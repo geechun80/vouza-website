@@ -1305,77 +1305,71 @@
       const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 1000);
       camera.position.set(0, 0, 5.5);
 
-      /* ── LIGHTS ── */
-      scene.add(new THREE.AmbientLight(0x001133, 2.5));
-      const pLight1 = new THREE.PointLight(0x0066ff, 4, 22);
-      pLight1.position.set(4, 3, 4);
+      /* ── LIGHTS — farther away, softer ── */
+      scene.add(new THREE.AmbientLight(0x001133, 3));
+      const pLight1 = new THREE.PointLight(0x0066ff, 2.5, 40);
+      pLight1.position.set(7, 5, 6);
       scene.add(pLight1);
-      const pLight2 = new THREE.PointLight(0x00ccff, 3, 20);
-      pLight2.position.set(-4, -2, 3);
+      const pLight2 = new THREE.PointLight(0x00aaff, 1.8, 35);
+      pLight2.position.set(-6, -4, 5);
       scene.add(pLight2);
-      const pLight3 = new THREE.PointLight(0x4400ff, 2, 18);
-      pLight3.position.set(0, -5, 2);
+      const pLight3 = new THREE.PointLight(0x4400ff, 1.2, 30);
+      pLight3.position.set(0, -7, 3);
       scene.add(pLight3);
 
-      /* ── ICOSAHEDRON ── */
-      const geo = new THREE.IcosahedronGeometry(1.9, 1);
+      /* ── ICOSAHEDRON — detail 2 = smooth sphere ── */
+      const geo = new THREE.IcosahedronGeometry(1.7, 2);
       const mat = new THREE.MeshPhongMaterial({
         color: 0x1144cc,
         emissive: 0x001166,
-        specular: 0x44aaff,
-        shininess: 100,
+        specular: 0x3388cc,
+        shininess: 55,
         transparent: true,
         opacity: 0.92,
       });
       const mesh = new THREE.Mesh(geo, mat);
       scene.add(mesh);
 
-      /* ── WIREFRAME OVERLAY ── */
-      const wireMesh = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({
-        color: 0x2266ff, wireframe: true, transparent: true, opacity: 0.2,
-      }));
-      wireMesh.scale.setScalar(1.02);
-      scene.add(wireMesh);
-
       /* ── DUAL RINGS ── */
       const ring1 = new THREE.Mesh(
-        new THREE.TorusGeometry(2.8, 0.014, 8, 90),
-        new THREE.MeshBasicMaterial({ color: 0x0055ff, transparent: true, opacity: 0.45 })
+        new THREE.TorusGeometry(2.6, 0.013, 8, 100),
+        new THREE.MeshBasicMaterial({ color: 0x0055ff, transparent: true, opacity: 0.4 })
       );
       ring1.rotation.x = Math.PI / 3;
       scene.add(ring1);
       const ring2 = new THREE.Mesh(
-        new THREE.TorusGeometry(3.3, 0.009, 8, 90),
-        new THREE.MeshBasicMaterial({ color: 0x0033aa, transparent: true, opacity: 0.28 })
+        new THREE.TorusGeometry(3.1, 0.008, 8, 100),
+        new THREE.MeshBasicMaterial({ color: 0x0033aa, transparent: true, opacity: 0.25 })
       );
       ring2.rotation.x = -Math.PI / 4;
       ring2.rotation.y = Math.PI / 5;
       scene.add(ring2);
 
-      /* ── 18 SWIRL PARTICLE LINES ── */
+      /* ── 9 SWIRL LINES (natural curves, no sharp angles) ── */
       function makeSwirlLine(radius, turns, pts, color, opacity) {
         const positions = [];
         for (let i = 0; i < pts; i++) {
           const t = i / pts;
           const a = t * Math.PI * 2 * turns;
-          const r = radius + Math.sin(t * Math.PI * 6) * 0.3;
-          const y = (t - 0.5) * 6;
+          const wobble = Math.sin(t * Math.PI * 4) * 0.25 + Math.cos(t * Math.PI * 7) * 0.12;
+          const r = radius + wobble;
+          const y = (t - 0.5) * 5.5 + Math.sin(t * Math.PI * 3) * 0.3;
           positions.push(Math.cos(a) * r, y, Math.sin(a) * r);
         }
         const g = new THREE.BufferGeometry();
         g.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
         return new THREE.Line(g, new THREE.LineBasicMaterial({ color, transparent: true, opacity }));
       }
-      for (let i = 0; i < 18; i++) {
+      for (let i = 0; i < 9; i++) {
         const l = makeSwirlLine(
-          2.2 + Math.random() * 1.4,
-          2 + Math.random() * 3,
-          200,
-          new THREE.Color().setHSL(0.6 + Math.random() * 0.15, 1, 0.5 + Math.random() * 0.3),
-          0.15 + Math.random() * 0.28
+          2.0 + Math.random() * 1.2,
+          2.5 + Math.random() * 2.5,
+          300,
+          new THREE.Color().setHSL(0.58 + Math.random() * 0.18, 1, 0.5 + Math.random() * 0.3),
+          0.18 + Math.random() * 0.25
         );
-        l.rotation.y = (i / 18) * Math.PI * 2;
-        l.rotation.x = (Math.random() - 0.5) * 0.8;
+        l.rotation.y = (i / 9) * Math.PI * 2;
+        l.rotation.x = (Math.random() - 0.5) * 1.0;
         scene.add(l);
       }
 
@@ -1383,7 +1377,7 @@
       const dotCount = 220;
       const dotPos = new Float32Array(dotCount * 3);
       for (let i = 0; i < dotCount; i++) {
-        const r = 3.0 + Math.random() * 1.8;
+        const r = 2.8 + Math.random() * 1.8;
         const theta = Math.random() * Math.PI * 2;
         const phi   = Math.acos(2 * Math.random() - 1);
         dotPos[i*3]   = r * Math.sin(phi) * Math.cos(theta);
@@ -1393,7 +1387,7 @@
       const dotGeo = new THREE.BufferGeometry();
       dotGeo.setAttribute('position', new THREE.Float32BufferAttribute(dotPos, 3));
       const dots = new THREE.Points(dotGeo, new THREE.PointsMaterial({
-        color: 0x88ccff, size: 0.065, transparent: true, opacity: 0.75,
+        color: 0x88ccff, size: 0.055, transparent: true, opacity: 0.7,
       }));
       scene.add(dots);
 
@@ -1413,17 +1407,15 @@
       function animate() {
         requestAnimationFrame(animate);
         t += 0.005;
-        mesh.rotation.x = t * 0.4;
-        mesh.rotation.y = t * 0.6;
-        wireMesh.rotation.x = mesh.rotation.x;
-        wireMesh.rotation.y = mesh.rotation.y;
-        ring1.rotation.z = t * 0.3;
-        ring2.rotation.z = -t * 0.22;
-        ring2.rotation.x = -Math.PI / 4 + Math.sin(t * 0.5) * 0.12;
-        dots.rotation.y = t * 0.1;
-        pLight1.position.x = Math.sin(t * 0.7) * 5;
-        pLight1.position.y = Math.cos(t * 0.5) * 4;
-        pLight2.position.x = Math.cos(t * 0.6) * -4;
+        mesh.rotation.x = t * 0.35;
+        mesh.rotation.y = t * 0.55;
+        ring1.rotation.z = t * 0.28;
+        ring2.rotation.z = -t * 0.2;
+        ring2.rotation.x = -Math.PI / 4 + Math.sin(t * 0.5) * 0.1;
+        dots.rotation.y = t * 0.09;
+        pLight1.position.x = Math.sin(t * 0.7) * 7;
+        pLight1.position.y = Math.cos(t * 0.5) * 5;
+        pLight2.position.x = Math.cos(t * 0.6) * -6;
         renderer.render(scene, camera);
       }
       animate();
