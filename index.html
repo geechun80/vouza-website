@@ -107,6 +107,14 @@
 
     .nav-cta { display: flex; gap: 12px; align-items: center; }
 
+    /* ── RAINBOW BORDER (21st.dev style) ─────────── */
+    @property --rb-angle {
+      syntax: '<angle>';
+      initial-value: 0deg;
+      inherits: false;
+    }
+    @keyframes rb-spin { to { --rb-angle: 360deg; } }
+
     .btn {
       display: inline-flex;
       align-items: center;
@@ -121,16 +129,43 @@
       border: none;
       transition: all 0.25s;
       white-space: nowrap;
+      position: relative;
+      isolation: isolate;
+    }
+    .btn::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: inherit;
+      background: conic-gradient(
+        from var(--rb-angle),
+        #ff0080, #ff6600, #ffdd00,
+        #00ff88, #00aaff, #aa00ff, #ff0080
+      );
+      animation: rb-spin 4s linear infinite;
+      z-index: -1;
+    }
+    .btn::after {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      border-radius: inherit;
+      background: var(--bg);
+      z-index: -1;
     }
     .btn-ghost {
       background: transparent;
       color: var(--muted);
     }
+    .btn-ghost::after { background: var(--bg); }
     .btn-ghost:hover { color: var(--white); }
     .btn-primary {
       background: linear-gradient(135deg, var(--cyan), var(--blue));
       color: var(--white);
       box-shadow: 0 0 20px rgba(0,212,212,0.3);
+    }
+    .btn-primary::after {
+      background: linear-gradient(135deg, var(--cyan), var(--blue));
     }
     .btn-primary:hover {
       transform: translateY(-1px);
@@ -139,12 +174,9 @@
     .btn-outline {
       background: rgba(0,212,212,0.08);
       color: var(--cyan);
-      border: 1px solid rgba(0,212,212,0.3);
     }
-    .btn-outline:hover {
-      background: rgba(0,212,212,0.15);
-      box-shadow: 0 0 20px rgba(0,212,212,0.2);
-    }
+    .btn-outline::after { background: rgba(0,20,30,0.9); }
+    .btn-outline:hover { background: rgba(0,212,212,0.15); }
     .btn-lg { padding: 14px 32px; font-size: 0.95rem; }
 
     /* ── HERO ─────────────────────────────────────── */
@@ -164,7 +196,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 60px;
-      align-items: center;
+      align-items: flex-start;
       width: 100%;
       max-width: 1200px;
     }
@@ -176,6 +208,7 @@
       height: 480px;
       border-radius: 24px;
       overflow: hidden;
+      padding-top: 60px;
     }
 
     #hero3d {
@@ -1256,12 +1289,24 @@
 <script>
   /* ── THREE.JS HERO 3D ───────────────────────────── */
   (function () {
-    const script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
-    script.onload = initHero3D;
-    document.head.appendChild(script);
+    function loadScript(src) {
+      return new Promise(function (resolve, reject) {
+        var s = document.createElement('script');
+        s.src = src; s.onload = resolve; s.onerror = reject;
+        document.head.appendChild(s);
+      });
+    }
 
-    function initHero3D() {
+    loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js')
+      .then(function () { return loadScript('https://unpkg.com/three@0.128.0/examples/js/loaders/FontLoader.js'); })
+      .then(function () { return loadScript('https://unpkg.com/three@0.128.0/examples/js/geometries/TextGeometry.js'); })
+      .then(function () {
+        return fetch('https://unpkg.com/three@0.128.0/examples/fonts/helvetiker_bold.typeface.json')
+          .then(function (r) { return r.json(); });
+      })
+      .then(function (fontJson) { initHero3D(fontJson); });
+
+    function initHero3D(fontJson) {
       const canvas = document.getElementById('hero3d');
       const container = canvas.parentElement;
 
@@ -1285,9 +1330,26 @@
       pLight3.position.set(0, -4, 1);
       scene.add(pLight3);
 
-      /* ── MAIN ICOSAHEDRON ── */
-      const geo = new THREE.IcosahedronGeometry(1.4, 1);
-      const mat = new THREE.MeshPhongMaterial({
+      /* ── 3D "AI" TEXT ── */
+      const font = new THREE.FontLoader().parse(fontJson);
+      const textGeo = new THREE.TextGeometry('AI', {
+        font: font,
+        size: 1.2,
+        height: 0.45,
+        curveSegments: 12,
+        bevelEnabled: true,
+        bevelThickness: 0.07,
+        bevelSize: 0.04,
+        bevelSegments: 6,
+      });
+      textGeo.computeBoundingBox();
+      const bb = textGeo.boundingBox;
+      textGeo.translate(
+        -(bb.max.x + bb.min.x) / 2,
+        -(bb.max.y + bb.min.y) / 2,
+        -(bb.max.z + bb.min.z) / 2
+      );
+      const textMat = new THREE.MeshPhongMaterial({
         color: 0x1144cc,
         emissive: 0x001166,
         specular: 0x44aaff,
@@ -1295,27 +1357,26 @@
         transparent: true,
         opacity: 0.92,
       });
-      const mesh = new THREE.Mesh(geo, mat);
+      const mesh = new THREE.Mesh(textGeo, textMat);
       scene.add(mesh);
 
-      /* ── WIREFRAME OVERLAY ── */
-      const wireMat = new THREE.MeshBasicMaterial({
-        color: 0x2266ff,
-        wireframe: true,
-        transparent: true,
-        opacity: 0.18,
-      });
-      const wireMesh = new THREE.Mesh(geo, wireMat);
-      wireMesh.scale.setScalar(1.02);
+      const wireMesh = new THREE.Mesh(textGeo, new THREE.MeshBasicMaterial({
+        color: 0x2266ff, wireframe: true, transparent: true, opacity: 0.2,
+      }));
+      wireMesh.scale.setScalar(1.01);
       scene.add(wireMesh);
 
-      /* ── OUTER RING ── */
-      const ringGeo = new THREE.TorusGeometry(2.2, 0.012, 8, 80);
-      const ringMat = new THREE.MeshBasicMaterial({ color: 0x0055ff, transparent: true, opacity: 0.4 });
-      const ring1 = new THREE.Mesh(ringGeo, ringMat);
+      /* ── OUTER RINGS ── */
+      const ring1 = new THREE.Mesh(
+        new THREE.TorusGeometry(2.2, 0.012, 8, 80),
+        new THREE.MeshBasicMaterial({ color: 0x0055ff, transparent: true, opacity: 0.4 })
+      );
       ring1.rotation.x = Math.PI / 3;
       scene.add(ring1);
-      const ring2 = new THREE.Mesh(new THREE.TorusGeometry(2.6, 0.008, 8, 80), new THREE.MeshBasicMaterial({ color: 0x0033aa, transparent: true, opacity: 0.25 }));
+      const ring2 = new THREE.Mesh(
+        new THREE.TorusGeometry(2.6, 0.008, 8, 80),
+        new THREE.MeshBasicMaterial({ color: 0x0033aa, transparent: true, opacity: 0.25 })
+      );
       ring2.rotation.x = -Math.PI / 4;
       ring2.rotation.y = Math.PI / 5;
       scene.add(ring2);
@@ -1324,10 +1385,10 @@
       function makeSwirlLine(radius, turns, pts, color, opacity) {
         const positions = [];
         for (let i = 0; i < pts; i++) {
-          const t  = i / pts;
-          const a  = t * Math.PI * 2 * turns;
-          const r  = radius + Math.sin(t * Math.PI * 6) * 0.3;
-          const y  = (t - 0.5) * 5;
+          const t = i / pts;
+          const a = t * Math.PI * 2 * turns;
+          const r = radius + Math.sin(t * Math.PI * 6) * 0.3;
+          const y = (t - 0.5) * 5;
           positions.push(Math.cos(a) * r, y, Math.sin(a) * r);
         }
         const g = new THREE.BufferGeometry();
@@ -1379,10 +1440,10 @@
       function animate() {
         requestAnimationFrame(animate);
         t += 0.005;
-        mesh.rotation.x = t * 0.4;
-        mesh.rotation.y = t * 0.6;
-        wireMesh.rotation.x = mesh.rotation.x;
+        mesh.rotation.y = t * 0.4;
+        mesh.rotation.x = Math.sin(t * 0.3) * 0.2;
         wireMesh.rotation.y = mesh.rotation.y;
+        wireMesh.rotation.x = mesh.rotation.x;
         ring1.rotation.z = t * 0.3;
         ring2.rotation.z = -t * 0.2;
         ring2.rotation.x = -Math.PI / 4 + Math.sin(t * 0.5) * 0.1;
