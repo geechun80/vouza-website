@@ -78,10 +78,9 @@
       text-decoration: none;
     }
     .nav-logo img {
-      height: 36px;
-      background: #fff;
-      border-radius: 8px;
-      padding: 3px 8px;
+      height: 52px;
+      mix-blend-mode: screen;
+      filter: brightness(1.1);
     }
     .nav-logo-text {
       font-size: 1.2rem;
@@ -202,13 +201,6 @@
     }
 
     .hero-left { text-align: left; }
-
-    .hero-right {
-      position: relative;
-      height: 480px;
-      border-radius: 24px;
-      overflow: hidden;
-    }
 
     #hero3d {
       width: 100%;
@@ -767,10 +759,9 @@
       margin-bottom: 14px;
     }
     .footer-logo img {
-      height: 32px;
-      background: #fff;
-      border-radius: 6px;
-      padding: 2px 6px;
+      height: 36px;
+      mix-blend-mode: screen;
+      filter: brightness(1.1);
     }
     .footer-logo span { font-size: 1.1rem; font-weight: 800; color: var(--cyan); letter-spacing: 1px; }
     .footer-brand p { color: var(--muted); font-size: 0.83rem; line-height: 1.7; max-width: 260px; }
@@ -830,6 +821,119 @@
       .stat-card:first-child { border-radius: 16px 16px 0 0; }
       .stat-card:last-child { border-radius: 0 0 16px 16px; }
     }
+
+    /* ── GLOBAL GRID OVERLAY ──────────────────────── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(0,212,212,0.014) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,212,0.014) 1px, transparent 1px);
+      background-size: 72px 72px;
+    }
+
+    /* ── HERO RIGHT — enhanced panel ─────────────── */
+    .hero-right {
+      position: relative;
+      height: 480px;
+      border-radius: 20px;
+      overflow: hidden;
+      background: rgba(0,10,20,0.55);
+      border: 1px solid rgba(0,212,212,0.12);
+      box-shadow: 0 0 60px rgba(0,100,100,0.1), inset 0 1px 0 rgba(0,212,212,0.06);
+    }
+    .hero-right::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      background-image:
+        linear-gradient(rgba(0,212,212,0.024) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,212,0.024) 1px, transparent 1px);
+      background-size: 44px 44px;
+    }
+
+    /* ── HUD CORNER BRACKETS ─────────────────────── */
+    .hud-corner {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      z-index: 4;
+      pointer-events: none;
+    }
+    .hud-corner.tl { top: 10px; left: 10px; border-top: 1.5px solid rgba(0,212,212,0.65); border-left: 1.5px solid rgba(0,212,212,0.65); }
+    .hud-corner.tr { top: 10px; right: 10px; border-top: 1.5px solid rgba(0,212,212,0.65); border-right: 1.5px solid rgba(0,212,212,0.65); }
+    .hud-corner.bl { bottom: 10px; left: 10px; border-bottom: 1.5px solid rgba(0,212,212,0.65); border-left: 1.5px solid rgba(0,212,212,0.65); }
+    .hud-corner.br { bottom: 10px; right: 10px; border-bottom: 1.5px solid rgba(0,212,212,0.65); border-right: 1.5px solid rgba(0,212,212,0.65); }
+
+    /* ── SCAN LINE ────────────────────────────────── */
+    .scan-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(0,212,212,0.55) 30%, rgba(0,212,212,0.55) 70%, transparent 100%);
+      z-index: 3;
+      pointer-events: none;
+      animation: scan-sweep 5.5s ease-in-out infinite;
+    }
+    @keyframes scan-sweep {
+      0%   { top: 0%;   opacity: 0; }
+      6%   { opacity: 1; }
+      90%  { opacity: 0.7; }
+      100% { top: 100%; opacity: 0; }
+    }
+
+    /* ── FLOATING AGENT STATUS CARDS ─────────────── */
+    .agent-card {
+      position: absolute;
+      z-index: 5;
+      background: rgba(0,12,24,0.92);
+      border: 1px solid rgba(0,212,212,0.22);
+      border-radius: 10px;
+      padding: 9px 13px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04);
+      pointer-events: none;
+    }
+    .agent-card-1 { top: 22px;  right: 20px; animation: float-ac 5.5s ease-in-out infinite; }
+    .agent-card-2 { top: 180px; right: 20px; animation: float-ac 6s   ease-in-out infinite 1.2s; }
+    .agent-card-3 { bottom: 26px; left: 22px; animation: float-ac 5s  ease-in-out infinite 2.1s; }
+    @keyframes float-ac {
+      0%,100% { transform: translateY(0px); }
+      50%      { transform: translateY(-7px); }
+    }
+    .ac-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      animation: pulse-dot 2s infinite;
+    }
+    .ac-dot.cyan  { background: var(--cyan);  box-shadow: 0 0 8px var(--cyan); }
+    .ac-dot.green { background: #00ff88;      box-shadow: 0 0 8px rgba(0,255,136,0.7); }
+    .ac-label {
+      font-size: 0.63rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      margin-bottom: 2px;
+      white-space: nowrap;
+    }
+    .ac-value {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--white);
+      white-space: nowrap;
+    }
+    .ac-value.cyan { color: var(--cyan); }
   </style>
 </head>
 <body>
@@ -843,7 +947,7 @@
 <nav>
   <a class="nav-logo" href="#">
     <img src="vouza-logo.png" alt="Vouza" onerror="this.style.display='none'" />
-    <span class="nav-logo-text">VOUZA</span>
+    <span class="nav-logo-text" style="display:none">VOUZA</span>
   </a>
   <ul class="nav-links" id="navLinks">
     <li><a href="#services" class="active">Services</a></li>
@@ -904,6 +1008,35 @@
     <!-- RIGHT — 3D Visual -->
     <div class="hero-right">
       <canvas id="hero3d"></canvas>
+      <!-- HUD corners -->
+      <div class="hud-corner tl"></div>
+      <div class="hud-corner tr"></div>
+      <div class="hud-corner bl"></div>
+      <div class="hud-corner br"></div>
+      <!-- Scan line -->
+      <div class="scan-line"></div>
+      <!-- Floating agent status cards -->
+      <div class="agent-card agent-card-1">
+        <div class="ac-dot cyan"></div>
+        <div>
+          <div class="ac-label">AI Agents</div>
+          <div class="ac-value cyan">8 / 8 Active</div>
+        </div>
+      </div>
+      <div class="agent-card agent-card-2">
+        <div class="ac-dot green"></div>
+        <div>
+          <div class="ac-label">Tasks Today</div>
+          <div class="ac-value">1,247 Done</div>
+        </div>
+      </div>
+      <div class="agent-card agent-card-3">
+        <div class="ac-dot cyan"></div>
+        <div>
+          <div class="ac-label">Response Time</div>
+          <div class="ac-value">~1.2s avg</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
