@@ -47,6 +47,15 @@
       pointer-events: none;
     }
 
+    /* ── CONFETTI ─────────────────────────────────── */
+    #confetti {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
     /* ── NAVBAR ───────────────────────────────────── */
     nav {
       position: fixed;
@@ -767,6 +776,8 @@
 
 <!-- ── STARFIELD CANVAS ─────────────────────────────── -->
 <canvas id="starfield"></canvas>
+<!-- ── CONFETTI CANVAS ──────────────────────────────── -->
+<canvas id="confetti"></canvas>
 
 <!-- ── NAVBAR ──────────────────────────────────────── -->
 <nav>
@@ -1262,6 +1273,80 @@
   initStars(280);
   drawStars();
   window.addEventListener('resize', () => { resize(); initStars(280); });
+
+  /* ── CONFETTI ───────────────────────────────────── */
+  (function () {
+    const cc = document.getElementById('confetti');
+    const cx = cc.getContext('2d');
+    const COLORS = [
+      'rgba(0,212,212,', 'rgba(0,102,255,', 'rgba(120,80,255,',
+      'rgba(255,80,160,', 'rgba(255,200,60,', 'rgba(80,255,160,'
+    ];
+    let pieces = [];
+
+    function resizeCC() {
+      cc.width  = window.innerWidth;
+      cc.height = window.innerHeight;
+    }
+
+    function Piece() {
+      this.x     = Math.random() * cc.width;
+      this.y     = Math.random() * cc.height - cc.height;
+      this.w     = Math.random() * 8 + 4;
+      this.h     = Math.random() * 4 + 2;
+      this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+      this.alpha = Math.random() * 0.5 + 0.2;
+      this.rot   = Math.random() * Math.PI * 2;
+      this.drot  = (Math.random() - 0.5) * 0.08;
+      this.dy    = Math.random() * 0.6 + 0.2;
+      this.dx    = (Math.random() - 0.5) * 0.3;
+      this.shape = Math.random() > 0.5 ? 'rect' : 'circle';
+    }
+
+    function initPieces() {
+      pieces = [];
+      const n = Math.floor((cc.width * cc.height) / 14000);
+      for (let i = 0; i < n; i++) {
+        const p = new Piece();
+        p.y = Math.random() * cc.height;
+        pieces.push(p);
+      }
+    }
+
+    function drawConfetti() {
+      cx.clearRect(0, 0, cc.width, cc.height);
+      for (const p of pieces) {
+        cx.save();
+        cx.translate(p.x, p.y);
+        cx.rotate(p.rot);
+        cx.globalAlpha = p.alpha;
+        cx.fillStyle = p.color + p.alpha + ')';
+        if (p.shape === 'rect') {
+          cx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        } else {
+          cx.beginPath();
+          cx.arc(0, 0, p.w / 2, 0, Math.PI * 2);
+          cx.fill();
+        }
+        cx.restore();
+
+        p.y   += p.dy;
+        p.x   += p.dx;
+        p.rot += p.drot;
+
+        if (p.y > cc.height + 20) {
+          p.y = -20;
+          p.x = Math.random() * cc.width;
+        }
+      }
+      requestAnimationFrame(drawConfetti);
+    }
+
+    resizeCC();
+    initPieces();
+    drawConfetti();
+    window.addEventListener('resize', () => { resizeCC(); initPieces(); });
+  })();
 
   /* ── NAVBAR ──────────────────────────────────────── */
   function toggleNav() {
