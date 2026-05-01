@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -208,7 +208,6 @@
       height: 480px;
       border-radius: 24px;
       overflow: hidden;
-      padding-top: 60px;
     }
 
     #hero3d {
@@ -1289,24 +1288,45 @@
 <script>
   /* ── THREE.JS HERO 3D ───────────────────────────── */
   (function () {
-    function loadScript(src) {
-      return new Promise(function (resolve, reject) {
-        var s = document.createElement('script');
-        s.src = src; s.onload = resolve; s.onerror = reject;
-        document.head.appendChild(s);
-      });
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+    script.onload = initHero3D;
+    document.head.appendChild(script);
+
+    function makeAITexture() {
+      const W = 512, H = 288;
+      const tc = document.createElement('canvas');
+      tc.width = W; tc.height = H;
+      const ctx = tc.getContext('2d');
+      ctx.clearRect(0, 0, W, H);
+      ctx.font = 'bold 210px Arial Black, Arial, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      /* extrusion depth layers */
+      const steps = 14;
+      for (let i = steps; i >= 1; i--) {
+        const ratio = i / steps;
+        ctx.fillStyle = 'rgba(0,' + Math.round(20 * (1 - ratio)) + ',' + Math.round(120 * (1 - ratio)) + ',0.95)';
+        ctx.fillText('AI', W / 2 + i * 0.9, H / 2 + i * 0.9);
+      }
+      /* cyan glow */
+      ctx.shadowColor = '#00d4d4';
+      ctx.shadowBlur = 48;
+      ctx.fillStyle = '#0055cc';
+      ctx.fillText('AI', W / 2, H / 2);
+      /* gradient face */
+      ctx.shadowBlur = 0;
+      const grad = ctx.createLinearGradient(80, 40, 430, 248);
+      grad.addColorStop(0, '#ffffff');
+      grad.addColorStop(0.35, '#99eeff');
+      grad.addColorStop(0.7, '#0099ff');
+      grad.addColorStop(1, '#0044cc');
+      ctx.fillStyle = grad;
+      ctx.fillText('AI', W / 2, H / 2);
+      return tc;
     }
 
-    loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js')
-      .then(function () { return loadScript('https://unpkg.com/three@0.128.0/examples/js/loaders/FontLoader.js'); })
-      .then(function () { return loadScript('https://unpkg.com/three@0.128.0/examples/js/geometries/TextGeometry.js'); })
-      .then(function () {
-        return fetch('https://unpkg.com/three@0.128.0/examples/fonts/helvetiker_bold.typeface.json')
-          .then(function (r) { return r.json(); });
-      })
-      .then(function (fontJson) { initHero3D(fontJson); });
-
-    function initHero3D(fontJson) {
+    function initHero3D() {
       const canvas = document.getElementById('hero3d');
       const container = canvas.parentElement;
 
@@ -1326,45 +1346,14 @@
       const pLight2 = new THREE.PointLight(0x00ccff, 2, 20);
       pLight2.position.set(-3, -2, 2);
       scene.add(pLight2);
-      const pLight3 = new THREE.PointLight(0x4400ff, 1.5, 15);
-      pLight3.position.set(0, -4, 1);
-      scene.add(pLight3);
 
-      /* ── 3D "AI" TEXT ── */
-      const font = new THREE.FontLoader().parse(fontJson);
-      const textGeo = new THREE.TextGeometry('AI', {
-        font: font,
-        size: 1.2,
-        height: 0.45,
-        curveSegments: 12,
-        bevelEnabled: true,
-        bevelThickness: 0.07,
-        bevelSize: 0.04,
-        bevelSegments: 6,
-      });
-      textGeo.computeBoundingBox();
-      const bb = textGeo.boundingBox;
-      textGeo.translate(
-        -(bb.max.x + bb.min.x) / 2,
-        -(bb.max.y + bb.min.y) / 2,
-        -(bb.max.z + bb.min.z) / 2
+      /* ── "AI" TEXT PLANE ── */
+      const texture = new THREE.CanvasTexture(makeAITexture());
+      const mesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(3.8, 2.15),
+        new THREE.MeshBasicMaterial({ map: texture, transparent: true, side: THREE.DoubleSide })
       );
-      const textMat = new THREE.MeshPhongMaterial({
-        color: 0x1144cc,
-        emissive: 0x001166,
-        specular: 0x44aaff,
-        shininess: 80,
-        transparent: true,
-        opacity: 0.92,
-      });
-      const mesh = new THREE.Mesh(textGeo, textMat);
       scene.add(mesh);
-
-      const wireMesh = new THREE.Mesh(textGeo, new THREE.MeshBasicMaterial({
-        color: 0x2266ff, wireframe: true, transparent: true, opacity: 0.2,
-      }));
-      wireMesh.scale.setScalar(1.01);
-      scene.add(wireMesh);
 
       /* ── OUTER RINGS ── */
       const ring1 = new THREE.Mesh(
@@ -1440,10 +1429,9 @@
       function animate() {
         requestAnimationFrame(animate);
         t += 0.005;
-        mesh.rotation.y = t * 0.4;
-        mesh.rotation.x = Math.sin(t * 0.3) * 0.2;
-        wireMesh.rotation.y = mesh.rotation.y;
-        wireMesh.rotation.x = mesh.rotation.x;
+        mesh.rotation.y = Math.sin(t * 0.5) * 0.35;
+        mesh.rotation.x = Math.sin(t * 0.3) * 0.1;
+        mesh.position.y = Math.sin(t * 0.7) * 0.12;
         ring1.rotation.z = t * 0.3;
         ring2.rotation.z = -t * 0.2;
         ring2.rotation.x = -Math.PI / 4 + Math.sin(t * 0.5) * 0.1;
