@@ -78,12 +78,8 @@
       text-decoration: none;
     }
     .nav-logo img {
-      width: 56px;
-      height: 38px;
-      object-fit: cover;
-      object-position: center top;
-      mix-blend-mode: screen;
-      filter: brightness(1.15);
+      height: 46px;
+      width: auto;
     }
     .nav-logo-text {
       font-size: 1.2rem;
@@ -762,9 +758,8 @@
       margin-bottom: 14px;
     }
     .footer-logo img {
-      height: 36px;
-      mix-blend-mode: screen;
-      filter: brightness(1.1);
+      height: 40px;
+      width: auto;
     }
     .footer-logo span { font-size: 1.1rem; font-weight: 800; color: var(--cyan); letter-spacing: 1px; }
     .footer-brand p { color: var(--muted); font-size: 0.83rem; line-height: 1.7; max-width: 260px; }
@@ -936,7 +931,7 @@
 <nav>
   <a class="nav-logo" href="#">
     <img src="vouza-logo.png" alt="Vouza" onerror="this.style.display='none'" />
-    <span class="nav-logo-text">VOUZA</span>
+    <span class="nav-logo-text" style="display:none"></span>
   </a>
   <ul class="nav-links" id="navLinks">
     <li><a href="#services" class="active">Services</a></li>
