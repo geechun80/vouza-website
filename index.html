@@ -1288,105 +1288,13 @@
 <script>
   /* ── THREE.JS HERO 3D ───────────────────────────── */
   (function () {
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+    script.onload = initHero3D;
+    document.head.appendChild(script);
 
-    /* ── Fallback: canvas-texture "AI" on a plane ── */
-    function initFallback() {
+    function initHero3D() {
       const canvas = document.getElementById('hero3d');
-      if (!canvas) return;
-      const container = canvas.parentElement;
-
-      const W = 512, H = 288;
-      const tc = document.createElement('canvas');
-      tc.width = W; tc.height = H;
-      const ctx = tc.getContext('2d');
-      ctx.clearRect(0, 0, W, H);
-      ctx.font = 'bold 210px Arial Black, Arial, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      const steps = 14;
-      for (let i = steps; i >= 1; i--) {
-        const ratio = i / steps;
-        ctx.fillStyle = 'rgba(0,' + Math.round(20*(1-ratio)) + ',' + Math.round(120*(1-ratio)) + ',0.95)';
-        ctx.fillText('AI', W/2 + i*0.9, H/2 + i*0.9);
-      }
-      ctx.shadowColor = '#00d4d4';
-      ctx.shadowBlur = 48;
-      ctx.fillStyle = '#0055cc';
-      ctx.fillText('AI', W/2, H/2);
-      ctx.shadowBlur = 0;
-      const grad = ctx.createLinearGradient(80, 40, 430, 248);
-      grad.addColorStop(0, '#ffffff');
-      grad.addColorStop(0.35, '#99eeff');
-      grad.addColorStop(0.7, '#0099ff');
-      grad.addColorStop(1, '#0044cc');
-      ctx.fillStyle = grad;
-      ctx.fillText('AI', W/2, H/2);
-
-      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-      renderer.setPixelRatio(window.devicePixelRatio);
-      renderer.setClearColor(0x000000, 0);
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 1000);
-      camera.position.set(0, 0, 6.5);
-
-      const texture = new THREE.CanvasTexture(tc);
-      const mesh = new THREE.Mesh(
-        new THREE.PlaneGeometry(4.5, 2.54),
-        new THREE.MeshBasicMaterial({ map: texture, transparent: true, alphaTest: 0.15, depthWrite: false })
-      );
-      scene.add(mesh);
-
-      function resize() {
-        const w = container.clientWidth, h = container.clientHeight;
-        renderer.setSize(w, h);
-        camera.aspect = w / h;
-        camera.updateProjectionMatrix();
-      }
-      resize();
-      window.addEventListener('resize', resize);
-
-      let t = 0;
-      (function animate() {
-        requestAnimationFrame(animate);
-        t += 0.005;
-        mesh.rotation.y = Math.sin(t * 0.5) * 0.35;
-        mesh.rotation.x = Math.sin(t * 0.3) * 0.1;
-        renderer.render(scene, camera);
-      })();
-    }
-
-    /* ── Sequential script loader ── */
-    function loadScript(src) {
-      return new Promise(function(resolve, reject) {
-        var s = document.createElement('script');
-        s.src = src;
-        s.onload = resolve;
-        s.onerror = reject;
-        document.head.appendChild(s);
-      });
-    }
-
-    loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js')
-      .then(function() {
-        return loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/FontLoader.js');
-      })
-      .then(function() {
-        return loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/geometries/TextGeometry.js');
-      })
-      .then(function() {
-        return fetch('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/fonts/helvetiker_bold.typeface.json')
-          .then(function(r) { return r.json(); });
-      })
-      .then(function(fontJson) {
-        initHero3D(fontJson);
-      })
-      .catch(function() {
-        initFallback();
-      });
-
-    function initHero3D(fontJson) {
-      const canvas = document.getElementById('hero3d');
-      if (!canvas) return;
       const container = canvas.parentElement;
 
       const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
@@ -1395,134 +1303,89 @@
 
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 1000);
-      camera.position.set(0, 0, 6.5);
+      camera.position.set(0, 0, 5.5);
 
-      /* ── 4 LIGHTS ── */
-      scene.add(new THREE.AmbientLight(0x0a1a3a, 3));
-
-      const pLight1 = new THREE.PointLight(0x00d4d4, 6, 35);
-      pLight1.position.set(4, 3, 5);
+      /* ── LIGHTS ── */
+      scene.add(new THREE.AmbientLight(0x001133, 2.5));
+      const pLight1 = new THREE.PointLight(0x0066ff, 4, 22);
+      pLight1.position.set(4, 3, 4);
       scene.add(pLight1);
-
-      const pLight2 = new THREE.PointLight(0x0066ff, 4, 28);
-      pLight2.position.set(-4, -2, 4);
+      const pLight2 = new THREE.PointLight(0x00ccff, 3, 20);
+      pLight2.position.set(-4, -2, 3);
       scene.add(pLight2);
-
-      const pLight3 = new THREE.PointLight(0x8800ff, 2.5, 22);
-      pLight3.position.set(0, -4, 2);
+      const pLight3 = new THREE.PointLight(0x4400ff, 2, 18);
+      pLight3.position.set(0, -5, 2);
       scene.add(pLight3);
 
-      /* ── TRUE 3D TEXT GEOMETRY ── */
-      const loader = new THREE.FontLoader();
-      const font = loader.parse(fontJson);
-
-      const textGeo = new THREE.TextGeometry('AI', {
-        font: font,
-        size: 2.0,
-        height: 0.6,
-        curveSegments: 12,
-        bevelEnabled: true,
-        bevelThickness: 0.10,
-        bevelSize: 0.06,
-        bevelSegments: 8
-      });
-      textGeo.computeBoundingBox();
-      const bb = textGeo.boundingBox;
-      const cx = -(bb.max.x - bb.min.x) / 2;
-      const cy = -(bb.max.y - bb.min.y) / 2;
-      const cz = -(bb.max.z - bb.min.z) / 2;
-      textGeo.translate(cx, cy, cz);
-
-      const textMat = new THREE.MeshPhongMaterial({
-        color: 0x22aaff,
-        emissive: 0x003366,
-        specular: 0xffffff,
-        shininess: 300
-      });
-      const textMesh = new THREE.Mesh(textGeo, textMat);
-
-      /* ── GLOW OVERLAY (slightly larger, BackSide) ── */
-      const glowGeo = new THREE.TextGeometry('AI', {
-        font: font,
-        size: 2.0,
-        height: 0.6,
-        curveSegments: 12,
-        bevelEnabled: true,
-        bevelThickness: 0.10,
-        bevelSize: 0.06,
-        bevelSegments: 8
-      });
-      glowGeo.computeBoundingBox();
-      const gb = glowGeo.boundingBox;
-      glowGeo.translate(
-        -(gb.max.x - gb.min.x) / 2,
-        -(gb.max.y - gb.min.y) / 2,
-        -(gb.max.z - gb.min.z) / 2
-      );
-      const glowMat = new THREE.MeshBasicMaterial({
-        color: 0x00d4d4,
+      /* ── ICOSAHEDRON ── */
+      const geo = new THREE.IcosahedronGeometry(1.9, 1);
+      const mat = new THREE.MeshPhongMaterial({
+        color: 0x1144cc,
+        emissive: 0x001166,
+        specular: 0x44aaff,
+        shininess: 100,
         transparent: true,
-        opacity: 0.06,
-        side: THREE.BackSide
+        opacity: 0.92,
       });
-      const glowMesh = new THREE.Mesh(glowGeo, glowMat);
-      glowMesh.scale.setScalar(1.06);
+      const mesh = new THREE.Mesh(geo, mat);
+      scene.add(mesh);
 
-      const group = new THREE.Group();
-      group.add(textMesh);
-      group.add(glowMesh);
-      scene.add(group);
+      /* ── WIREFRAME OVERLAY ── */
+      const wireMesh = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({
+        color: 0x2266ff, wireframe: true, transparent: true, opacity: 0.2,
+      }));
+      wireMesh.scale.setScalar(1.02);
+      scene.add(wireMesh);
 
-      /* ── TORUS RINGS ── */
+      /* ── DUAL RINGS ── */
       const ring1 = new THREE.Mesh(
-        new THREE.TorusGeometry(2.8, 0.013, 8, 100),
-        new THREE.MeshBasicMaterial({ color: 0x0066ff, transparent: true, opacity: 0.5 })
+        new THREE.TorusGeometry(2.8, 0.014, 8, 90),
+        new THREE.MeshBasicMaterial({ color: 0x0055ff, transparent: true, opacity: 0.45 })
       );
       ring1.rotation.x = Math.PI / 3;
       scene.add(ring1);
-
       const ring2 = new THREE.Mesh(
-        new THREE.TorusGeometry(3.3, 0.009, 8, 100),
-        new THREE.MeshBasicMaterial({ color: 0x00aaff, transparent: true, opacity: 0.3 })
+        new THREE.TorusGeometry(3.3, 0.009, 8, 90),
+        new THREE.MeshBasicMaterial({ color: 0x0033aa, transparent: true, opacity: 0.28 })
       );
+      ring2.rotation.x = -Math.PI / 4;
+      ring2.rotation.y = Math.PI / 5;
       scene.add(ring2);
 
-      /* ── 22 SWIRL PARTICLE LINES ── */
+      /* ── 18 SWIRL PARTICLE LINES ── */
       function makeSwirlLine(radius, turns, pts, color, opacity) {
         const positions = [];
         for (let i = 0; i < pts; i++) {
-          const tv = i / pts;
-          const a = tv * Math.PI * 2 * turns;
-          const r = radius + Math.sin(tv * Math.PI * 6) * 0.3;
-          const y = (tv - 0.5) * 5;
+          const t = i / pts;
+          const a = t * Math.PI * 2 * turns;
+          const r = radius + Math.sin(t * Math.PI * 6) * 0.3;
+          const y = (t - 0.5) * 6;
           positions.push(Math.cos(a) * r, y, Math.sin(a) * r);
         }
         const g = new THREE.BufferGeometry();
         g.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
         return new THREE.Line(g, new THREE.LineBasicMaterial({ color, transparent: true, opacity }));
       }
-      for (let i = 0; i < 22; i++) {
-        const hue = 0.55 + Math.random() * 0.15;
-        const col = new THREE.Color().setHSL(hue, 1.0, 0.5 + Math.random() * 0.25);
-        const line = makeSwirlLine(
-          2.0 + Math.random() * 1.4,
+      for (let i = 0; i < 18; i++) {
+        const l = makeSwirlLine(
+          2.2 + Math.random() * 1.4,
           2 + Math.random() * 3,
-          220,
-          col,
-          0.15 + Math.random() * 0.30
+          200,
+          new THREE.Color().setHSL(0.6 + Math.random() * 0.15, 1, 0.5 + Math.random() * 0.3),
+          0.15 + Math.random() * 0.28
         );
-        line.rotation.y = (i / 22) * Math.PI * 2;
-        line.rotation.x = (Math.random() - 0.5) * 0.8;
-        scene.add(line);
+        l.rotation.y = (i / 18) * Math.PI * 2;
+        l.rotation.x = (Math.random() - 0.5) * 0.8;
+        scene.add(l);
       }
 
-      /* ── 260 DOT PARTICLES ── */
-      const dotCount = 260;
+      /* ── 220 DOT PARTICLES ── */
+      const dotCount = 220;
       const dotPos = new Float32Array(dotCount * 3);
       for (let i = 0; i < dotCount; i++) {
-        const r = 3.0 + Math.random() * 1.5;
+        const r = 3.0 + Math.random() * 1.8;
         const theta = Math.random() * Math.PI * 2;
-        const phi = Math.acos(2 * Math.random() - 1);
+        const phi   = Math.acos(2 * Math.random() - 1);
         dotPos[i*3]   = r * Math.sin(phi) * Math.cos(theta);
         dotPos[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
         dotPos[i*3+2] = r * Math.cos(phi);
@@ -1530,13 +1393,14 @@
       const dotGeo = new THREE.BufferGeometry();
       dotGeo.setAttribute('position', new THREE.Float32BufferAttribute(dotPos, 3));
       const dots = new THREE.Points(dotGeo, new THREE.PointsMaterial({
-        color: 0x88ccff, size: 0.06, transparent: true, opacity: 0.8
+        color: 0x88ccff, size: 0.065, transparent: true, opacity: 0.75,
       }));
       scene.add(dots);
 
       /* ── RESIZE ── */
       function resize() {
-        const w = container.clientWidth, h = container.clientHeight;
+        const w = container.clientWidth;
+        const h = container.clientHeight;
         renderer.setSize(w, h);
         camera.aspect = w / h;
         camera.updateProjectionMatrix();
@@ -1546,31 +1410,24 @@
 
       /* ── ANIMATE ── */
       let t = 0;
-      (function animate() {
+      function animate() {
         requestAnimationFrame(animate);
-        t += 0.016;
-
-        /* Full 360° continuous Y rotation + gentle X tilt */
-        group.rotation.y += 0.006;
-        group.rotation.x = Math.sin(t * 0.4) * 0.18;
-
-        /* Orbiting lights */
+        t += 0.005;
+        mesh.rotation.x = t * 0.4;
+        mesh.rotation.y = t * 0.6;
+        wireMesh.rotation.x = mesh.rotation.x;
+        wireMesh.rotation.y = mesh.rotation.y;
+        ring1.rotation.z = t * 0.3;
+        ring2.rotation.z = -t * 0.22;
+        ring2.rotation.x = -Math.PI / 4 + Math.sin(t * 0.5) * 0.12;
+        dots.rotation.y = t * 0.1;
         pLight1.position.x = Math.sin(t * 0.7) * 5;
         pLight1.position.y = Math.cos(t * 0.5) * 4;
         pLight2.position.x = Math.cos(t * 0.6) * -4;
-
-        /* Rings rotate independently */
-        ring1.rotation.z = t * 0.3;
-        ring2.rotation.z = -t * 0.2;
-        ring2.rotation.x = Math.sin(t * 0.4) * 0.25;
-
-        /* Dots drift */
-        dots.rotation.y = t * 0.08;
-
         renderer.render(scene, camera);
-      })();
+      }
+      animate();
     }
-
   })();
 
   /* ── STARFIELD ───────────────────────────────────── */
