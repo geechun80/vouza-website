@@ -8,6 +8,13 @@
   <meta property="og:title" content="Vouza – AI Assistant Solutions for Enterprise" />
   <meta property="og:description" content="One AI Assistant. Many Capabilities. Automate, optimize, and grow your business with Vouza." />
   <meta property="og:url" content="https://vouza.ai" />
+  <meta property="og:image" content="https://vouza.ai/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://vouza.ai/og-image.jpg" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="icon" type="image/png" sizes="64x64" href="favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -820,6 +827,13 @@
       .stat-card:last-child { border-radius: 0 0 16px 16px; }
     }
 
+    /* ── MOBILE — hide overlapping hero elements ────── */
+    @media (max-width: 768px) {
+      .agent-card   { display: none; }
+      .hud-corner   { display: none; }
+      .scan-line    { display: none; }
+    }
+
     /* ── GLOBAL GRID OVERLAY ──────────────────────── */
     body::after {
       content: '';
@@ -1309,22 +1323,24 @@
         <span class="region-tag">🇻🇳 Vietnam</span>
       </div>
     </div>
-    <form class="contact-form" onsubmit="handleSubmit(event)">
+    <form class="contact-form" action="https://formspree.io/hello@vouza.ai" method="POST">
+      <input type="hidden" name="_subject" value="New enquiry from vouza.ai" />
+      <input type="hidden" name="_next" value="https://vouza.ai#contact" />
       <div class="form-group">
         <label>Full Name *</label>
-        <input type="text" placeholder="Your name" required />
+        <input type="text" name="name" placeholder="Your name" required />
       </div>
       <div class="form-group">
         <label>Company Name *</label>
-        <input type="text" placeholder="Your company" required />
+        <input type="text" name="company" placeholder="Your company" required />
       </div>
       <div class="form-group">
         <label>Email Address *</label>
-        <input type="email" placeholder="you@company.com" required />
+        <input type="email" name="email" placeholder="you@company.com" required />
       </div>
       <div class="form-group">
         <label>Country</label>
-        <select>
+        <select name="country">
           <option>Singapore</option>
           <option>Malaysia</option>
           <option>Thailand</option>
@@ -1335,7 +1351,7 @@
       </div>
       <div class="form-group">
         <label>Solution of Interest</label>
-        <select>
+        <select name="solution">
           <option>AI Assistants</option>
           <option>Website & App Integration</option>
           <option>Robotics Solutions</option>
@@ -1345,14 +1361,11 @@
       </div>
       <div class="form-group">
         <label>Message</label>
-        <textarea placeholder="Tell us about your business needs..."></textarea>
+        <textarea name="message" placeholder="Tell us about your business needs..."></textarea>
       </div>
       <button type="submit" class="btn btn-primary btn-lg" style="width:100%;border-radius:12px;margin-top:4px;">
         Send Message →
       </button>
-      <p id="form-msg" style="font-size:0.82rem;color:var(--cyan);display:none;text-align:center;margin-top:8px;">
-        ✓ Message sent! We'll be in touch within 1 business day.
-      </p>
     </form>
   </div>
 </section>
@@ -1422,16 +1435,16 @@
       const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 1000);
       camera.position.set(0, 0, 5.5);
 
-      /* ── LIGHTS — farther away, softer ── */
-      scene.add(new THREE.AmbientLight(0x001133, 3));
-      const pLight1 = new THREE.PointLight(0x0066ff, 2.5, 40);
-      pLight1.position.set(7, 5, 6);
+      /* ── LIGHTS — wide orbits, never face-on ── */
+      scene.add(new THREE.AmbientLight(0x001133, 3.5));
+      const pLight1 = new THREE.PointLight(0x0066ff, 1.6, 45);
+      pLight1.position.set(8, 5, 4);
       scene.add(pLight1);
-      const pLight2 = new THREE.PointLight(0x00aaff, 1.8, 35);
-      pLight2.position.set(-6, -4, 5);
+      const pLight2 = new THREE.PointLight(0x00aaff, 1.2, 40);
+      pLight2.position.set(-7, -4, 3);
       scene.add(pLight2);
-      const pLight3 = new THREE.PointLight(0x4400ff, 1.2, 30);
-      pLight3.position.set(0, -7, 3);
+      const pLight3 = new THREE.PointLight(0x4400ff, 0.9, 35);
+      pLight3.position.set(2, -8, 2);
       scene.add(pLight3);
 
       /* ── ICOSAHEDRON — detail 2 = smooth sphere ── */
@@ -1530,9 +1543,11 @@
         ring2.rotation.z = -t * 0.2;
         ring2.rotation.x = -Math.PI / 4 + Math.sin(t * 0.5) * 0.1;
         dots.rotation.y = t * 0.09;
-        pLight1.position.x = Math.sin(t * 0.7) * 7;
-        pLight1.position.y = Math.cos(t * 0.5) * 5;
-        pLight2.position.x = Math.cos(t * 0.6) * -6;
+        /* Keep lights in offset orbits — never on the camera axis */
+        pLight1.position.x = Math.cos(t * 0.38) * 7 + 3;
+        pLight1.position.y = Math.sin(t * 0.27) * 5 + 2;
+        pLight2.position.x = Math.cos(t * 0.44 + 2.1) * 6 - 3;
+        pLight2.position.y = Math.sin(t * 0.31 + 1.3) * 4 - 2;
         renderer.render(scene, camera);
       }
       animate();
@@ -1685,14 +1700,7 @@
       : 'rgba(2,12,14,0.8)';
   });
 
-  /* ── CONTACT FORM ────────────────────────────────── */
-  function handleSubmit(e) {
-    e.preventDefault();
-    document.getElementById('form-msg').style.display = 'block';
-    const btn = e.target.querySelector('button[type=submit]');
-    btn.textContent = '✓ Sent!';
-    btn.disabled = true;
-  }
+  /* Contact form now submits via Formspree (real delivery to hello@vouza.ai) */
 </script>
 </body>
 </html>
