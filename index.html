@@ -827,6 +827,97 @@
       .stat-card:last-child { border-radius: 0 0 16px 16px; }
     }
 
+    /* ── VEE DEMO VIDEO SECTION ─────────────────────── */
+    .vee-demo {
+      background: var(--bg);
+    }
+    .vee-demo-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .vee-video-wrap {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      background: #000;
+      box-shadow: 0 0 60px rgba(0,212,212,0.12), 0 0 120px rgba(0,102,255,0.06);
+      cursor: pointer;
+    }
+    .vee-video-wrap video {
+      width: 100%;
+      display: block;
+      border-radius: 20px;
+    }
+    /* HUD frame on demo video */
+    .vee-video-wrap .hud-corner.tl { top: 12px;    left: 12px; }
+    .vee-video-wrap .hud-corner.tr { top: 12px;    right: 12px; }
+    .vee-video-wrap .hud-corner.bl { bottom: 12px; left: 12px; }
+    .vee-video-wrap .hud-corner.br { bottom: 12px; right: 12px; }
+    /* Play overlay — shown before first click */
+    .vee-play-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background: rgba(0,8,14,0.55);
+      backdrop-filter: blur(4px);
+      border-radius: 20px;
+      transition: opacity 0.35s;
+      pointer-events: none;
+      z-index: 6;
+    }
+    .vee-video-wrap.playing .vee-play-overlay {
+      opacity: 0;
+    }
+    .vee-play-btn {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(0,212,212,0.25), rgba(0,102,255,0.25));
+      border: 2px solid rgba(0,212,212,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 40px rgba(0,212,212,0.3);
+      animation: pulse-play 2.5s ease-in-out infinite;
+    }
+    @keyframes pulse-play {
+      0%,100% { box-shadow: 0 0 30px rgba(0,212,212,0.3); }
+      50%      { box-shadow: 0 0 60px rgba(0,212,212,0.6); }
+    }
+    .vee-play-btn svg {
+      width: 28px; height: 28px;
+      fill: var(--cyan);
+      margin-left: 4px;
+    }
+    .vee-play-hint {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: rgba(0,212,212,0.8);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    .vee-sound-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 16px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: rgba(0,212,212,0.7);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border: 1px solid rgba(0,212,212,0.2);
+      border-radius: 100px;
+      padding: 5px 14px;
+      background: rgba(0,212,212,0.05);
+    }
+
     /* ── HERO VIDEO ──────────────────────────────────── */
     .hero-video {
       width: 100%;
@@ -974,6 +1065,7 @@
   </a>
   <ul class="nav-links" id="navLinks">
     <li><a href="#services" class="active">Services</a></li>
+    <li><a href="#demo">Demo</a></li>
     <li><a href="#assistants">AI Assistants</a></li>
     <li><a href="#how-it-works">How It Works</a></li>
     <li><a href="#industries">Industries</a></li>
@@ -1098,6 +1190,41 @@
       <div class="hud-corner bl"></div>
       <div class="hud-corner br"></div>
       <div class="scan-line"></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── VEE DEMO VIDEO ──────────────────────────────── -->
+<section class="vee-demo" id="demo">
+  <div class="vee-demo-inner">
+    <div class="section-header center">
+      <div class="section-label">See Vee in Action</div>
+      <h2 class="section-title">Watch How<br><span class="grad-text">Vee Transforms Your Business</span></h2>
+      <p class="section-desc">Tap to watch Vee — your AI assistant — explain how Vouza's platform works across real enterprise workflows.</p>
+    </div>
+    <div class="vee-video-wrap" id="veeDemoWrap" onclick="playVeeDemo()">
+      <video id="veeDemoVideo" playsinline preload="metadata">
+        <source src="Vee Explaination.mp4" type="video/mp4">
+      </video>
+      <!-- HUD frame -->
+      <div class="hud-corner tl"></div>
+      <div class="hud-corner tr"></div>
+      <div class="hud-corner bl"></div>
+      <div class="hud-corner br"></div>
+      <div class="scan-line"></div>
+      <!-- Play overlay -->
+      <div class="vee-play-overlay" id="veePlayOverlay">
+        <div class="vee-play-btn">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="vee-play-hint">Click to play</div>
+      </div>
+    </div>
+    <div class="vee-sound-badge">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+      Sound On — turn up your volume
     </div>
   </div>
 </section>
@@ -1757,6 +1884,24 @@
     drawConfetti();
     window.addEventListener('resize', () => { resizeCC(); initPieces(); });
   })();
+
+  /* ── VEE DEMO CLICK-TO-PLAY ─────────────────────── */
+  function playVeeDemo() {
+    const wrap  = document.getElementById('veeDemoWrap');
+    const video = document.getElementById('veeDemoVideo');
+    if (video.paused) {
+      video.play();
+      wrap.classList.add('playing');
+    } else {
+      video.pause();
+      wrap.classList.remove('playing');
+    }
+  }
+  // Re-show overlay when video ends
+  document.getElementById('veeDemoVideo').addEventListener('ended', function() {
+    document.getElementById('veeDemoWrap').classList.remove('playing');
+    this.currentTime = 0;
+  });
 
   /* ── NAVBAR ──────────────────────────────────────── */
   function toggleNav() {
