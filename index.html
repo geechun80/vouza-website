@@ -827,6 +827,31 @@
       .stat-card:last-child { border-radius: 0 0 16px 16px; }
     }
 
+    /* ── HERO VIDEO ──────────────────────────────────── */
+    .hero-video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 20px;
+      display: block;
+    }
+
+    /* ── SPHERE SHOWCASE SECTION ─────────────────────── */
+    .sphere-showcase {
+      background: rgba(0,20,25,0.5);
+    }
+    .sphere-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    @media (max-width: 900px) {
+      .sphere-inner { grid-template-columns: 1fr; }
+    }
+
     /* ── MOBILE — hide overlapping hero elements ────── */
     @media (max-width: 768px) {
       .agent-card   { display: none; }
@@ -1003,9 +1028,11 @@
         </div>
       </div>
     </div>
-    <!-- RIGHT — 3D Visual -->
+    <!-- RIGHT — Vee Video -->
     <div class="hero-right">
-      <canvas id="hero3d"></canvas>
+      <video class="hero-video" autoplay muted loop playsinline>
+        <source src="Vee Said Hello.mp4" type="video/mp4">
+      </video>
       <!-- HUD corners -->
       <div class="hud-corner tl"></div>
       <div class="hud-corner tr"></div>
@@ -1035,6 +1062,42 @@
           <div class="ac-value">~1.2s avg</div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── AI CORE — 3D Sphere ──────────────────────────── -->
+<section class="sphere-showcase">
+  <div class="sphere-inner">
+    <div>
+      <div class="section-label">Vouza AI Core</div>
+      <h2 class="section-title">Always Learning.<br><span class="grad-text">Always Evolving.</span></h2>
+      <p class="section-desc" style="margin-bottom:32px;">A continuously adapting neural engine at the heart of every Vouza assistant — every interaction makes it smarter, every workflow makes it faster.</p>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);flex-shrink:0;"></div>
+          <span style="font-size:0.9rem;color:var(--muted);">Real-time context awareness across all channels</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);flex-shrink:0;"></div>
+          <span style="font-size:0.9rem;color:var(--muted);">Continuous self-improvement from every interaction</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);flex-shrink:0;"></div>
+          <span style="font-size:0.9rem;color:var(--muted);">Enterprise-grade accuracy trained on SEA business context</span>
+        </div>
+      </div>
+    </div>
+    <!-- 3D Sphere — reuses hero-right styling -->
+    <div class="hero-right">
+      <canvas id="hero3d"></canvas>
+      <div class="hud-corner tl"></div>
+      <div class="hud-corner tr"></div>
+      <div class="hud-corner bl"></div>
+      <div class="hud-corner br"></div>
+      <div class="scan-line"></div>
     </div>
   </div>
 </section>
