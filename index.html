@@ -1323,9 +1323,11 @@
         <span class="region-tag">🇻🇳 Vietnam</span>
       </div>
     </div>
-    <form class="contact-form" action="https://formspree.io/hello@vouza.ai" method="POST">
-      <input type="hidden" name="_subject" value="New enquiry from vouza.ai" />
-      <input type="hidden" name="_next" value="https://vouza.ai#contact" />
+    <form class="contact-form" id="contactForm">
+      <!-- Web3Forms: get your free key at web3forms.com → enter hello@vouza.ai -->
+      <input type="hidden" name="access_key" value="PASTE_YOUR_WEB3FORMS_KEY_HERE" />
+      <input type="hidden" name="subject" value="New enquiry from vouza.ai" />
+      <input type="hidden" name="from_name" value="Vouza Website" />
       <div class="form-group">
         <label>Full Name *</label>
         <input type="text" name="name" placeholder="Your name" required />
@@ -1363,9 +1365,15 @@
         <label>Message</label>
         <textarea name="message" placeholder="Tell us about your business needs..."></textarea>
       </div>
-      <button type="submit" class="btn btn-primary btn-lg" style="width:100%;border-radius:12px;margin-top:4px;">
+      <button type="submit" id="submitBtn" class="btn btn-primary btn-lg" style="width:100%;border-radius:12px;margin-top:4px;">
         Send Message →
       </button>
+      <p id="form-success" style="display:none;font-size:0.85rem;color:var(--cyan);text-align:center;margin-top:12px;padding:12px;border:1px solid rgba(0,212,212,0.3);border-radius:10px;background:rgba(0,212,212,0.06);">
+        ✓ Message sent! We'll be in touch within 1 business day.
+      </p>
+      <p id="form-error" style="display:none;font-size:0.85rem;color:#ff6b6b;text-align:center;margin-top:12px;padding:12px;border:1px solid rgba(255,100,100,0.3);border-radius:10px;background:rgba(255,100,100,0.06);">
+        ✗ Something went wrong. Please email us directly at hello@vouza.ai
+      </p>
     </form>
   </div>
 </section>
@@ -1700,7 +1708,37 @@
       : 'rgba(2,12,14,0.8)';
   });
 
-  /* Contact form now submits via Formspree (real delivery to hello@vouza.ai) */
+  /* ── CONTACT FORM — Web3Forms AJAX ──────────────── */
+  document.getElementById('contactForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn     = document.getElementById('submitBtn');
+    const success = document.getElementById('form-success');
+    const error   = document.getElementById('form-error');
+    success.style.display = 'none';
+    error.style.display   = 'none';
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+
+    try {
+      const res  = await fetch('https://api.web3forms.com/submit', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body:    JSON.stringify(Object.fromEntries(new FormData(this)))
+      });
+      const data = await res.json();
+      if (data.success) {
+        success.style.display = 'block';
+        this.reset();
+        btn.textContent = '✓ Sent!';
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (err) {
+      error.style.display = 'block';
+      btn.textContent = 'Send Message →';
+      btn.disabled = false;
+    }
+  });
 </script>
 </body>
 </html>
