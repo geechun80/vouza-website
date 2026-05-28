@@ -743,6 +743,134 @@
       color: var(--cyan);
     }
 
+    /* ── PDPA TRUST BADGE ────────────────────────── */
+    .pdpa-trust-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 28px;
+      padding: 12px 18px;
+      background: rgba(0,212,212,0.05);
+      border: 1px solid rgba(0,212,212,0.2);
+      border-radius: 12px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .pdpa-trust-badge svg { flex-shrink: 0; color: var(--cyan); }
+    .pdpa-trust-badge strong { color: var(--cyan); display: block; font-size: 0.82rem; }
+
+    /* ── PDPA CONSENT CHECKBOX ────────────────────── */
+    .pdpa-consent {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 14px 16px;
+      background: rgba(0,212,212,0.04);
+      border: 1px solid rgba(0,212,212,0.15);
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    .pdpa-consent input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      accent-color: var(--cyan);
+      cursor: pointer;
+      background: transparent;
+      border: 1px solid var(--card-border);
+      border-radius: 4px;
+    }
+    .pdpa-consent-text {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .pdpa-consent-text a {
+      color: var(--cyan);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      cursor: pointer;
+    }
+
+    /* ── PRIVACY POLICY MODAL ─────────────────────── */
+    .privacy-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(6px);
+      z-index: 9000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .privacy-overlay.open { display: flex; }
+    .privacy-modal {
+      background: #051518;
+      border: 1px solid rgba(0,212,212,0.2);
+      border-radius: 20px;
+      max-width: 720px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 40px 44px;
+      position: relative;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0,212,212,0.3) transparent;
+    }
+    .privacy-modal h2 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      color: var(--white);
+    }
+    .privacy-modal .pm-date {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 28px;
+      display: block;
+    }
+    .privacy-modal h3 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--cyan);
+      margin: 22px 0 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .privacy-modal p, .privacy-modal li {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+    .privacy-modal ul { padding-left: 20px; margin: 8px 0; }
+    .privacy-modal li { margin-bottom: 4px; }
+    .privacy-modal a { color: var(--cyan); }
+    .pm-close {
+      position: absolute;
+      top: 18px;
+      right: 20px;
+      background: rgba(0,212,212,0.08);
+      border: 1px solid rgba(0,212,212,0.2);
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 1rem;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .pm-close:hover { color: var(--white); background: rgba(0,212,212,0.15); }
+    @media (max-width: 600px) {
+      .privacy-modal { padding: 28px 20px; }
+    }
+
     /* ── FOOTER ───────────────────────────────────── */
     footer {
       background: rgba(0,8,10,0.9);
@@ -1512,6 +1640,16 @@
         <span class="region-tag">🇮🇩 Indonesia</span>
         <span class="region-tag">🇻🇳 Vietnam</span>
       </div>
+      <div class="pdpa-trust-badge">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <polyline points="9 12 11 14 15 10"/>
+        </svg>
+        <div>
+          <strong>PDPA Compliant · Singapore</strong>
+          Your personal data is collected and handled in accordance with Singapore's Personal Data Protection Act 2012. We use your information solely to respond to your enquiry.
+        </div>
+      </div>
     </div>
     <form class="contact-form" id="contactForm">
       <!-- Web3Forms: get your free key at web3forms.com → enter hello@vouza.ai -->
@@ -1519,24 +1657,24 @@
       <input type="hidden" name="subject" value="New enquiry from vouza.ai" />
       <input type="hidden" name="from_name" value="Vouza Website" />
       <div class="form-group">
-        <label>Full Name *</label>
-        <input type="text" name="name" placeholder="Your name" required />
+        <label for="f-name">Full Name *</label>
+        <input id="f-name" type="text" name="name" placeholder="Your name" required />
       </div>
       <div class="form-group">
-        <label>Company Name *</label>
-        <input type="text" name="company" placeholder="Your company" required />
+        <label for="f-company">Company Name *</label>
+        <input id="f-company" type="text" name="company" placeholder="Your company" required />
       </div>
       <div class="form-group">
-        <label>Email Address *</label>
-        <input type="email" name="email" placeholder="you@company.com" required />
+        <label for="f-email">Email Address *</label>
+        <input id="f-email" type="email" name="email" placeholder="you@company.com" required />
       </div>
       <div class="form-group">
-        <label>Phone / WhatsApp</label>
-        <input type="tel" name="phone" placeholder="+65 9123 4567" />
+        <label for="f-phone">Phone / WhatsApp</label>
+        <input id="f-phone" type="tel" name="phone" placeholder="+65 9123 4567" />
       </div>
       <div class="form-group">
-        <label>Country</label>
-        <select name="country">
+        <label for="f-country">Country</label>
+        <select id="f-country" name="country">
           <option>Singapore</option>
           <option>Malaysia</option>
           <option>Thailand</option>
@@ -1546,8 +1684,8 @@
         </select>
       </div>
       <div class="form-group">
-        <label>Solution of Interest</label>
-        <select name="solution">
+        <label for="f-solution">Solution of Interest</label>
+        <select id="f-solution" name="solution">
           <option>AI Assistants</option>
           <option>Website & App Integration</option>
           <option>Robotics Solutions</option>
@@ -1556,10 +1694,17 @@
         </select>
       </div>
       <div class="form-group">
-        <label>Message</label>
-        <textarea name="message" placeholder="Tell us about your business needs..."></textarea>
+        <label for="f-message">Message</label>
+        <textarea id="f-message" name="message" placeholder="Tell us about your business needs..."></textarea>
       </div>
-      <button type="submit" id="submitBtn" class="btn btn-primary btn-lg" style="width:100%;border-radius:12px;margin-top:4px;">
+      <!-- PDPA Consent -->
+      <label class="pdpa-consent" for="pdpa-check">
+        <input type="checkbox" id="pdpa-check" name="pdpa_consent" required />
+        <span class="pdpa-consent-text">
+          I consent to Vouza Pte Ltd collecting and using my personal data to respond to this enquiry, in accordance with Singapore's <a onclick="openPrivacy(event)">Personal Data Protection Act (PDPA) 2012</a>. My data will not be shared with third parties without consent.
+        </span>
+      </label>
+      <button type="submit" id="submitBtn" class="btn btn-primary btn-lg" style="width:100%;border-radius:12px;margin-top:4px;" disabled>
         Send Message →
       </button>
       <p id="form-success" style="display:none;font-size:0.85rem;color:var(--cyan);text-align:center;margin-top:12px;padding:12px;border:1px solid rgba(0,212,212,0.3);border-radius:10px;background:rgba(0,212,212,0.06);">
@@ -1613,9 +1758,78 @@
   </div>
   <div class="footer-bottom">
     <span>© 2026 Vouza Pte Ltd. All rights reserved. Registered in Singapore.</span>
-    <span>hello@vouza.ai</span>
+    <span style="display:flex;gap:20px;align-items:center;">
+      <a href="#" onclick="openPrivacy(event)" style="color:var(--muted);text-decoration:none;font-size:0.78rem;transition:color 0.2s;" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--muted)'">Privacy Policy</a>
+      <span style="opacity:0.3;">·</span>
+      <span>hello@vouza.ai</span>
+    </span>
   </div>
 </footer>
+
+<!-- ── PRIVACY POLICY MODAL ──────────────────────── -->
+<div class="privacy-overlay" id="privacyOverlay" role="dialog" aria-modal="true" aria-labelledby="privacy-title">
+  <div class="privacy-modal">
+    <button class="pm-close" onclick="closePrivacy()" aria-label="Close privacy policy">✕</button>
+    <h2 id="privacy-title">Privacy Policy</h2>
+    <span class="pm-date">Vouza Pte Ltd · Effective: 1 January 2025 · Singapore</span>
+
+    <h3>1. Who We Are</h3>
+    <p>Vouza Pte Ltd ("Vouza", "we", "us") is a company incorporated in Singapore. We operate the website at <strong>vouza.ai</strong> and provide AI assistant solutions for businesses. Contact us at <a href="mailto:hello@vouza.ai">hello@vouza.ai</a>.</p>
+
+    <h3>2. Data We Collect</h3>
+    <p>When you submit an enquiry through our contact form, we collect:</p>
+    <ul>
+      <li>Full name and company name</li>
+      <li>Email address</li>
+      <li>Phone / WhatsApp number (optional)</li>
+      <li>Country of operation</li>
+      <li>Your message and solution interest</li>
+    </ul>
+    <p>We do not collect payment data, government ID, or sensitive personal data through this website.</p>
+
+    <h3>3. How We Use Your Data</h3>
+    <p>Your personal data is used solely to:</p>
+    <ul>
+      <li>Respond to your enquiry and provide information about our services</li>
+      <li>Follow up on your interest in Vouza's AI solutions</li>
+      <li>Send relevant service updates, only where you have indicated interest</li>
+    </ul>
+    <p>We do not use your data for unsolicited marketing, profiling, or automated decision-making.</p>
+
+    <h3>4. Legal Basis — PDPA 2012 (Singapore)</h3>
+    <p>We comply with the <strong>Personal Data Protection Act 2012 (Singapore)</strong>. We collect your personal data with your consent (given via the form checkbox). You may withdraw consent at any time by emailing us at <a href="mailto:hello@vouza.ai">hello@vouza.ai</a>.</p>
+
+    <h3>5. Data Sharing</h3>
+    <p>We do not sell, rent, or trade your personal data. We may share data with:</p>
+    <ul>
+      <li><strong>Web3Forms</strong> — our form processing service (data is transmitted to deliver your message to our inbox and is not retained by them for marketing)</li>
+      <li>Our internal team members who handle enquiries</li>
+    </ul>
+    <p>No data is transferred outside Singapore without appropriate safeguards.</p>
+
+    <h3>6. Data Retention</h3>
+    <p>We retain enquiry data for up to 2 years to support our business relationship. After that, data is deleted or anonymised unless a longer period is required by law.</p>
+
+    <h3>7. Your Rights</h3>
+    <p>Under the PDPA, you have the right to:</p>
+    <ul>
+      <li><strong>Access</strong> the personal data we hold about you</li>
+      <li><strong>Correct</strong> any inaccurate data</li>
+      <li><strong>Withdraw consent</strong> and request deletion of your data</li>
+    </ul>
+    <p>To exercise any of these rights, email us at <a href="mailto:hello@vouza.ai">hello@vouza.ai</a> with the subject "PDPA Data Request". We will respond within 10 business days.</p>
+
+    <h3>8. Security</h3>
+    <p>We take reasonable steps to protect your personal data from unauthorised access, disclosure, or loss. Our website is served over HTTPS and form submissions are encrypted in transit.</p>
+
+    <h3>9. Changes to This Policy</h3>
+    <p>We may update this policy from time to time. The effective date at the top of this page will reflect any changes. Continued use of this website after changes constitutes acceptance of the updated policy.</p>
+
+    <h3>10. Contact Our Data Protection Officer</h3>
+    <p>For any data protection concerns, contact us at:<br>
+    <strong>Vouza Pte Ltd</strong> · Singapore · <a href="mailto:hello@vouza.ai">hello@vouza.ai</a></p>
+  </div>
+</div>
 
 <script>
   /* ── THREE.JS HERO 3D ───────────────────────────── */
@@ -1884,6 +2098,32 @@
     drawConfetti();
     window.addEventListener('resize', () => { resizeCC(); initPieces(); });
   })();
+
+  /* ── PDPA CONSENT — enable submit only when checked ─ */
+  const pdpaCheck  = document.getElementById('pdpa-check');
+  const submitBtn  = document.getElementById('submitBtn');
+  pdpaCheck.addEventListener('change', function() {
+    submitBtn.disabled = !this.checked;
+    submitBtn.style.opacity = this.checked ? '1' : '0.45';
+  });
+  submitBtn.style.opacity = '0.45';
+
+  /* ── PRIVACY POLICY MODAL ──────────────────────── */
+  function openPrivacy(e) {
+    if (e) e.preventDefault();
+    document.getElementById('privacyOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closePrivacy() {
+    document.getElementById('privacyOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('privacyOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closePrivacy();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closePrivacy();
+  });
 
   /* ── VEE DEMO CLICK-TO-PLAY ─────────────────────── */
   function playVeeDemo() {
