@@ -1,0 +1,9 @@
+name = "vee-chat-proxy"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+
+[vars]
+ALLOWED_ORIGIN = "https://vouza.ai"
+
+# Secret (set via `wrangler secret put OPENROUTER_API_KEY`, never stored here):
+#   OPENROUTER_API_KEY

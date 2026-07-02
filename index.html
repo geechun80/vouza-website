@@ -440,9 +440,24 @@
       background: rgba(0,60,70,0.4);
       box-shadow: 0 8px 40px rgba(0,100,100,0.2);
     }
+    a.assistant-card { display: block; text-decoration: none; color: inherit; }
     .assistant-icon { font-size: 1.6rem; margin-bottom: 12px; }
     .assistant-card h4 { font-size: 0.92rem; font-weight: 700; margin-bottom: 6px; }
     .assistant-card p { font-size: 0.78rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── NETWORK VISUALIZER ───────────────────────── */
+    .network-viz { text-align: center; }
+    #net-canvas {
+      display: block;
+      width: 100%;
+      max-width: 900px;
+      height: 340px;
+      margin: 0 auto;
+      border-radius: 20px;
+      border: 1px solid var(--card-border);
+      background: rgba(0,10,20,0.5);
+      backdrop-filter: blur(10px);
+    }
 
     /* ── HOW IT WORKS ─────────────────────────────── */
     .how { background: rgba(0,20,25,0.5); }
@@ -871,6 +886,119 @@
       .privacy-modal { padding: 28px 20px; }
     }
 
+    /* ── VEE CHAT WIDGET ──────────────────────────── */
+    .vee-chat-launcher {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 8000;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--cyan), var(--blue));
+      border: none;
+      box-shadow: 0 8px 30px rgba(0,212,212,0.4);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      transition: transform 0.2s;
+    }
+    .vee-chat-launcher:hover { transform: scale(1.08); }
+    .vee-chat-launcher .vee-chat-close-icon { display: none; }
+    .vee-chat-launcher.open .vee-chat-bubble-icon { display: none; }
+    .vee-chat-launcher.open .vee-chat-close-icon { display: block; }
+    .vee-chat-panel {
+      position: fixed;
+      bottom: 96px;
+      right: 24px;
+      z-index: 8000;
+      width: 360px;
+      max-width: calc(100vw - 48px);
+      height: 500px;
+      max-height: calc(100vh - 140px);
+      background: #051518;
+      border: 1px solid rgba(0,212,212,0.2);
+      border-radius: 20px;
+      box-shadow: 0 30px 90px rgba(0,0,0,0.55);
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .vee-chat-panel.open { display: flex; }
+    .vee-chat-header {
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--card-border);
+      background: rgba(0,212,212,0.06);
+    }
+    .vee-chat-avatar {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--cyan), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800;
+      color: #01181c;
+      flex-shrink: 0;
+    }
+    .vee-chat-header-text h4 { font-size: 0.92rem; font-weight: 700; }
+    .vee-chat-header-text span { font-size: 0.72rem; color: var(--muted); }
+    .vee-chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0,212,212,0.3) transparent;
+    }
+    .vee-msg {
+      max-width: 85%;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 0.82rem;
+      line-height: 1.55;
+    }
+    .vee-msg.vee { align-self: flex-start; background: rgba(0,212,212,0.08); border: 1px solid var(--card-border); color: var(--white); border-bottom-left-radius: 4px; }
+    .vee-msg.user { align-self: flex-end; background: rgba(0,102,255,0.18); border: 1px solid rgba(68,153,255,0.25); color: var(--white); border-bottom-right-radius: 4px; }
+    .vee-msg.typing { align-self: flex-start; color: var(--muted); font-style: italic; }
+    .vee-chat-form {
+      display: flex;
+      gap: 8px;
+      padding: 12px;
+      border-top: 1px solid var(--card-border);
+    }
+    .vee-chat-form input {
+      flex: 1;
+      background: rgba(0,40,50,0.6);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      color: var(--white);
+      font-size: 0.82rem;
+      font-family: inherit;
+    }
+    .vee-chat-form input:focus { outline: none; border-color: var(--cyan); }
+    .vee-chat-form button {
+      background: linear-gradient(135deg, var(--cyan), var(--blue));
+      border: none;
+      border-radius: 10px;
+      padding: 0 16px;
+      color: #01181c;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.82rem;
+    }
+    .vee-chat-form button:disabled { opacity: 0.5; cursor: not-allowed; }
+    @media (max-width: 600px) {
+      .vee-chat-panel { right: 16px; bottom: 88px; }
+      .vee-chat-launcher { right: 16px; bottom: 16px; }
+    }
+
     /* ── FOOTER ───────────────────────────────────── */
     footer {
       background: rgba(0,8,10,0.9);
@@ -898,6 +1026,35 @@
     }
     .footer-logo span { font-size: 1.1rem; font-weight: 800; color: var(--cyan); letter-spacing: 1px; }
     .footer-brand p { color: var(--muted); font-size: 0.83rem; line-height: 1.7; max-width: 260px; }
+    .newsletter-form {
+      display: flex;
+      gap: 8px;
+      margin-top: 18px;
+      max-width: 320px;
+    }
+    .newsletter-form input[type="email"] {
+      flex: 1;
+      min-width: 0;
+      background: rgba(0,40,50,0.6);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      padding: 10px 14px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      backdrop-filter: blur(10px);
+    }
+    .newsletter-form input[type="email"]::placeholder { color: var(--muted); }
+    .newsletter-form input[type="email"]:focus {
+      border-color: rgba(0,212,212,0.5);
+      box-shadow: 0 0 0 3px rgba(0,212,212,0.08);
+    }
+    .newsletter-form .btn { padding: 10px 18px; font-size: 0.82rem; white-space: nowrap; }
+    .newsletter-msg { font-size: 0.75rem; margin-top: 8px; min-height: 1em; }
+    .newsletter-msg.success { color: var(--cyan); }
+    .newsletter-msg.error { color: #ff6b6b; }
     .footer-col h4 { font-size: 0.82rem; font-weight: 700; color: var(--white); margin-bottom: 16px; letter-spacing: 0.5px; }
     .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
     .footer-col ul a { color: var(--muted); text-decoration: none; font-size: 0.83rem; transition: color 0.2s; }
@@ -950,9 +1107,11 @@
       section { padding: 70px 5%; }
       .footer-top { grid-template-columns: 1fr; }
       .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+      .newsletter-form { max-width: 100%; }
       .hero-stats { flex-direction: column; }
       .stat-card:first-child { border-radius: 16px 16px 0 0; }
       .stat-card:last-child { border-radius: 0 0 16px 16px; }
+      #net-canvas { height: 260px; }
     }
 
     /* ── VEE DEMO VIDEO SECTION ─────────────────────── */
@@ -1404,11 +1563,12 @@
     <p class="section-desc">Each assistant is purpose-built for its domain — trained to handle real business workflows with accuracy and speed.</p>
   </div>
   <div class="assistants-grid">
-    <div class="assistant-card">
+    <a class="assistant-card" href="#download">
       <div class="assistant-icon">🗂️</div>
       <h4>Admin AI</h4>
       <p>Automates scheduling, document handling, task coordination, and internal communications.</p>
-    </div>
+      <span class="service-tag" style="margin-top:12px;">Free to Try →</span>
+    </a>
     <div class="assistant-card">
       <div class="assistant-icon">📊</div>
       <h4>Accounting AI</h4>
@@ -1445,6 +1605,30 @@
       <p>Handles customer inquiries, automates responses, and generates conversation summaries via WhatsApp.</p>
     </div>
   </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── ADMIN AI FREE DOWNLOAD ────────────────────────── -->
+<section class="cta-section" id="download">
+  <h2>Try Admin AI<br><span class="grad-text">Free. Open Source. Yours to Run.</span></h2>
+  <p>Your AI office assistant — runs on your own PC, controlled from your phone. Email, calendar, WhatsApp, Telegram, files, and voice, all in one agent. Bring your own AI key and you're live in minutes.</p>
+  <div class="cta-actions">
+    <a href="https://github.com/geechun80/vouza-admin-agent" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg">⬇ Download on GitHub</a>
+    <a href="https://github.com/geechun80/vouza-admin-agent#-quickstart" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-lg">View Quickstart</a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── NETWORK VISUALIZER ──────────────────────────── -->
+<section class="network-viz">
+  <div class="section-header center">
+    <div class="section-label">Connected Intelligence</div>
+    <h2 class="section-title">Every Assistant.<br><span class="grad-text">One Network.</span></h2>
+    <p class="section-desc">Vouza's AI assistants don't operate in silos — they share context, hand off tasks, and coordinate in real time across your entire operation.</p>
+  </div>
+  <canvas id="net-canvas"></canvas>
 </section>
 
 <div class="divider"></div>
@@ -1726,6 +1910,14 @@
         <span>VOUZA</span>
       </a>
       <p>AI-powered enterprise solutions for businesses across Singapore, Malaysia, and Southeast Asia. Smarter workflows, better decisions, stronger business.</p>
+      <form class="newsletter-form" id="newsletterForm">
+        <input type="hidden" name="access_key" value="b8ca7e0e-3a3c-472b-ac08-4e66542f2375" />
+        <input type="hidden" name="subject" value="Newsletter Signup — vouza.ai" />
+        <input type="hidden" name="from_name" value="Vouza Website Newsletter" />
+        <input id="newsletter-email" type="email" name="email" placeholder="you@company.com" required aria-label="Email address" />
+        <button type="submit" id="newsletterBtn" class="btn btn-primary">Subscribe</button>
+      </form>
+      <p id="newsletter-msg" class="newsletter-msg" aria-live="polite"></p>
     </div>
     <div class="footer-col">
       <h4>Solutions</h4>
@@ -1829,6 +2021,26 @@
     <p>For any data protection concerns, contact us at:<br>
     <strong>Vouza AI</strong> · Singapore · <a href="mailto:hello@vouza.ai">hello@vouza.ai</a></p>
   </div>
+</div>
+
+<!-- ── VEE CHAT WIDGET ──────────────────────────────── -->
+<button class="vee-chat-launcher" id="veeChatLauncher" aria-label="Chat with Vee, Vouza's AI assistant">
+  <span class="vee-chat-bubble-icon">💬</span>
+  <span class="vee-chat-close-icon">✕</span>
+</button>
+<div class="vee-chat-panel" id="veeChatPanel" role="dialog" aria-label="Chat with Vee">
+  <div class="vee-chat-header">
+    <div class="vee-chat-avatar">V</div>
+    <div class="vee-chat-header-text">
+      <h4>Vee</h4>
+      <span>Vouza AI Assistant</span>
+    </div>
+  </div>
+  <div class="vee-chat-messages" id="veeChatMessages"></div>
+  <form class="vee-chat-form" id="veeChatForm">
+    <input type="text" id="veeChatInput" placeholder="Ask Vee anything…" autocomplete="off" maxlength="2000" />
+    <button type="submit" id="veeChatSend">Send</button>
+  </form>
 </div>
 
 <script>
@@ -2191,6 +2403,227 @@
       btn.disabled = false;
     }
   });
+
+  /* ── NEWSLETTER SIGNUP — Web3Forms AJAX ─────────── */
+  document.getElementById('newsletterForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('newsletterBtn');
+    const msg = document.getElementById('newsletter-msg');
+    msg.textContent = '';
+    msg.className = 'newsletter-msg';
+    const originalLabel = btn.textContent;
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+
+    try {
+      const res  = await fetch('https://api.web3forms.com/submit', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body:    JSON.stringify(Object.fromEntries(new FormData(this)))
+      });
+      const data = await res.json();
+      if (data.success) {
+        msg.textContent = '✓ Subscribed! Thanks for joining.';
+        msg.className = 'newsletter-msg success';
+        this.reset();
+        btn.textContent = '✓ Done';
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (err) {
+      msg.textContent = '✗ Something went wrong. Please try again.';
+      msg.className = 'newsletter-msg error';
+      btn.textContent = originalLabel;
+      btn.disabled = false;
+    }
+  });
+
+  /* ── NETWORK VISUALIZER — hub-and-spoke agent map ── */
+  (function () {
+    const canvas = document.getElementById('net-canvas');
+    const ctx    = canvas.getContext('2d');
+
+    const NAMES = [
+      'Admin AI', 'Accounting AI', 'Quality Engineering AI', 'Marketing AI',
+      'Sourcing AI', 'Buyer AI', 'Engineering AI', 'WhatsApp AI',
+    ];
+
+    let nodes = [];
+    let t = 0;
+
+    function resize() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width  = rect.width;
+      canvas.height = rect.height;
+      initNodes();
+    }
+
+    function initNodes() {
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+      nodes = [];
+
+      nodes.push({ x: cx, y: cy, r: 10, name: 'Vouza Core', isHub: true });
+
+      const orbitR = Math.min(canvas.width, canvas.height) * 0.35;
+      for (let i = 0; i < NAMES.length; i++) {
+        const angle = (i / NAMES.length) * Math.PI * 2;
+        nodes.push({
+          x: cx + Math.cos(angle) * orbitR,
+          y: cy + Math.sin(angle) * orbitR,
+          r: 6,
+          name: NAMES[i],
+          isHub: false,
+          baseAngle: angle,
+          dist: orbitR,
+        });
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      t += 0.008;
+
+      for (const n of nodes) {
+        if (!n.isHub) {
+          n.baseAngle += 0.003;
+          n.x = canvas.width / 2 + Math.cos(n.baseAngle) * n.dist;
+          n.y = canvas.height / 2 + Math.sin(n.baseAngle) * n.dist;
+        }
+      }
+
+      const hub = nodes[0];
+
+      for (let i = 1; i < nodes.length; i++) {
+        const grad = ctx.createLinearGradient(hub.x, hub.y, nodes[i].x, nodes[i].y);
+        grad.addColorStop(0, 'rgba(0,212,212,0.56)');
+        grad.addColorStop(1, 'rgba(0,102,255,0.11)');
+        ctx.beginPath();
+        ctx.moveTo(hub.x, hub.y);
+        ctx.lineTo(nodes[i].x, nodes[i].y);
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+
+      for (let i = 1; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist < 140) {
+            const alpha = (1 - dist / 140) * 0.14;
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.strokeStyle = `rgba(0,212,212,${alpha})`;
+            ctx.lineWidth = 0.6;
+            ctx.stroke();
+          }
+        }
+      }
+
+      for (const n of nodes) {
+        if (n.isHub) {
+          const ring = 16 + Math.sin(t * 2) * 4;
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, ring, 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(0,212,212,${0.2 + Math.sin(t * 2) * 0.1})`;
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+        }
+
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        ctx.fillStyle = n.isHub ? '#00d4d4' : 'rgba(0,212,212,0.7)';
+        ctx.fill();
+
+        ctx.font = n.isHub ? '700 11px Inter, sans-serif' : '500 10px Inter, sans-serif';
+        ctx.fillStyle = n.isHub ? '#00d4d4' : 'rgba(200,230,240,0.75)';
+        ctx.textAlign = 'center';
+        ctx.fillText(n.name, n.x, n.y + n.r + 16);
+      }
+    }
+
+    function loop() { draw(); requestAnimationFrame(loop); }
+
+    const ro = new ResizeObserver(resize);
+    ro.observe(canvas.parentElement);
+    resize();
+    loop();
+  })();
+
+  /* ── VEE CHAT WIDGET ──────────────────────────────── */
+  (function () {
+    const VEE_API_URL = 'https://vee-chat-proxy.vouza.workers.dev';
+    const MAX_HISTORY = 20;
+
+    const launcher = document.getElementById('veeChatLauncher');
+    const panel    = document.getElementById('veeChatPanel');
+    const messages = document.getElementById('veeChatMessages');
+    const form     = document.getElementById('veeChatForm');
+    const input    = document.getElementById('veeChatInput');
+    const sendBtn  = document.getElementById('veeChatSend');
+
+    let history = [];
+    let opened  = false;
+
+    function addBubble(role, text) {
+      const div = document.createElement('div');
+      div.className = 'vee-msg ' + (role === 'user' ? 'user' : 'vee');
+      div.textContent = text;
+      messages.appendChild(div);
+      messages.scrollTop = messages.scrollHeight;
+      return div;
+    }
+
+    launcher.addEventListener('click', function () {
+      opened = !opened;
+      launcher.classList.toggle('open', opened);
+      panel.classList.toggle('open', opened);
+      if (opened && messages.children.length === 0) {
+        addBubble('vee', "Hi, I'm Vee 👋 Ask me about Vouza's AI assistants, robotics, or how to get started — or try Admin AI free on GitHub.");
+        input.focus();
+      }
+    });
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const text = input.value.trim();
+      if (!text) return;
+
+      addBubble('user', text);
+      history.push({ role: 'user', content: text });
+      if (history.length > MAX_HISTORY) history = history.slice(-MAX_HISTORY);
+
+      input.value = '';
+      input.disabled = true;
+      sendBtn.disabled = true;
+      const typing = addBubble('vee', 'Typing…');
+      typing.classList.add('typing');
+
+      try {
+        const res = await fetch(VEE_API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: history }),
+        });
+        const data = await res.json();
+        typing.remove();
+        if (!res.ok || !data.reply) throw new Error(data.error || 'Vee is unavailable right now');
+        addBubble('vee', data.reply);
+        history.push({ role: 'assistant', content: data.reply });
+        if (history.length > MAX_HISTORY) history = history.slice(-MAX_HISTORY);
+      } catch (err) {
+        typing.remove();
+        addBubble('vee', "Sorry, I'm having trouble connecting right now — please try again, or reach us at hello@vouza.ai.");
+      } finally {
+        input.disabled = false;
+        sendBtn.disabled = false;
+        input.focus();
+      }
+    });
+  })();
 </script>
 </body>
 </html>
