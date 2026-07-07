@@ -579,6 +579,7 @@
       background: rgba(0,212,212,0.1);
       border: 1px solid rgba(0,212,212,0.15);
       border-radius: 10px;
+      color: var(--cyan);
     }
     .channel-item h4 { font-size: 0.92rem; font-weight: 700; margin-bottom: 4px; }
     .channel-item p { font-size: 0.8rem; color: var(--muted); line-height: 1.55; }
@@ -637,6 +638,7 @@
       justify-content: center;
       font-size: 0.9rem;
       box-shadow: 0 0 10px rgba(0,212,212,0.2);
+      color: var(--cyan);
     }
     .d1 { top: -18px; left: 50%; transform: translateX(-50%); }
     .d2 { bottom: -18px; left: 50%; transform: translateX(-50%); }
@@ -698,6 +700,7 @@
       color: var(--cyan);
       background: rgba(0,212,212,0.08);
     }
+    .industry-tag svg { vertical-align: -3px; margin-right: 6px; color: var(--cyan); }
 
     /* ── CTA SECTION ──────────────────────────────── */
     .cta-section {
@@ -1388,17 +1391,6 @@
     }
     .ac-value.cyan { color: var(--cyan); }
 
-    /* ── SCROLL REVEAL ─────────────────────────────── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: none;
-    }
-
     /* ── REDUCED MOTION ────────────────────────────── */
     @media (prefers-reduced-motion: reduce) {
       .btn::before,
@@ -1695,7 +1687,7 @@
   <h2>Try Admin AI<br><span class="grad-text">Free. Open Source. Yours to Run.</span></h2>
   <p>Your AI office assistant — runs on your own PC, controlled from your phone. Email, calendar, WhatsApp, Telegram, files, and voice, all in one agent. Bring your own AI key and you're live in minutes.</p>
   <div class="cta-actions">
-    <a href="https://github.com/geechun80/vouza-admin-agent" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg">⬇ Download on GitHub</a>
+    <a href="https://github.com/geechun80/vouza-admin-agent" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:6px;"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>Download on GitHub</a>
     <a href="https://github.com/geechun80/vouza-admin-agent#-quickstart" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-lg">View Quickstart</a>
   </div>
 </section>
@@ -1756,21 +1748,21 @@
       <p class="section-desc">One AI brain connected to all the channels your team and customers already use.</p>
       <div class="channel-list">
         <div class="channel-item">
-          <div class="channel-icon">🖥️</div>
+          <div class="channel-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M9 20h6"/><path d="M12 17v3"/></svg></div>
           <div>
             <h4>Website Portals</h4>
             <p>Fully embedded AI assistant in your web portal — accessible to staff and customers 24/7.</p>
           </div>
         </div>
         <div class="channel-item">
-          <div class="channel-icon">📱</div>
+          <div class="channel-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18.5h2"/></svg></div>
           <div>
             <h4>Mobile Apps (iOS & Android)</h4>
             <p>Native integration into your mobile application for on-the-go AI-powered operations.</p>
           </div>
         </div>
         <div class="channel-item">
-          <div class="channel-icon">💚</div>
+          <div class="channel-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1.2-3.6A8 8 0 1 1 8.6 19.2L4 20z"/><path d="M8.5 10.5c0 3 2.5 5 5 5"/></svg></div>
           <div>
             <h4>WhatsApp & Messaging</h4>
             <p>Connect your AI assistant to WhatsApp for instant customer support and automated responses.</p>
@@ -1780,17 +1772,17 @@
     </div>
     <div class="everywhere-visual">
       <div class="orbit orbit-1">
-        <div class="orbit-dot d1">🖥️</div>
-        <div class="orbit-dot d2">📱</div>
-        <div class="orbit-dot d3">💚</div>
-        <div class="orbit-dot d4">📷</div>
+        <div class="orbit-dot d1"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M9 20h6"/><path d="M12 17v3"/></svg></div>
+        <div class="orbit-dot d2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18.5h2"/></svg></div>
+        <div class="orbit-dot d3"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1.2-3.6A8 8 0 1 1 8.6 19.2L4 20z"/><path d="M8.5 10.5c0 3 2.5 5 5 5"/></svg></div>
+        <div class="orbit-dot d4"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a2 2 0 0 1 2-2h2l1.5-2h7L17 6h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8z"/><circle cx="12" cy="13" r="3.2"/></svg></div>
       </div>
       <div class="orbit orbit-2">
-        <div class="orbit-dot d5">⚙️</div>
-        <div class="orbit-dot d6">📊</div>
+        <div class="orbit-dot d5"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2.5 12h3M18.5 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></div>
+        <div class="orbit-dot d6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M3 20h18"/></svg></div>
       </div>
       <div class="orbit orbit-3"></div>
-      <div class="visual-center">🤖</div>
+      <div class="visual-center"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="9" width="14" height="11" rx="2"/><path d="M12 9V5"/><circle cx="12" cy="3.5" r="1.5"/><circle cx="9" cy="14" r="1.2"/><circle cx="15" cy="14" r="1.2"/><path d="M9 17.5h6"/><path d="M2 12h3"/><path d="M19 12h3"/></svg></div>
     </div>
   </div>
 </section>
@@ -1843,16 +1835,16 @@
     <p class="section-desc">Vouza serves enterprises across Singapore, Malaysia, and Southeast Asia in the industries that matter most.</p>
   </div>
   <div class="industry-tags">
-    <div class="industry-tag">🏭 Manufacturing</div>
-    <div class="industry-tag">🚚 Logistics</div>
-    <div class="industry-tag">💰 Finance & Banking</div>
-    <div class="industry-tag">🛍️ Retail & E-Commerce</div>
-    <div class="industry-tag">🏥 Healthcare</div>
-    <div class="industry-tag">🏨 Hospitality</div>
-    <div class="industry-tag">⚖️ Professional Services</div>
-    <div class="industry-tag">🏗️ Construction</div>
-    <div class="industry-tag">📡 Technology</div>
-    <div class="industry-tag">🎓 Education</div>
+    <div class="industry-tag"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V12l4.5 3V12l4.5 3V12l6-3.5V21H3z"/><path d="M15 8.5V5h2.5v2"/><path d="M3 21h16.5"/></svg>Manufacturing</div>
+    <div class="industry-tag"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="11" height="9" rx="1"/><path d="M13 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>Logistics</div>
+    <div class="industry-tag"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M15 9.5c0-1.4-1.3-2-3-2s-3 .8-3 2 1.3 1.8 3 2 3 .6 3 2-1.3 2-3 2-3-.6-3-2"/></svg>Finance & Banking</div>
+    <div class="industry-tag"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>Retail & E-Commerce</div>
+    <div class="industry-tag"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M12 8v8M8 12h8"/></svg>Healthcare</div>
+    <div class="industry-tag"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1"/><path d="M10 21v-4h4v4"/></svg>Hospitality</div>
+    <div class="industry-tag"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M7 21h10"/><path d="M4 7h6M14 7h6"/><path d="M4 7l-2.5 5a2.5 2.5 0 0 0 5 0L4 7z"/><path d="M20 7l-2.5 5a2.5 2.5 0 0 0 5 0L20 7z"/></svg>Professional Services</div>
+    <div class="industry-tag"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16a8 8 0 0 1 16 0z"/><path d="M2 16h20"/><path d="M12 6v4"/></svg>Construction</div>
+    <div class="industry-tag"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13a9 9 0 0 1 9-9"/><path d="M3 13l8 8"/><circle cx="3" cy="13" r="1.6"/><path d="M12 4l3.5-2.5M17 9l3-2"/></svg>Technology</div>
+    <div class="industry-tag"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-4 10 4-10 4L2 9z"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/><path d="M22 9v6"/></svg>Education</div>
   </div>
 </section>
 
@@ -2126,6 +2118,8 @@
   </form>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
   /* ── THREE.JS HERO 3D ───────────────────────────── */
   (function () {
@@ -2851,33 +2845,9 @@
     });
   })();
 
-  /* ── SCROLL REVEAL + HERO STAT COUNT-UP ─────────── */
+  /* ── HERO STAT COUNT-UP ──────────────────────────── */
   (function () {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    /* Apply .reveal to target elements, with per-container stagger */
-    const revealGroups = [
-      { container: '.services-grid',   items: '.service-card' },
-      { container: '.assistants-grid', items: '.assistant-card' },
-      { container: '.steps',           items: '.step' },
-      { container: '.benefits-grid',   items: '.benefit-card' },
-      { container: '.industry-tags',   items: '.industry-tag' },
-    ];
-    revealGroups.forEach(function (group) {
-      document.querySelectorAll(group.container).forEach(function (container) {
-        const items = container.querySelectorAll(group.items);
-        items.forEach(function (el, index) {
-          el.classList.add('reveal');
-          el.style.transitionDelay = (index * 60) + 'ms';
-        });
-      });
-    });
-    /* Standalone reveal targets (no stagger) */
-    document.querySelectorAll('.section-header, .contact-info, .contact-form').forEach(function (el) {
-      el.classList.add('reveal');
-    });
-
-    const revealEls = document.querySelectorAll('.reveal');
     const statEls = document.querySelectorAll('.stat-value');
 
     function animateStat(el) {
@@ -2900,19 +2870,8 @@
     }
 
     if (prefersReducedMotion || !('IntersectionObserver' in window)) {
-      revealEls.forEach(function (el) { el.classList.add('visible'); });
       // Stats already show their final static text — nothing to animate.
     } else {
-      const revealObserver = new IntersectionObserver(function (entries, observer) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.12 });
-      revealEls.forEach(function (el) { revealObserver.observe(el); });
-
       const statObserver = new IntersectionObserver(function (entries, observer) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
@@ -2923,6 +2882,214 @@
       }, { threshold: 0.12 });
       statEls.forEach(function (el) { statObserver.observe(el); });
     }
+  })();
+
+  /* ── GSAP SCROLLTRIGGER ENTRANCE ANIMATIONS ──────── */
+  (function () {
+    if (!window.gsap || !window.ScrollTrigger) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.config({ ignoreMobileResize: true });
+
+    gsap.matchMedia().add('(prefers-reduced-motion: no-preference)', function () {
+
+      /* Several cards/tags/buttons have `transition: all …` in their CSS (for
+         hover effects). That CSS transition fights GSAP's per-frame inline
+         style updates on the same properties (opacity/transform), which can
+         leave elements stuck mid-animation. Neutralize it for the duration
+         of the entrance tween, then let GSAP clear the override so hover
+         transitions work again afterward. */
+      function killTransition(els) {
+        gsap.utils.toArray(els).forEach(function (el) { el.style.transition = 'none'; });
+      }
+
+      /* HERO — plays on load, not scroll-triggered */
+      const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      const heroBadge = document.querySelector('.hero-left .hero-badge');
+      const heroH1 = document.querySelector('.hero-left h1');
+      const heroSub = document.querySelector('.hero-left .hero-sub');
+      const heroActions = document.querySelector('.hero-left .hero-actions');
+      const heroStatCards = document.querySelectorAll('.hero-left .stat-card');
+      if (heroBadge) heroTl.from(heroBadge, { opacity: 0, y: 28, duration: 0.7 });
+      if (heroH1) heroTl.from(heroH1, { opacity: 0, y: 28, duration: 0.7 }, '-=0.5');
+      if (heroSub) heroTl.from(heroSub, { opacity: 0, y: 28, duration: 0.7 }, '-=0.5');
+      if (heroActions) heroTl.from(heroActions, { opacity: 0, y: 28, duration: 0.7 }, '-=0.5');
+      if (heroStatCards.length) heroTl.from(heroStatCards, { opacity: 0, y: 28, duration: 0.7, stagger: 0.1 }, '-=0.4');
+
+      /* Every section header */
+      gsap.utils.toArray('.section-header').forEach(function (el) {
+        gsap.from(el, {
+          opacity: 0, y: 32, duration: 0.7,
+          scrollTrigger: { trigger: el, start: 'top 82%', once: true },
+        });
+      });
+
+      /* Services grid */
+      document.querySelectorAll('.services-grid').forEach(function (grid) {
+        const cards = grid.querySelectorAll('.service-card');
+        if (!cards.length) return;
+        killTransition(cards);
+        gsap.from(cards, {
+          opacity: 0, y: 40, duration: 0.7, stagger: 0.15, ease: 'power3.out', clearProps: 'transition',
+          scrollTrigger: { trigger: grid, start: 'top 82%', once: true },
+        });
+      });
+
+      /* Assistants grid */
+      document.querySelectorAll('.assistants-grid').forEach(function (grid) {
+        const cards = grid.querySelectorAll('.assistant-card');
+        if (!cards.length) return;
+        killTransition(cards);
+        gsap.from(cards, {
+          opacity: 0, y: 40, duration: 0.7, stagger: 0.08, ease: 'power3.out', clearProps: 'transition',
+          scrollTrigger: { trigger: grid, start: 'top 82%', once: true },
+        });
+      });
+
+      /* #download section — h2 then cta-actions pop */
+      const downloadSection = document.getElementById('download');
+      if (downloadSection) {
+        const h2 = downloadSection.querySelector('h2');
+        const actions = downloadSection.querySelectorAll('.cta-actions a');
+        const tl = gsap.timeline({
+          scrollTrigger: { trigger: downloadSection, start: 'top 82%', once: true },
+        });
+        if (h2) tl.from(h2, { opacity: 0, y: 32, duration: 0.7, ease: 'power3.out' });
+        if (actions.length) {
+          killTransition(actions);
+          tl.from(actions, { opacity: 0, scale: 0.9, duration: 0.6, stagger: 0.1, ease: 'back.out(1.6)', clearProps: 'transition' }, '-=0.3');
+        }
+      }
+
+      /* Network visualizer canvas */
+      const netCanvas = document.getElementById('net-canvas');
+      if (netCanvas) {
+        gsap.from(netCanvas, {
+          opacity: 0, y: 36, scale: 0.97, duration: 0.7, ease: 'power3.out',
+          scrollTrigger: { trigger: netCanvas, start: 'top 82%', once: true },
+        });
+      }
+
+      /* How it works — steps */
+      document.querySelectorAll('.steps').forEach(function (stepsEl) {
+        const steps = stepsEl.querySelectorAll('.step');
+        if (!steps.length) return;
+        killTransition(steps);
+        gsap.from(steps, {
+          opacity: 0, y: 36, duration: 0.7, stagger: 0.15, ease: 'power3.out', clearProps: 'transition',
+          scrollTrigger: { trigger: stepsEl, start: 'top 82%', once: true },
+        });
+      });
+
+      /* Works Everywhere */
+      document.querySelectorAll('.everywhere-inner').forEach(function (inner) {
+        const col = inner.querySelector(':scope > div:first-child');
+        const visual = inner.querySelector('.everywhere-visual');
+        if (col) {
+          const items = col.querySelectorAll('.channel-item');
+          const tl = gsap.timeline({
+            scrollTrigger: { trigger: inner, start: 'top 82%', once: true },
+          });
+          tl.from(col, { opacity: 0, x: -40, duration: 0.7, ease: 'power3.out' });
+          if (items.length) {
+            killTransition(items);
+            tl.from(items, { opacity: 0, x: -40, duration: 0.6, stagger: 0.12, ease: 'power3.out', clearProps: 'transition' }, '-=0.4');
+          }
+        }
+        if (visual) {
+          gsap.from(visual, {
+            opacity: 0, x: 40, scale: 0.96, duration: 0.7, ease: 'power3.out',
+            scrollTrigger: { trigger: inner, start: 'top 82%', once: true },
+          });
+        }
+      });
+
+      /* Benefits grid */
+      document.querySelectorAll('.benefits-grid').forEach(function (grid) {
+        const cards = grid.querySelectorAll('.benefit-card');
+        if (!cards.length) return;
+        killTransition(cards);
+        gsap.from(cards, {
+          opacity: 0, y: 36, duration: 0.7, stagger: 0.1, ease: 'power3.out', clearProps: 'transition',
+          scrollTrigger: { trigger: grid, start: 'top 82%', once: true },
+        });
+      });
+
+      /* Industry tags */
+      document.querySelectorAll('.industry-tags').forEach(function (wrap) {
+        const tags = wrap.querySelectorAll('.industry-tag');
+        if (!tags.length) return;
+        killTransition(tags);
+        gsap.from(tags, {
+          opacity: 0, scale: 0.9, duration: 0.4, stagger: 0.04, ease: 'power2.out', clearProps: 'transition',
+          scrollTrigger: { trigger: wrap, start: 'top 82%', once: true },
+        });
+      });
+
+      /* CTA sections — h2 + p fade-up, buttons pop. #download already has its
+         own dedicated timeline above (h2 + actions, no <p>) — skip it here so
+         the two timelines don't fight over the same h2/button elements. */
+      document.querySelectorAll('.cta-section').forEach(function (section) {
+        if (section.id === 'download') return;
+        const h2 = section.querySelector('h2');
+        const p = section.querySelector('p');
+        const actions = section.querySelectorAll('.cta-actions a');
+        const tl = gsap.timeline({
+          scrollTrigger: { trigger: section, start: 'top 82%', once: true },
+        });
+        if (h2) tl.from(h2, { opacity: 0, y: 32, duration: 0.7, ease: 'power3.out' });
+        if (p) tl.from(p, { opacity: 0, y: 32, duration: 0.7, ease: 'power3.out' }, '-=0.4');
+        if (actions.length) {
+          killTransition(actions);
+          tl.from(actions, { opacity: 0, scale: 0.9, duration: 0.6, stagger: 0.1, ease: 'back.out(1.6)', clearProps: 'transition' }, '-=0.3');
+        }
+      });
+
+      /* Contact */
+      const contactInfo = document.querySelector('#contact .contact-info');
+      const contactForm = document.querySelector('#contact .contact-form');
+      if (contactInfo) {
+        gsap.from(contactInfo, {
+          opacity: 0, x: -40, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: { trigger: contactInfo, start: 'top 82%', once: true },
+        });
+      }
+      if (contactForm) {
+        gsap.from(contactForm, {
+          opacity: 0, x: 40, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: { trigger: contactForm, start: 'top 82%', once: true },
+        });
+      }
+
+      /* Footer */
+      const footerTop = document.querySelector('footer .footer-top');
+      if (footerTop) {
+        gsap.from(footerTop, {
+          opacity: 0, y: 24, duration: 0.7, ease: 'power3.out',
+          scrollTrigger: { trigger: footerTop, start: 'top 82%', once: true },
+        });
+      }
+
+      /* Sphere showcase — AI Core */
+      document.querySelectorAll('.sphere-showcase').forEach(function (section) {
+        const content = section.querySelector('.sphere-inner > div:first-child');
+        const panel = section.querySelector('.hero-right');
+        if (content) gsap.from(content, { opacity: 0, y: 32, duration: 0.7, ease: 'power3.out', scrollTrigger: { trigger: section, start: 'top 82%', once: true } });
+        if (panel) gsap.from(panel, { opacity: 0, scale: 0.97, duration: 0.7, ease: 'power3.out', scrollTrigger: { trigger: section, start: 'top 82%', once: true } });
+      });
+
+      /* Vee demo video — header already covered by the generic .section-header rule above */
+      document.querySelectorAll('.vee-demo-inner').forEach(function (inner) {
+        const panel = inner.querySelector('.vee-video-wrap');
+        if (panel) {
+          gsap.from(panel, {
+            opacity: 0, scale: 0.97, duration: 0.7, ease: 'power3.out',
+            scrollTrigger: { trigger: inner, start: 'top 82%', once: true },
+          });
+        }
+      });
+
+    });
   })();
 </script>
 </body>
