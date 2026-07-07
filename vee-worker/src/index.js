@@ -11,6 +11,27 @@ Keep replies concise (2-4 sentences), friendly, and helpful. If someone wants a 
 
 const MAX_MESSAGES = 20;
 const MAX_MESSAGE_LEN = 2000;
+const RATE_LIMIT = 8;        // requests…
+const RATE_WINDOW_MS = 60000; // …per fixed 60s window, per IP
+
+export class RateLimiter {
+  constructor(state) {
+    this.state = state;
+  }
+  async fetch() {
+    const window = Math.floor(Date.now() / RATE_WINDOW_MS);
+    const data = (await this.state.storage.get('w')) || { window: 0, count: 0 };
+    if (data.window !== window) {
+      data.window = window;
+      data.count = 0;
+    }
+    data.count++;
+    await this.state.storage.put('w', data);
+    return new Response(JSON.stringify({ allowed: data.count <= RATE_LIMIT, count: data.count }), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+}
 
 function corsHeaders(allowedOrigin) {
   return {
@@ -37,6 +58,21 @@ export default {
         status: 403,
         headers: { ...headers, 'Content-Type': 'application/json' },
       });
+    }
+
+    const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+    try {
+      const stub = env.RATE_LIMITER_DO.get(env.RATE_LIMITER_DO.idFromName(ip));
+      const check = await stub.fetch('https://limiter/');
+      const { allowed } = await check.json();
+      if (!allowed) {
+        return new Response(JSON.stringify({ error: 'Rate limited' }), {
+          status: 429,
+          headers: { ...headers, 'Content-Type': 'application/json', 'Retry-After': '60' },
+        });
+      }
+    } catch {
+      // If the rate limiter itself fails, allow the request rather than break chat.
     }
 
     let body;
@@ -70,6 +106,8 @@ export default {
       }
     }
 
+    const wantStream = body.stream === true;
+
     let upstream;
     try {
       upstream = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -85,6 +123,7 @@ export default {
           messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
           max_tokens: 500,
           temperature: 0.6,
+          stream: wantStream,
         }),
       });
     } catch (err) {
@@ -99,6 +138,14 @@ export default {
       return new Response(JSON.stringify({ error: 'Upstream error', detail: errText.slice(0, 300) }), {
         status: 502,
         headers: { ...headers, 'Content-Type': 'application/json' },
+      });
+    }
+
+    if (wantStream) {
+      // Pass OpenRouter's SSE stream straight through to the browser.
+      return new Response(upstream.body, {
+        status: 200,
+        headers: { ...headers, 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache' },
       });
     }
 

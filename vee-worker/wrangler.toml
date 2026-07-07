@@ -5,5 +5,14 @@ compatibility_date = "2025-01-01"
 [vars]
 ALLOWED_ORIGIN = "https://vouza.ai"
 
+# Per-IP rate limiting via Durable Object (8 requests per 60s)
+[[durable_objects.bindings]]
+name = "RATE_LIMITER_DO"
+class_name = "RateLimiter"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["RateLimiter"]
+
 # Secret (set via `wrangler secret put OPENROUTER_API_KEY`, never stored here):
 #   OPENROUTER_API_KEY
