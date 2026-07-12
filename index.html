@@ -156,6 +156,54 @@
 
     .nav-cta { display: flex; gap: 12px; align-items: center; }
 
+    /* ── SCROLL PROGRESS BAR ───────────────────────── */
+    #scroll-progress {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--cyan), var(--azure), var(--violet));
+      transform: scaleX(0);
+      transform-origin: left;
+      z-index: 200;
+      pointer-events: none;
+    }
+
+    /* ── BACK TO TOP ────────────────────────────────── */
+    #backToTop {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      z-index: 500;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(2,12,14,0.75);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(0,212,212,0.4);
+      color: var(--cyan);
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(12px);
+      transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    #backToTop.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    #backToTop:hover {
+      border-color: rgba(0,212,212,0.8);
+      box-shadow: 0 0 22px rgba(0,212,212,0.5);
+    }
+    @media (max-width: 600px) {
+      #backToTop { bottom: 16px; left: 16px; }
+    }
+
     /* ── RAINBOW BORDER (21st.dev style) ─────────── */
     @property --rb-angle {
       syntax: '<angle>';
@@ -692,33 +740,40 @@
     .benefit-card p { font-size: 0.8rem; color: var(--muted); line-height: 1.65; }
 
     /* ── INDUSTRIES ───────────────────────────────── */
-    .industry-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
+    .industries-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 16px;
       margin-top: 40px;
     }
-    .industry-tag {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 20px;
+    .industry-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 100px;
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: var(--muted);
+      border-radius: 16px;
+      padding: 24px 20px;
       transition: all 0.25s;
       backdrop-filter: blur(10px);
-      cursor: default;
+      position: relative;
+      overflow: hidden;
     }
-    .industry-tag:hover {
-      border-color: rgba(0,212,212,0.4);
+    .industry-card:hover {
+      border-color: rgba(0,212,212,0.3);
+      background: rgba(0,60,70,0.4);
+      box-shadow: 0 8px 40px rgba(0,100,100,0.2);
+    }
+    .industry-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      background: rgba(0,212,212,0.1);
+      border: 1px solid rgba(0,212,212,0.15);
       color: var(--cyan);
-      background: rgba(0,212,212,0.08);
     }
-    .industry-tag svg { vertical-align: -3px; margin-right: 6px; color: var(--cyan); }
+    .industry-card h4 { font-size: 0.92rem; font-weight: 700; margin-bottom: 6px; }
+    .industry-card p { font-size: 0.78rem; color: var(--muted); line-height: 1.65; }
 
     /* ── CTA SECTION ──────────────────────────────── */
     .cta-section {
@@ -1448,16 +1503,16 @@
     .accent-b .card-ring { --ring-accent: var(--azure); }
     .accent-c .card-ring { --ring-accent: var(--violet); }
 
-    .accent-b .service-icon { color: var(--azure); background: rgba(46,142,255,0.1); border-color: rgba(46,142,255,0.18); }
+    .accent-b .service-icon, .accent-b .industry-icon { color: var(--azure); background: rgba(46,142,255,0.1); border-color: rgba(46,142,255,0.18); }
     .accent-b .assistant-icon, .accent-b .benefit-icon { color: var(--azure); }
-    .accent-c .service-icon { color: var(--violet); background: rgba(124,92,255,0.1); border-color: rgba(124,92,255,0.18); }
+    .accent-c .service-icon, .accent-c .industry-icon { color: var(--violet); background: rgba(124,92,255,0.1); border-color: rgba(124,92,255,0.18); }
     .accent-c .assistant-icon, .accent-c .benefit-icon { color: var(--violet); }
 
-    .service-card.accent-b:hover, .assistant-card.accent-b:hover, .benefit-card.accent-b:hover {
+    .service-card.accent-b:hover, .assistant-card.accent-b:hover, .benefit-card.accent-b:hover, .industry-card.accent-b:hover {
       border-color: rgba(46,142,255,0.35);
       box-shadow: 0 20px 60px rgba(46,142,255,0.18), inset 0 1px 0 rgba(46,142,255,0.12);
     }
-    .service-card.accent-c:hover, .assistant-card.accent-c:hover, .benefit-card.accent-c:hover {
+    .service-card.accent-c:hover, .assistant-card.accent-c:hover, .benefit-card.accent-c:hover, .industry-card.accent-c:hover {
       border-color: rgba(124,92,255,0.35);
       box-shadow: 0 20px 60px rgba(124,92,255,0.18), inset 0 1px 0 rgba(124,92,255,0.12);
     }
@@ -1490,6 +1545,14 @@
 <!-- ── CONFETTI CANVAS ──────────────────────────────── -->
 <canvas id="confetti"></canvas>
 
+<!-- ── SCROLL PROGRESS ───────────────────────────────── -->
+<div id="scroll-progress"></div>
+
+<!-- ── BACK TO TOP ────────────────────────────────────── -->
+<button id="backToTop" aria-label="Back to top">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
+
 <!-- ── NAVBAR ──────────────────────────────────────── -->
 <nav>
   <a class="nav-logo" href="#">
@@ -1497,7 +1560,7 @@
     <span class="nav-logo-text" style="display:none"></span>
   </a>
   <ul class="nav-links" id="navLinks">
-    <li><a href="#services" class="active">Services</a></li>
+    <li><a href="#services">Services</a></li>
     <li><a href="#demo">Demo</a></li>
     <li><a href="#assistants">AI Assistants</a></li>
     <li><a href="#how-it-works">How It Works</a></li>
@@ -1907,17 +1970,57 @@
     <h2 class="section-title">AI Solutions Across<br><span class="grad-text">Every Major Sector</span></h2>
     <p class="section-desc">Vouza serves enterprises across Singapore, Malaysia, and Southeast Asia in the industries that matter most.</p>
   </div>
-  <div class="industry-tags">
-    <div class="industry-tag"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V12l4.5 3V12l4.5 3V12l6-3.5V21H3z"/><path d="M15 8.5V5h2.5v2"/><path d="M3 21h16.5"/></svg>Manufacturing</div>
-    <div class="industry-tag"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="11" height="9" rx="1"/><path d="M13 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>Logistics</div>
-    <div class="industry-tag"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M15 9.5c0-1.4-1.3-2-3-2s-3 .8-3 2 1.3 1.8 3 2 3 .6 3 2-1.3 2-3 2-3-.6-3-2"/></svg>Finance & Banking</div>
-    <div class="industry-tag"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>Retail & E-Commerce</div>
-    <div class="industry-tag"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M12 8v8M8 12h8"/></svg>Healthcare</div>
-    <div class="industry-tag"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1"/><path d="M10 21v-4h4v4"/></svg>Hospitality</div>
-    <div class="industry-tag"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M7 21h10"/><path d="M4 7h6M14 7h6"/><path d="M4 7l-2.5 5a2.5 2.5 0 0 0 5 0L4 7z"/><path d="M20 7l-2.5 5a2.5 2.5 0 0 0 5 0L20 7z"/></svg>Professional Services</div>
-    <div class="industry-tag"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16a8 8 0 0 1 16 0z"/><path d="M2 16h20"/><path d="M12 6v4"/></svg>Construction</div>
-    <div class="industry-tag"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13a9 9 0 0 1 9-9"/><path d="M3 13l8 8"/><circle cx="3" cy="13" r="1.6"/><path d="M12 4l3.5-2.5M17 9l3-2"/></svg>Technology</div>
-    <div class="industry-tag"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-4 10 4-10 4L2 9z"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/><path d="M22 9v6"/></svg>Education</div>
+  <div class="industries-grid">
+    <div class="industry-card">
+      <div class="industry-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V12l4.5 3V12l4.5 3V12l6-3.5V21H3z"/><path d="M15 8.5V5h2.5v2"/><path d="M3 21h16.5"/></svg></div>
+      <h4>Manufacturing</h4>
+      <p>Vision-AI quality inspection, predictive maintenance, and automated production reporting.</p>
+    </div>
+    <div class="industry-card">
+      <div class="industry-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="11" height="9" rx="1"/><path d="M13 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg></div>
+      <h4>Logistics</h4>
+      <p>Route optimisation, shipment-tracking assistants, and warehouse workflow automation.</p>
+    </div>
+    <div class="industry-card">
+      <div class="industry-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M15 9.5c0-1.4-1.3-2-3-2s-3 .8-3 2 1.3 1.8 3 2 3 .6 3 2-1.3 2-3 2-3-.6-3-2"/></svg></div>
+      <h4>Finance &amp; Banking</h4>
+      <p>Customer-service AI, document processing, and compliance-ready reporting.</p>
+    </div>
+    <div class="industry-card">
+      <div class="industry-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></div>
+      <h4>Retail &amp; E-Commerce</h4>
+      <p>24/7 conversational commerce, order support, and inventory insights.</p>
+    </div>
+    <div class="industry-card">
+      <div class="industry-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M12 8v8M8 12h8"/></svg></div>
+      <h4>Healthcare</h4>
+      <p>Appointment scheduling, patient enquiry triage, and admin automation.</p>
+    </div>
+    <div class="industry-card">
+      <div class="industry-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1"/><path d="M10 21v-4h4v4"/></svg></div>
+      <h4>Hospitality</h4>
+      <p>Guest-services chat, booking assistance, and multilingual concierge AI.</p>
+    </div>
+    <div class="industry-card">
+      <div class="industry-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M7 21h10"/><path d="M4 7h6M14 7h6"/><path d="M4 7l-2.5 5a2.5 2.5 0 0 0 5 0L4 7z"/><path d="M20 7l-2.5 5a2.5 2.5 0 0 0 5 0L20 7z"/></svg></div>
+      <h4>Professional Services</h4>
+      <p>Client intake, document drafting, and internal knowledge assistants.</p>
+    </div>
+    <div class="industry-card">
+      <div class="industry-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16a8 8 0 0 1 16 0z"/><path d="M2 16h20"/><path d="M12 6v4"/></svg></div>
+      <h4>Construction</h4>
+      <p>Site-inspection vision AI, safety monitoring, and progress reporting.</p>
+    </div>
+    <div class="industry-card">
+      <div class="industry-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13a9 9 0 0 1 9-9"/><path d="M3 13l8 8"/><circle cx="3" cy="13" r="1.6"/><path d="M12 4l3.5-2.5M17 9l3-2"/></svg></div>
+      <h4>Technology</h4>
+      <p>Support-desk automation, documentation assistants, and system integrations.</p>
+    </div>
+    <div class="industry-card">
+      <div class="industry-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-4 10 4-10 4L2 9z"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/><path d="M22 9v6"/></svg></div>
+      <h4>Education</h4>
+      <p>Student enquiry assistants, enrolment support, and administrative workflows.</p>
+    </div>
   </div>
 </section>
 
@@ -2540,6 +2643,125 @@
       : 'rgba(2,12,14,0.8)';
   });
 
+  /* ── SCROLL PROGRESS + BACK TO TOP ─────────────────── */
+  (function () {
+    const progressBar = document.getElementById('scroll-progress');
+    const backToTop = document.getElementById('backToTop');
+    if (!progressBar && !backToTop) return;
+
+    let rafId = null;
+
+    function update() {
+      rafId = null;
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? Math.min(1, Math.max(0, scrollTop / docHeight)) : 0;
+      if (progressBar) progressBar.style.transform = 'scaleX(' + progress + ')';
+      if (backToTop) backToTop.classList.toggle('visible', scrollTop > 700);
+    }
+
+    function onScroll() {
+      if (rafId === null) rafId = requestAnimationFrame(update);
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    update();
+
+    if (backToTop) {
+      backToTop.addEventListener('click', function () {
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduceMotion) {
+          window.scrollTo(0, 0);
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+    }
+  })();
+
+  /* ── SCROLLSPY ──────────────────────────────────────── */
+  (function () {
+    const sectionIds = ['services', 'demo', 'assistants', 'how-it-works', 'industries', 'contact'];
+    const navLinksMap = {};
+    sectionIds.forEach(function (id) {
+      const link = document.querySelector('#navLinks a[href="#' + id + '"]');
+      if (link) navLinksMap[id] = link;
+    });
+
+    const sections = sectionIds
+      .map(function (id) { return document.getElementById(id); })
+      .filter(Boolean);
+
+    if (!sections.length || !('IntersectionObserver' in window)) return;
+
+    function clearActive() {
+      Object.keys(navLinksMap).forEach(function (key) {
+        navLinksMap[key].classList.remove('active');
+        navLinksMap[key].removeAttribute('aria-current');
+      });
+    }
+
+    function setActive(id) {
+      Object.keys(navLinksMap).forEach(function (key) {
+        const link = navLinksMap[key];
+        if (key === id) {
+          link.classList.add('active');
+          link.setAttribute('aria-current', 'true');
+        } else {
+          link.classList.remove('active');
+          link.removeAttribute('aria-current');
+        }
+      });
+    }
+
+    const visible = {};
+    const observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        visible[entry.target.id] = entry.isIntersecting;
+      });
+      const activeId = sectionIds.find(function (id) { return visible[id]; });
+      if (activeId) {
+        setActive(activeId);
+      } else {
+        clearActive();
+      }
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+
+    sections.forEach(function (section) { observer.observe(section); });
+  })();
+
+  /* ── MAGNETIC CTA BUTTONS ───────────────────────────── */
+  (function () {
+    if (!window.gsap) return;
+    const canMagnetic = window.matchMedia('(hover: hover) and (pointer: fine)').matches
+      && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!canMagnetic) return;
+
+    const MAX_OFFSET = 7;
+    const buttons = document.querySelectorAll(
+      '.hero .btn-primary, .hero .btn-outline, .cta-section .btn-primary, .cta-section .btn-outline, .nav-cta .btn-primary'
+    );
+
+    buttons.forEach(function (btn) {
+      const xTo = gsap.quickTo(btn, 'x', { duration: 0.35, ease: 'power3.out' });
+      const yTo = gsap.quickTo(btn, 'y', { duration: 0.35, ease: 'power3.out' });
+
+      btn.addEventListener('pointermove', function (e) {
+        const rect = btn.getBoundingClientRect();
+        const relX = e.clientX - rect.left - rect.width / 2;
+        const relY = e.clientY - rect.top - rect.height / 2;
+        const offsetX = Math.max(-MAX_OFFSET, Math.min(MAX_OFFSET, relX * 0.3));
+        const offsetY = Math.max(-MAX_OFFSET, Math.min(MAX_OFFSET, relY * 0.3));
+        xTo(offsetX);
+        yTo(offsetY);
+      });
+
+      btn.addEventListener('pointerleave', function () {
+        gsap.to(btn, { x: 0, y: 0, duration: 0.8, ease: 'elastic.out(1, 0.45)' });
+      });
+    });
+  })();
+
   /* ── CONTACT FORM — Web3Forms AJAX ──────────────── */
   document.getElementById('contactForm').addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -3092,14 +3314,15 @@
         });
       });
 
-      /* Industry tags */
-      document.querySelectorAll('.industry-tags').forEach(function (wrap) {
-        const tags = wrap.querySelectorAll('.industry-tag');
-        if (!tags.length) return;
-        killTransition(tags);
-        gsap.from(tags, {
-          opacity: 0, scale: 0.9, duration: 0.4, stagger: 0.04, ease: 'power2.out', clearProps: 'transition',
-          scrollTrigger: { trigger: wrap, start: 'top 82%', once: true },
+      /* Industries grid */
+      document.querySelectorAll('.industries-grid').forEach(function (grid) {
+        const cards = grid.querySelectorAll('.industry-card');
+        if (!cards.length) return;
+        killTransition(cards);
+        gsap.from(cards, {
+          opacity: 0, y: 36, rotationX: -12, transformPerspective: 800, transformOrigin: 'center 80%',
+          duration: 0.7, stagger: 0.06, ease: 'power3.out', clearProps: 'transition,transform',
+          scrollTrigger: { trigger: grid, start: 'top 82%', once: true },
         });
       });
 
@@ -3186,6 +3409,7 @@
     applyAccents('.services-grid', '.service-card');
     applyAccents('.assistants-grid', '.assistant-card');
     applyAccents('.benefits-grid', '.benefit-card');
+    applyAccents('.industries-grid', '.industry-card');
 
     /* Pointer-tracking 3D tilt is desktop-mouse-only and respects
        prefers-reduced-motion; touch/keyboard users keep the plain CSS
@@ -3194,7 +3418,7 @@
       && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!canTilt) return;
 
-    const cards = document.querySelectorAll('.service-card, .assistant-card, .benefit-card');
+    const cards = document.querySelectorAll('.service-card, .assistant-card, .benefit-card, .industry-card');
 
     cards.forEach(function (card) {
       const glare = document.createElement('div');
