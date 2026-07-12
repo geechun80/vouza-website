@@ -69,6 +69,14 @@
       --card-bg:   rgba(0,60,70,0.25);
       --card-border: rgba(0,200,200,0.1);
       --glow:      rgba(0,212,212,0.15);
+      --violet:    #7c5cff;
+      --azure:     #2e8eff;
+    }
+
+    @property --ring-angle {
+      syntax: '<angle>';
+      inherits: false;
+      initial-value: 0deg;
     }
 
     html { scroll-behavior: smooth; }
@@ -316,10 +324,16 @@
       margin-bottom: 24px;
     }
     .grad-text {
-      background: linear-gradient(135deg, #ffffff 0%, #7fffff 40%, #0099ff 100%);
+      background: linear-gradient(135deg, var(--cyan) 0%, var(--azure) 35%, var(--violet) 65%, var(--cyan) 100%);
+      background-size: 200% 100%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      animation: grad-shimmer 8s ease-in-out infinite alternate;
+    }
+    @keyframes grad-shimmer {
+      0%   { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
     }
 
     .hero-sub {
@@ -471,6 +485,8 @@
       padding: 24px 20px;
       transition: all 0.25s;
       backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
     }
     .assistant-card:hover {
       border-color: rgba(0,212,212,0.3);
@@ -663,6 +679,8 @@
       border-radius: 20px;
       transition: all 0.25s;
       backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
     }
     .benefit-card:hover {
       border-color: rgba(0,212,212,0.3);
@@ -1391,6 +1409,59 @@
     }
     .ac-value.cyan { color: var(--cyan); }
 
+    /* ── 3D TILT: GLARE + RING ────────────────────── */
+    .card-glare {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      z-index: 2;
+    }
+    .card-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      background: conic-gradient(from var(--ring-angle, 0deg), transparent 0%, var(--ring-accent, var(--cyan)) 20%, transparent 40%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      animation: ring-spin 3s linear infinite;
+      animation-play-state: paused;
+      z-index: 1;
+    }
+    .card-ring.is-active {
+      opacity: 1;
+      animation-play-state: running;
+    }
+    @keyframes ring-spin {
+      to { --ring-angle: 360deg; }
+    }
+
+    /* ── COLOR ACCENTS ─────────────────────────────── */
+    .accent-a .card-ring { --ring-accent: var(--cyan); }
+    .accent-b .card-ring { --ring-accent: var(--azure); }
+    .accent-c .card-ring { --ring-accent: var(--violet); }
+
+    .accent-b .service-icon { color: var(--azure); background: rgba(46,142,255,0.1); border-color: rgba(46,142,255,0.18); }
+    .accent-b .assistant-icon, .accent-b .benefit-icon { color: var(--azure); }
+    .accent-c .service-icon { color: var(--violet); background: rgba(124,92,255,0.1); border-color: rgba(124,92,255,0.18); }
+    .accent-c .assistant-icon, .accent-c .benefit-icon { color: var(--violet); }
+
+    .service-card.accent-b:hover, .assistant-card.accent-b:hover, .benefit-card.accent-b:hover {
+      border-color: rgba(46,142,255,0.35);
+      box-shadow: 0 20px 60px rgba(46,142,255,0.18), inset 0 1px 0 rgba(46,142,255,0.12);
+    }
+    .service-card.accent-c:hover, .assistant-card.accent-c:hover, .benefit-card.accent-c:hover {
+      border-color: rgba(124,92,255,0.35);
+      box-shadow: 0 20px 60px rgba(124,92,255,0.18), inset 0 1px 0 rgba(124,92,255,0.12);
+    }
+
     /* ── REDUCED MOTION ────────────────────────────── */
     @media (prefers-reduced-motion: reduce) {
       .btn::before,
@@ -1404,7 +1475,9 @@
       .agent-card-1,
       .agent-card-2,
       .agent-card-3,
-      .ac-dot {
+      .ac-dot,
+      .grad-text,
+      .card-ring {
         animation: none !important;
       }
     }
@@ -2930,7 +3003,8 @@
         if (!cards.length) return;
         killTransition(cards);
         gsap.from(cards, {
-          opacity: 0, y: 40, duration: 0.7, stagger: 0.15, ease: 'power3.out', clearProps: 'transition',
+          opacity: 0, y: 40, rotationX: -12, transformPerspective: 800, transformOrigin: 'center 80%',
+          duration: 0.7, stagger: 0.15, ease: 'power3.out', clearProps: 'transition,transform',
           scrollTrigger: { trigger: grid, start: 'top 82%', once: true },
         });
       });
@@ -2941,7 +3015,8 @@
         if (!cards.length) return;
         killTransition(cards);
         gsap.from(cards, {
-          opacity: 0, y: 40, duration: 0.7, stagger: 0.08, ease: 'power3.out', clearProps: 'transition',
+          opacity: 0, y: 40, rotationX: -12, transformPerspective: 800, transformOrigin: 'center 80%',
+          duration: 0.7, stagger: 0.08, ease: 'power3.out', clearProps: 'transition,transform',
           scrollTrigger: { trigger: grid, start: 'top 82%', once: true },
         });
       });
@@ -2976,7 +3051,8 @@
         if (!steps.length) return;
         killTransition(steps);
         gsap.from(steps, {
-          opacity: 0, y: 36, duration: 0.7, stagger: 0.15, ease: 'power3.out', clearProps: 'transition',
+          opacity: 0, y: 36, rotationX: -12, transformPerspective: 800, transformOrigin: 'center 80%',
+          duration: 0.7, stagger: 0.15, ease: 'power3.out', clearProps: 'transition,transform',
           scrollTrigger: { trigger: stepsEl, start: 'top 82%', once: true },
         });
       });
@@ -3010,7 +3086,8 @@
         if (!cards.length) return;
         killTransition(cards);
         gsap.from(cards, {
-          opacity: 0, y: 36, duration: 0.7, stagger: 0.1, ease: 'power3.out', clearProps: 'transition',
+          opacity: 0, y: 36, rotationX: -12, transformPerspective: 800, transformOrigin: 'center 80%',
+          duration: 0.7, stagger: 0.1, ease: 'power3.out', clearProps: 'transition,transform',
           scrollTrigger: { trigger: grid, start: 'top 82%', once: true },
         });
       });
@@ -3089,6 +3166,90 @@
         }
       });
 
+    });
+  })();
+
+  /* ── 3D TILT + COLOR ACCENTS ──────────────────────── */
+  (function () {
+    /* Accent cycling runs regardless of pointer/motion capability so
+       touch and reduced-motion users still get the colored icon tints
+       and CSS :hover glow (see .accent-a/b/c rules in <style>). */
+    const ACCENTS = ['accent-a', 'accent-b', 'accent-c'];
+    function applyAccents(gridSelector, cardSelector) {
+      document.querySelectorAll(gridSelector).forEach(function (grid) {
+        const cards = grid.querySelectorAll(cardSelector);
+        cards.forEach(function (card, i) {
+          card.classList.add(ACCENTS[i % 3]);
+        });
+      });
+    }
+    applyAccents('.services-grid', '.service-card');
+    applyAccents('.assistants-grid', '.assistant-card');
+    applyAccents('.benefits-grid', '.benefit-card');
+
+    /* Pointer-tracking 3D tilt is desktop-mouse-only and respects
+       prefers-reduced-motion; touch/keyboard users keep the plain CSS
+       :hover fallback already defined on these card classes. */
+    const canTilt = window.matchMedia('(hover: hover) and (pointer: fine)').matches
+      && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!canTilt) return;
+
+    const cards = document.querySelectorAll('.service-card, .assistant-card, .benefit-card');
+
+    cards.forEach(function (card) {
+      const glare = document.createElement('div');
+      glare.className = 'card-glare';
+      card.appendChild(glare);
+
+      const ring = document.createElement('div');
+      ring.className = 'card-ring';
+      card.appendChild(ring);
+
+      let active = false;
+      let rafPending = false;
+      let lastEvent = null;
+
+      function applyTilt() {
+        rafPending = false;
+        if (!active || !lastEvent) return;
+        const rect = card.getBoundingClientRect();
+        const x = lastEvent.clientX - rect.left;
+        const y = lastEvent.clientY - rect.top;
+        const xNorm = (x / rect.width) * 2 - 1;
+        const yNorm = (y / rect.height) * 2 - 1;
+        card.style.transform = 'perspective(800px) rotateX(' + (-yNorm * 6).toFixed(2) + 'deg) rotateY(' + (xNorm * 6).toFixed(2) + 'deg) translateY(-4px) scale(1.015)';
+        glare.style.background = 'radial-gradient(320px circle at ' + x.toFixed(1) + 'px ' + y.toFixed(1) + 'px, rgba(255,255,255,0.08), transparent 60%)';
+      }
+
+      card.addEventListener('pointerenter', function () {
+        /* Don't fight the GSAP entrance tween — if it's still running on
+           this card, skip tilt until the next pointerenter. */
+        if (window.gsap && gsap.isTweening(card)) { active = false; return; }
+        active = true;
+        card.style.transition = 'none';
+        glare.style.opacity = '1';
+        ring.classList.add('is-active');
+      });
+
+      card.addEventListener('pointermove', function (e) {
+        if (!active) return;
+        lastEvent = e;
+        if (!rafPending) {
+          rafPending = true;
+          requestAnimationFrame(applyTilt);
+        }
+      });
+
+      card.addEventListener('pointerleave', function () {
+        if (active) {
+          card.style.transition = 'transform 0.45s ease';
+          card.style.transform = '';
+        }
+        active = false;
+        lastEvent = null;
+        glare.style.opacity = '0';
+        ring.classList.remove('is-active');
+      });
     });
   })();
 </script>
