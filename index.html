@@ -840,6 +840,158 @@
     }
     .form-group textarea { resize: vertical; min-height: 110px; }
     .form-group select option { background: #051518; }
+
+    /* ── CONTACT TABS (Message / Booking) ─────────── */
+    .contact-form-col { display: flex; flex-direction: column; }
+    .contact-tabs {
+      display: flex;
+      gap: 4px;
+      padding: 4px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 100px;
+      margin-bottom: 20px;
+    }
+    .contact-tab {
+      flex: 1;
+      padding: 10px 14px;
+      border: none;
+      border-radius: 100px;
+      background: transparent;
+      color: var(--muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.25s, color 0.25s;
+    }
+    .contact-tab:hover { color: var(--white); }
+    .contact-tab.active {
+      background: linear-gradient(135deg, var(--cyan), var(--blue));
+      color: var(--bg2);
+    }
+    .contact-tab.active:hover { color: var(--bg2); }
+    .contact-panel { display: flex; flex-direction: column; }
+
+    /* ── BOOKING WIDGET ────────────────────────────── */
+    .booking-calendar {
+      border: 1px solid var(--card-border);
+      background: rgba(0,40,50,0.35);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .calendar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .calendar-label { font-size: 0.9rem; font-weight: 700; color: var(--white); }
+    .calendar-nav {
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,212,212,0.08);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      color: var(--cyan);
+      font-size: 1.1rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: background 0.2s, opacity 0.2s;
+    }
+    .calendar-nav:hover:not(:disabled) { background: rgba(0,212,212,0.18); }
+    .calendar-nav:disabled { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
+    .calendar-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+    .calendar-weekdays span {
+      display: block;
+      text-align: center;
+      font-size: 0.66rem;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.4px;
+    }
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+    .cal-day {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .cal-day.empty { visibility: hidden; pointer-events: none; }
+    .cal-day:hover:not(:disabled) { background: rgba(0,212,212,0.12); }
+    .cal-day.today { border-color: rgba(0,212,212,0.55); }
+    .cal-day.selected {
+      background: linear-gradient(135deg, var(--cyan), var(--blue));
+      color: var(--bg2);
+      border-color: transparent;
+    }
+    .cal-day:disabled {
+      color: var(--muted);
+      opacity: 0.32;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    .booking-timeslots { margin-bottom: 6px; }
+    .timeslots-label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.3px;
+      margin-bottom: 10px;
+    }
+    .timeslots-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+    .timeslots-placeholder { font-size: 0.8rem; color: var(--muted); padding: 6px 0; }
+    .time-slot {
+      padding: 8px 14px;
+      border: 1px solid var(--card-border);
+      border-radius: 100px;
+      background: rgba(0,40,50,0.5);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .time-slot:hover:not(:disabled) { border-color: rgba(0,212,212,0.5); }
+    .time-slot.selected {
+      background: linear-gradient(135deg, var(--cyan), var(--blue));
+      color: var(--bg2);
+      border-color: transparent;
+    }
+    .time-slot:disabled {
+      color: var(--muted);
+      opacity: 0.32;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    @media (max-width: 480px) {
+      .cal-day { font-size: 0.7rem; }
+      .calendar-nav { width: 28px; height: 28px; font-size: 1rem; }
+      .time-slot { padding: 7px 10px; font-size: 0.72rem; }
+      .contact-tab { font-size: 0.76rem; padding: 9px 8px; }
+    }
+
     .contact-info { padding-top: 8px; }
     .info-item {
       display: flex;
@@ -2084,70 +2236,149 @@
         </div>
       </div>
     </div>
-    <form class="contact-form" id="contactForm">
-      <!-- Web3Forms: get your free key at web3forms.com → enter hello@vouza.ai -->
-      <input type="hidden" name="access_key" value="b8ca7e0e-3a3c-472b-ac08-4e66542f2375" />
-      <input type="hidden" name="subject" value="New enquiry from vouza.ai" />
-      <input type="hidden" name="from_name" value="Vouza Website" />
-      <input type="checkbox" name="botcheck" style="display:none;" tabindex="-1" autocomplete="off" aria-hidden="true" />
-      <div class="form-group">
-        <label for="f-name">Full Name *</label>
-        <input id="f-name" type="text" name="name" placeholder="Your name" required />
+    <div class="contact-form-col">
+      <div class="contact-tabs" role="tablist" aria-label="Contact options">
+        <button type="button" class="contact-tab active" id="tabMessageBtn" role="tab" aria-selected="true" aria-controls="messagePanel">Send a Message</button>
+        <button type="button" class="contact-tab" id="tabBookingBtn" role="tab" aria-selected="false" aria-controls="bookingPanel">Book a Consultation</button>
       </div>
-      <div class="form-group">
-        <label for="f-company">Company Name *</label>
-        <input id="f-company" type="text" name="company" placeholder="Your company" required />
+
+      <div class="contact-panel" id="messagePanel" role="tabpanel" aria-labelledby="tabMessageBtn">
+        <form class="contact-form" id="contactForm">
+          <!-- Web3Forms: get your free key at web3forms.com → enter hello@vouza.ai -->
+          <input type="hidden" name="access_key" value="b8ca7e0e-3a3c-472b-ac08-4e66542f2375" />
+          <input type="hidden" name="subject" value="New enquiry from vouza.ai" />
+          <input type="hidden" name="from_name" value="Vouza Website" />
+          <input type="checkbox" name="botcheck" style="display:none;" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <div class="form-group">
+            <label for="f-name">Full Name *</label>
+            <input id="f-name" type="text" name="name" placeholder="Your name" required />
+          </div>
+          <div class="form-group">
+            <label for="f-company">Company Name *</label>
+            <input id="f-company" type="text" name="company" placeholder="Your company" required />
+          </div>
+          <div class="form-group">
+            <label for="f-email">Email Address *</label>
+            <input id="f-email" type="email" name="email" placeholder="you@company.com" required />
+          </div>
+          <div class="form-group">
+            <label for="f-phone">Phone / WhatsApp</label>
+            <input id="f-phone" type="tel" name="phone" placeholder="+65 9123 4567" />
+          </div>
+          <div class="form-group">
+            <label for="f-country">Country</label>
+            <select id="f-country" name="country">
+              <option>Singapore</option>
+              <option>Malaysia</option>
+              <option>Thailand</option>
+              <option>Indonesia</option>
+              <option>Vietnam</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="f-solution">Solution of Interest</label>
+            <select id="f-solution" name="solution">
+              <option>AI Assistants</option>
+              <option>Website & App Integration</option>
+              <option>Robotics Solutions</option>
+              <option>AI Camera Systems</option>
+              <option>Full Suite</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="f-message">Message</label>
+            <textarea id="f-message" name="message" placeholder="Tell us about your business needs..."></textarea>
+          </div>
+          <!-- PDPA Consent -->
+          <label class="pdpa-consent" for="pdpa-check">
+            <input type="checkbox" id="pdpa-check" name="pdpa_consent" required />
+            <span class="pdpa-consent-text">
+              I consent to Vouza AI collecting and using my personal data to respond to this enquiry, in accordance with Singapore's <a onclick="openPrivacy(event)">Personal Data Protection Act (PDPA) 2012</a>. My data will not be shared with third parties without consent.
+            </span>
+          </label>
+          <button type="submit" id="submitBtn" class="btn btn-primary btn-lg" style="width:100%;border-radius:12px;margin-top:4px;" disabled>
+            Send Message →
+          </button>
+          <p id="form-success" style="display:none;font-size:0.85rem;color:var(--cyan);text-align:center;margin-top:12px;padding:12px;border:1px solid rgba(0,212,212,0.3);border-radius:10px;background:rgba(0,212,212,0.06);">
+            ✓ Message sent! We'll be in touch within 1 business day.
+          </p>
+          <p id="form-error" style="display:none;font-size:0.85rem;color:#ff6b6b;text-align:center;margin-top:12px;padding:12px;border:1px solid rgba(255,100,100,0.3);border-radius:10px;background:rgba(255,100,100,0.06);">
+            ✗ Something went wrong. Please email us directly at hello@vouza.ai
+          </p>
+        </form>
       </div>
-      <div class="form-group">
-        <label for="f-email">Email Address *</label>
-        <input id="f-email" type="email" name="email" placeholder="you@company.com" required />
+
+      <div class="contact-panel" id="bookingPanel" role="tabpanel" aria-labelledby="tabBookingBtn" style="display:none;">
+        <form class="contact-form" id="bookingForm">
+          <input type="hidden" name="access_key" value="b8ca7e0e-3a3c-472b-ac08-4e66542f2375" />
+          <input type="hidden" name="subject" value="Appointment Request — vouza.ai" />
+          <input type="hidden" name="from_name" value="Vouza Booking Widget" />
+          <input type="hidden" name="requested_slot" id="booking-requested-slot" value="" />
+          <input type="hidden" name="booking_date" id="booking-date" value="" />
+          <input type="hidden" name="booking_time" id="booking-time" value="" />
+          <input type="checkbox" name="botcheck" style="display:none;" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+          <div class="booking-calendar">
+            <div class="calendar-header">
+              <button type="button" class="calendar-nav" id="calPrevBtn" aria-label="Previous month">‹</button>
+              <span class="calendar-label" id="calLabel" aria-live="polite">&nbsp;</span>
+              <button type="button" class="calendar-nav" id="calNextBtn" aria-label="Next month">›</button>
+            </div>
+            <div class="calendar-weekdays">
+              <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+            </div>
+            <div class="calendar-grid" id="calGrid" aria-label="Choose an appointment date"></div>
+          </div>
+
+          <div class="booking-timeslots">
+            <label class="timeslots-label" id="timeslotsLabel">Available times (SGT)</label>
+            <div class="timeslots-grid" id="timeSlotsGrid" aria-labelledby="timeslotsLabel">
+              <p class="timeslots-placeholder" id="timeSlotsPlaceholder">Select a date to see available times</p>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="b-name">Full Name *</label>
+            <input id="b-name" type="text" name="name" placeholder="Your name" required />
+          </div>
+          <div class="form-group">
+            <label for="b-company">Company Name</label>
+            <input id="b-company" type="text" name="company" placeholder="Your company" />
+          </div>
+          <div class="form-group">
+            <label for="b-email">Email Address *</label>
+            <input id="b-email" type="email" name="email" placeholder="you@company.com" required />
+          </div>
+          <div class="form-group">
+            <label for="b-phone">Phone / WhatsApp</label>
+            <input id="b-phone" type="tel" name="phone" placeholder="+65 9123 4567" />
+          </div>
+          <div class="form-group">
+            <label for="b-message">What would you like to discuss?</label>
+            <textarea id="b-message" name="message" placeholder="Tell us a bit about what you'd like to cover..."></textarea>
+          </div>
+
+          <!-- PDPA Consent -->
+          <label class="pdpa-consent" for="pdpa-check-booking">
+            <input type="checkbox" id="pdpa-check-booking" name="pdpa_consent" required />
+            <span class="pdpa-consent-text">
+              I consent to Vouza AI collecting and using my personal data to respond to this enquiry, in accordance with Singapore's <a onclick="openPrivacy(event)">Personal Data Protection Act (PDPA) 2012</a>. My data will not be shared with third parties without consent.
+            </span>
+          </label>
+
+          <button type="submit" id="bookingSubmitBtn" class="btn btn-primary btn-lg" style="width:100%;border-radius:12px;margin-top:4px;" disabled>
+            Request Appointment →
+          </button>
+          <p id="booking-form-success" style="display:none;font-size:0.85rem;color:var(--cyan);text-align:center;margin-top:12px;padding:12px;border:1px solid rgba(0,212,212,0.3);border-radius:10px;background:rgba(0,212,212,0.06);">
+            ✓ Appointment requested! We'll confirm your slot by email within 1 business day.
+          </p>
+          <p id="booking-form-error" style="display:none;font-size:0.85rem;color:#ff6b6b;text-align:center;margin-top:12px;padding:12px;border:1px solid rgba(255,100,100,0.3);border-radius:10px;background:rgba(255,100,100,0.06);">
+            ✗ Something went wrong. Please email us directly at hello@vouza.ai
+          </p>
+        </form>
       </div>
-      <div class="form-group">
-        <label for="f-phone">Phone / WhatsApp</label>
-        <input id="f-phone" type="tel" name="phone" placeholder="+65 9123 4567" />
-      </div>
-      <div class="form-group">
-        <label for="f-country">Country</label>
-        <select id="f-country" name="country">
-          <option>Singapore</option>
-          <option>Malaysia</option>
-          <option>Thailand</option>
-          <option>Indonesia</option>
-          <option>Vietnam</option>
-          <option>Other</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="f-solution">Solution of Interest</label>
-        <select id="f-solution" name="solution">
-          <option>AI Assistants</option>
-          <option>Website & App Integration</option>
-          <option>Robotics Solutions</option>
-          <option>AI Camera Systems</option>
-          <option>Full Suite</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="f-message">Message</label>
-        <textarea id="f-message" name="message" placeholder="Tell us about your business needs..."></textarea>
-      </div>
-      <!-- PDPA Consent -->
-      <label class="pdpa-consent" for="pdpa-check">
-        <input type="checkbox" id="pdpa-check" name="pdpa_consent" required />
-        <span class="pdpa-consent-text">
-          I consent to Vouza AI collecting and using my personal data to respond to this enquiry, in accordance with Singapore's <a onclick="openPrivacy(event)">Personal Data Protection Act (PDPA) 2012</a>. My data will not be shared with third parties without consent.
-        </span>
-      </label>
-      <button type="submit" id="submitBtn" class="btn btn-primary btn-lg" style="width:100%;border-radius:12px;margin-top:4px;" disabled>
-        Send Message →
-      </button>
-      <p id="form-success" style="display:none;font-size:0.85rem;color:var(--cyan);text-align:center;margin-top:12px;padding:12px;border:1px solid rgba(0,212,212,0.3);border-radius:10px;background:rgba(0,212,212,0.06);">
-        ✓ Message sent! We'll be in touch within 1 business day.
-      </p>
-      <p id="form-error" style="display:none;font-size:0.85rem;color:#ff6b6b;text-align:center;margin-top:12px;padding:12px;border:1px solid rgba(255,100,100,0.3);border-radius:10px;background:rgba(255,100,100,0.06);">
-        ✗ Something went wrong. Please email us directly at hello@vouza.ai
-      </p>
-    </form>
+    </div>
   </div>
 </section>
 
@@ -2793,6 +3024,280 @@
       btn.disabled = false;
     }
   });
+
+  /* ── CONTACT TABS — Send a Message / Book a Consultation ── */
+  (function () {
+    const tabMessageBtn = document.getElementById('tabMessageBtn');
+    const tabBookingBtn = document.getElementById('tabBookingBtn');
+    const messagePanel  = document.getElementById('messagePanel');
+    const bookingPanel  = document.getElementById('bookingPanel');
+    if (!tabMessageBtn || !tabBookingBtn) return;
+
+    function activateTab(tab) {
+      const isBooking = tab === 'booking';
+      tabBookingBtn.classList.toggle('active', isBooking);
+      tabMessageBtn.classList.toggle('active', !isBooking);
+      tabBookingBtn.setAttribute('aria-selected', String(isBooking));
+      tabMessageBtn.setAttribute('aria-selected', String(!isBooking));
+      bookingPanel.style.display = isBooking ? '' : 'none';
+      messagePanel.style.display = isBooking ? 'none' : '';
+    }
+    tabMessageBtn.addEventListener('click', function () { activateTab('message'); });
+    tabBookingBtn.addEventListener('click', function () { activateTab('booking'); });
+  })();
+
+  /* ── BOOKING WIDGET — custom calendar + SGT time slots ──── */
+  (function () {
+    const bookingForm = document.getElementById('bookingForm');
+    if (!bookingForm) return;
+
+    const MONTH_NAMES  = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const WEEKDAY_FULL = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const MAX_DAYS_OUT = 45;
+
+    // "Now", expressed in Singapore Time (UTC+8) wall-clock components,
+    // computed from the universal epoch timestamp — independent of the
+    // visitor's local timezone.
+    function sgtNow() {
+      const ms = Date.now() + 8 * 60 * 60 * 1000;
+      const d  = new Date(ms);
+      return {
+        year:    d.getUTCFullYear(),
+        month:   d.getUTCMonth(),
+        date:    d.getUTCDate(),
+        hours:   d.getUTCHours(),
+        minutes: d.getUTCMinutes(),
+      };
+    }
+
+    const today    = sgtNow();
+    const todayUTC = Date.UTC(today.year, today.month, today.date);
+
+    let viewYear     = today.year;
+    let viewMonth    = today.month;
+    let selected     = null; // { year, month, date, display }
+    let selectedTime = null; // { value: '09:00', label: '9:00 AM' }
+
+    const calLabel    = document.getElementById('calLabel');
+    const calGrid     = document.getElementById('calGrid');
+    const calPrevBtn  = document.getElementById('calPrevBtn');
+    const calNextBtn  = document.getElementById('calNextBtn');
+    const slotsGrid   = document.getElementById('timeSlotsGrid');
+    const dateInput   = document.getElementById('booking-date');
+    const timeInput   = document.getElementById('booking-time');
+    const slotInput   = document.getElementById('booking-requested-slot');
+    const pdpaCheckB  = document.getElementById('pdpa-check-booking');
+    const bookingBtn  = document.getElementById('bookingSubmitBtn');
+    const bNameInput  = document.getElementById('b-name');
+    const bEmailInput = document.getElementById('b-email');
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+    function daysInMonth(y, m) { return new Date(Date.UTC(y, m + 1, 0)).getUTCDate(); }
+    function firstWeekdayMon(y, m) {
+      const jsDay = new Date(Date.UTC(y, m, 1)).getUTCDay(); // 0=Sun..6=Sat
+      return (jsDay + 6) % 7; // 0=Mon..6=Sun
+    }
+
+    function renderCalendar() {
+      calLabel.textContent = MONTH_NAMES[viewMonth] + ' ' + viewYear;
+      calPrevBtn.disabled  = (viewYear === today.year && viewMonth === today.month);
+
+      calGrid.innerHTML = '';
+      const total  = daysInMonth(viewYear, viewMonth);
+      const offset = firstWeekdayMon(viewYear, viewMonth);
+
+      for (let i = 0; i < offset; i++) {
+        const empty = document.createElement('span');
+        empty.className = 'cal-day empty';
+        empty.setAttribute('aria-hidden', 'true');
+        calGrid.appendChild(empty);
+      }
+
+      for (let d = 1; d <= total; d++) {
+        const cellUTC   = Date.UTC(viewYear, viewMonth, d);
+        const dow       = new Date(cellUTC).getUTCDay(); // 0=Sun..6=Sat
+        const isWeekend = (dow === 0 || dow === 6);
+        const diffDays  = Math.round((cellUTC - todayUTC) / 86400000);
+        const isPast    = diffDays < 0;
+        const isTooFar  = diffDays > MAX_DAYS_OUT;
+        const isToday   = diffDays === 0;
+        const disabled  = isPast || isWeekend || isTooFar;
+        const dateLabel = MONTH_NAMES[viewMonth] + ' ' + d + ', ' + viewYear;
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'cal-day';
+        btn.textContent = String(d);
+        btn.setAttribute('aria-pressed', 'false');
+        if (isToday) btn.classList.add('today');
+
+        if (disabled) {
+          btn.disabled = true;
+          btn.setAttribute('aria-disabled', 'true');
+          btn.setAttribute('aria-label', dateLabel + ', unavailable');
+        } else {
+          btn.setAttribute('aria-label', dateLabel + ', available');
+          btn.addEventListener('click', function () { selectDate(viewYear, viewMonth, d); });
+        }
+
+        if (selected && selected.year === viewYear && selected.month === viewMonth && selected.date === d) {
+          btn.classList.add('selected');
+          btn.setAttribute('aria-pressed', 'true');
+        }
+
+        calGrid.appendChild(btn);
+      }
+    }
+
+    function selectDate(y, m, d) {
+      const weekday = WEEKDAY_FULL[new Date(Date.UTC(y, m, d)).getUTCDay()];
+      selected = {
+        year: y, month: m, date: d,
+        display: weekday + ', ' + d + ' ' + MONTH_NAMES[m] + ' ' + y,
+      };
+      selectedTime = null;
+      timeInput.value = '';
+      dateInput.value = y + '-' + pad(m + 1) + '-' + pad(d);
+      renderCalendar();
+      renderTimeSlots();
+      updateRequestedSlot();
+      updateSubmitState();
+    }
+
+    function renderTimeSlots() {
+      slotsGrid.innerHTML = '';
+      if (!selected) {
+        const p = document.createElement('p');
+        p.className = 'timeslots-placeholder';
+        p.id = 'timeSlotsPlaceholder';
+        p.textContent = 'Select a date to see available times';
+        slotsGrid.appendChild(p);
+        return;
+      }
+
+      const isToday    = (selected.year === today.year && selected.month === today.month && selected.date === today.date);
+      const nowMinutes = today.hours * 60 + today.minutes;
+
+      for (let h = 9; h <= 17; h++) {
+        for (let mm = 0; mm <= 30; mm += 30) {
+          const totalMin = h * 60 + mm;
+          const value    = pad(h) + ':' + pad(mm);
+          const hour12   = (h % 12 === 0) ? 12 : (h % 12);
+          const ampm     = h < 12 ? 'AM' : 'PM';
+          const label    = hour12 + (mm === 0 ? ':00' : ':30') + ' ' + ampm;
+          const isPast   = isToday && totalMin <= nowMinutes;
+
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'time-slot';
+          btn.textContent = label;
+          btn.setAttribute('aria-pressed', 'false');
+
+          if (isPast) {
+            btn.disabled = true;
+            btn.setAttribute('aria-disabled', 'true');
+            btn.setAttribute('aria-label', label + ', unavailable');
+          } else {
+            btn.setAttribute('aria-label', label + ', select');
+            btn.addEventListener('click', function () { selectTime(value, label); });
+          }
+
+          if (selectedTime && selectedTime.value === value) {
+            btn.classList.add('selected');
+            btn.setAttribute('aria-pressed', 'true');
+          }
+
+          slotsGrid.appendChild(btn);
+        }
+      }
+    }
+
+    function selectTime(value, label) {
+      selectedTime = { value: value, label: label };
+      timeInput.value = value;
+      renderTimeSlots();
+      updateRequestedSlot();
+      updateSubmitState();
+    }
+
+    function updateRequestedSlot() {
+      slotInput.value = (selected && selectedTime)
+        ? (selected.display + ' at ' + selectedTime.label + ' (SGT)')
+        : '';
+    }
+
+    function updateSubmitState() {
+      const hasDate = !!selected;
+      const hasTime = !!selectedTime;
+      const pdpaOk  = pdpaCheckB.checked;
+      const nameOk  = bNameInput.value.trim().length > 0;
+      const emailOk = bEmailInput.value.trim().length > 0 && bEmailInput.checkValidity();
+      const enabled = hasDate && hasTime && pdpaOk && nameOk && emailOk;
+      bookingBtn.disabled = !enabled;
+      bookingBtn.style.opacity = enabled ? '1' : '0.45';
+    }
+
+    calPrevBtn.addEventListener('click', function () {
+      viewMonth--;
+      if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+      renderCalendar();
+    });
+    calNextBtn.addEventListener('click', function () {
+      viewMonth++;
+      if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+      renderCalendar();
+    });
+
+    pdpaCheckB.addEventListener('change', updateSubmitState);
+    bNameInput.addEventListener('input', updateSubmitState);
+    bEmailInput.addEventListener('input', updateSubmitState);
+
+    bookingBtn.style.opacity = '0.45';
+    renderCalendar();
+    renderTimeSlots();
+
+    /* ── Booking form submit — Web3Forms AJAX ────────── */
+    bookingForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      updateRequestedSlot();
+      const btn     = bookingBtn;
+      const success = document.getElementById('booking-form-success');
+      const error   = document.getElementById('booking-form-error');
+      success.style.display = 'none';
+      error.style.display   = 'none';
+      const originalLabel = btn.textContent;
+      btn.textContent = 'Sending…';
+      btn.disabled = true;
+
+      try {
+        const res  = await fetch('https://api.web3forms.com/submit', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body:    JSON.stringify(Object.fromEntries(new FormData(this)))
+        });
+        const data = await res.json();
+        if (data.success) {
+          success.style.display = 'block';
+          this.reset();
+          selected = null;
+          selectedTime = null;
+          dateInput.value = '';
+          timeInput.value = '';
+          slotInput.value = '';
+          renderCalendar();
+          renderTimeSlots();
+          updateSubmitState();
+          btn.textContent = '✓ Requested!';
+        } else {
+          throw new Error(data.message);
+        }
+      } catch (err) {
+        error.style.display = 'block';
+        btn.textContent = originalLabel;
+        updateSubmitState();
+      }
+    });
+  })();
 
   /* ── NEWSLETTER SIGNUP — Web3Forms AJAX ─────────── */
   document.getElementById('newsletterForm').addEventListener('submit', async function(e) {
