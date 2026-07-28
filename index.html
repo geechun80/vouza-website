@@ -1348,6 +1348,14 @@
       font-size: 0.78rem;
       color: var(--muted);
     }
+    .footer-tech {
+      text-align: center;
+      font-size: 0.76rem;
+      color: var(--muted);
+      padding: 20px 0;
+      border-top: 1px solid var(--card-border);
+    }
+    .footer-tech span { color: var(--white); font-weight: 600; }
 
     /* ── DIVIDER ──────────────────────────────────── */
     .divider {
@@ -2430,10 +2438,15 @@
       </ul>
     </div>
   </div>
+  <div class="footer-tech">
+    <span>Technology &amp; Infrastructure</span> — Built on Twilio's Customer Engagement Platform · AWS Cloud · Hostinger Cloud
+  </div>
   <div class="footer-bottom">
     <span>© 2026 Vouza AI. All rights reserved. Registered in Singapore.</span>
     <span style="display:flex;gap:20px;align-items:center;">
       <a href="#" onclick="openPrivacy(event)" style="color:var(--muted);text-decoration:none;font-size:0.78rem;transition:color 0.2s;" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--muted)'">Privacy Policy</a>
+      <span style="opacity:0.3;">·</span>
+      <a href="#" onclick="openTerms(event)" style="color:var(--muted);text-decoration:none;font-size:0.78rem;transition:color 0.2s;" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--muted)'">Terms of Service</a>
       <span style="opacity:0.3;">·</span>
       <span>hello@vouza.ai</span>
     </span>
@@ -2502,6 +2515,48 @@
     <h3>10. Contact Our Data Protection Officer</h3>
     <p>For any data protection concerns, contact us at:<br>
     <strong>Vouza AI</strong> · Singapore · <a href="mailto:hello@vouza.ai">hello@vouza.ai</a></p>
+  </div>
+</div>
+
+<!-- ── TERMS OF SERVICE MODAL ──────────────────────── -->
+<div class="privacy-overlay" id="termsOverlay" role="dialog" aria-modal="true" aria-labelledby="terms-title">
+  <div class="privacy-modal">
+    <button class="pm-close" onclick="closeTerms()" aria-label="Close terms of service">✕</button>
+    <h2 id="terms-title">Terms of Service</h2>
+    <span class="pm-date">Vouza AI · Effective: 1 January 2025 · Singapore</span>
+
+    <h3>1. Acceptance of Terms</h3>
+    <p>By accessing or using the Vouza AI website and services ("Services"), you agree to be bound by these Terms of Service. If you do not agree, please do not use our Services.</p>
+
+    <h3>2. About Vouza AI</h3>
+    <p>Vouza AI ("Vouza", "we", "us") is a company incorporated in Singapore providing AI-powered assistant, automation, robotics, and vision-AI solutions for businesses. Contact us at <a href="mailto:hello@vouza.ai">hello@vouza.ai</a>.</p>
+
+    <h3>3. AI Accuracy</h3>
+    <p>AI-generated content may contain inaccuracies and should be reviewed before making important business decisions. Our Services use artificial intelligence to generate content, responses, and recommendations, and this content should not be relied upon as a substitute for professional judgment. You should independently review and verify AI-generated content before making important business, financial, legal, or operational decisions.</p>
+
+    <h3>4. Technology Providers</h3>
+    <p>Vouza.ai may use multiple third-party AI and cloud providers to deliver its services and may change providers where appropriate without reducing the subscribed service. These providers may include, but are not limited to, Twilio, AWS, Hostinger Cloud, and third-party AI model providers.</p>
+
+    <h3>5. Service Availability</h3>
+    <p>Services rely on third-party cloud platforms and APIs, so availability may occasionally be affected by those providers. We will make reasonable efforts to maintain service continuity but do not guarantee uninterrupted access.</p>
+
+    <h3>6. Acceptable Use</h3>
+    <p>Customers must not use the platform for spam, phishing, fraud or unlawful activities. We reserve the right to suspend or terminate access for any use that violates this policy.</p>
+
+    <h3>7. Intellectual Property</h3>
+    <p>All content, trademarks, and technology on this website and within our Services, excluding third-party content and customer data, are the property of Vouza AI or its licensors.</p>
+
+    <h3>8. Limitation of Liability</h3>
+    <p>To the maximum extent permitted by law, Vouza AI shall not be liable for any indirect, incidental, or consequential damages arising from your use of the Services, including decisions made based on AI-generated content.</p>
+
+    <h3>9. Changes to These Terms</h3>
+    <p>We may update these Terms from time to time. The effective date above will reflect the most recent revision. Continued use of our Services after changes constitutes acceptance of the updated Terms.</p>
+
+    <h3>10. Governing Law</h3>
+    <p>These Terms are governed by the laws of Singapore.</p>
+
+    <h3>11. Contact</h3>
+    <p>For questions about these Terms, contact us at <a href="mailto:hello@vouza.ai">hello@vouza.ai</a>.</p>
   </div>
 </div>
 
@@ -2835,8 +2890,23 @@
   document.getElementById('privacyOverlay').addEventListener('click', function(e) {
     if (e.target === this) closePrivacy();
   });
+
+  /* ── TERMS OF SERVICE MODAL ──────────────────────── */
+  function openTerms(e) {
+    if (e) e.preventDefault();
+    document.getElementById('termsOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeTerms() {
+    document.getElementById('termsOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('termsOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeTerms();
+  });
+
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closePrivacy();
+    if (e.key === 'Escape') { closePrivacy(); closeTerms(); }
   });
 
   /* ── VEE DEMO CLICK-TO-PLAY ─────────────────────── */
