@@ -800,6 +800,41 @@
     .industry-card h4 { font-size: 0.92rem; font-weight: 700; margin-bottom: 6px; }
     .industry-card p { font-size: 0.78rem; color: var(--muted); line-height: 1.65; }
 
+    /* ── LEADERSHIP TEAM ───────────────────────────── */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+    .team-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 36px 28px;
+      transition: all 0.25s;
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+    .team-card:hover {
+      border-color: rgba(0,212,212,0.3);
+      background: rgba(0,60,70,0.4);
+      box-shadow: 0 8px 40px rgba(0,100,100,0.2);
+    }
+    .team-photo {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 20px;
+      border: 2px solid var(--card-border);
+      display: block;
+    }
+    .team-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+    .team-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.65; }
+    .team-card p.team-role { color: var(--cyan); font-weight: 600; font-size: 0.85rem; margin-bottom: 10px; }
+
     /* ── PRODUCTS & SOLUTIONS ──────────────────────── */
     .products-grid {
       display: grid;
@@ -1781,11 +1816,11 @@
     .accent-c .service-icon, .accent-c .industry-icon, .accent-c .product-icon { color: var(--violet); background: rgba(124,92,255,0.1); border-color: rgba(124,92,255,0.18); }
     .accent-c .assistant-icon, .accent-c .benefit-icon { color: var(--violet); }
 
-    .service-card.accent-b:hover, .assistant-card.accent-b:hover, .benefit-card.accent-b:hover, .industry-card.accent-b:hover, .product-card.accent-b:hover {
+    .service-card.accent-b:hover, .assistant-card.accent-b:hover, .benefit-card.accent-b:hover, .industry-card.accent-b:hover, .product-card.accent-b:hover, .team-card.accent-b:hover {
       border-color: rgba(46,142,255,0.35);
       box-shadow: 0 20px 60px rgba(46,142,255,0.18), inset 0 1px 0 rgba(46,142,255,0.12);
     }
-    .service-card.accent-c:hover, .assistant-card.accent-c:hover, .benefit-card.accent-c:hover, .industry-card.accent-c:hover, .product-card.accent-c:hover {
+    .service-card.accent-c:hover, .assistant-card.accent-c:hover, .benefit-card.accent-c:hover, .industry-card.accent-c:hover, .product-card.accent-c:hover, .team-card.accent-c:hover {
       border-color: rgba(124,92,255,0.35);
       box-shadow: 0 20px 60px rgba(124,92,255,0.18), inset 0 1px 0 rgba(124,92,255,0.12);
     }
@@ -2387,6 +2422,37 @@
       <div class="industry-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-4 10 4-10 4L2 9z"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/><path d="M22 9v6"/></svg></div>
       <h4>Education</h4>
       <p>Student enquiry assistants, enrolment support, and administrative workflows.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── LEADERSHIP TEAM ──────────────────────────────────── -->
+<section id="team">
+  <div class="section-header center">
+    <div class="section-label">Leadership</div>
+    <h2 class="section-title">The Team Behind<br><span class="grad-text">Vouza.ai</span></h2>
+    <p class="section-desc">Three decades of combined leadership across business, engineering, and global sales — united by one vision.</p>
+  </div>
+  <div class="team-grid">
+    <div class="team-card">
+      <img src="team-images/bruce-lee.webp" alt="Bruce Lee" loading="lazy" decoding="async" class="team-photo">
+      <h4>Bruce Lee</h4>
+      <p class="team-role">Chief Executive Officer</p>
+      <p>20 years driving business strategy, growth, and partnerships across Southeast Asia, based in Kuala Lumpur.</p>
+    </div>
+    <div class="team-card">
+      <img src="team-images/leong-gc.webp" alt="Leong GC" loading="lazy" decoding="async" class="team-photo">
+      <h4>Leong GC</h4>
+      <p class="team-role">Chief Technology Officer</p>
+      <p>20 years of deep expertise in engineering and manufacturing — architecting robust, scalable technology systems.</p>
+    </div>
+    <div class="team-card">
+      <img src="team-images/aerick-ngu.webp" alt="Aerick Ngu" loading="lazy" decoding="async" class="team-photo">
+      <h4>Aerick Ngu</h4>
+      <p class="team-role">Chief Business Officer</p>
+      <p>20 years in semiconductors and Capex Sales — with a global network and proven track record of enterprise deal-making.</p>
     </div>
   </div>
 </section>
@@ -4172,6 +4238,18 @@
         });
       });
 
+      /* Team grid */
+      document.querySelectorAll('.team-grid').forEach(function (grid) {
+        const cards = grid.querySelectorAll('.team-card');
+        if (!cards.length) return;
+        killTransition(cards);
+        gsap.from(cards, {
+          opacity: 0, y: 36, rotationX: -12, transformPerspective: 800, transformOrigin: 'center 80%',
+          duration: 0.7, stagger: 0.1, ease: 'power3.out', clearProps: 'transition,transform',
+          scrollTrigger: { trigger: grid, start: 'top 82%', once: true },
+        });
+      });
+
       /* CTA sections — h2 + p fade-up, buttons pop. #download already has its
          own dedicated timeline above (h2 + actions, no <p>) — skip it here so
          the two timelines don't fight over the same h2/button elements. */
@@ -4257,6 +4335,7 @@
     applyAccents('.assistants-grid', '.assistant-card');
     applyAccents('.benefits-grid', '.benefit-card');
     applyAccents('.industries-grid', '.industry-card');
+    applyAccents('.team-grid', '.team-card');
 
     /* Pointer-tracking 3D tilt is desktop-mouse-only and respects
        prefers-reduced-motion; touch/keyboard users keep the plain CSS
@@ -4265,7 +4344,7 @@
       && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!canTilt) return;
 
-    const cards = document.querySelectorAll('.service-card, .product-card, .assistant-card, .benefit-card, .industry-card');
+    const cards = document.querySelectorAll('.service-card, .product-card, .assistant-card, .benefit-card, .industry-card, .team-card');
 
     cards.forEach(function (card) {
       const glare = document.createElement('div');
