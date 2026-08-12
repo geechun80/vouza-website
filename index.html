@@ -800,6 +800,54 @@
     .industry-card h4 { font-size: 0.92rem; font-weight: 700; margin-bottom: 6px; }
     .industry-card p { font-size: 0.78rem; color: var(--muted); line-height: 1.65; }
 
+    /* ── PRODUCTS & SOLUTIONS ──────────────────────── */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .product-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 28px 24px;
+      transition: all 0.25s;
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+    }
+    .product-card:hover {
+      border-color: rgba(0,212,212,0.3);
+      background: rgba(0,60,70,0.4);
+      box-shadow: 0 8px 40px rgba(0,100,100,0.2);
+    }
+    .product-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      background: rgba(0,212,212,0.1);
+      border: 1px solid rgba(0,212,212,0.15);
+      color: var(--cyan);
+    }
+    .product-card h4 { font-size: 0.98rem; font-weight: 700; margin-bottom: 8px; }
+    .product-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.65; margin-bottom: 16px; }
+    .product-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+    .product-chips .service-tag { margin-top: 0; }
+    .product-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--cyan);
+      text-decoration: none;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+    .product-cta:hover { text-decoration: underline; transform: translateX(3px); }
+
     /* ── CTA SECTION ──────────────────────────────── */
     .cta-section {
       text-align: center;
@@ -1728,16 +1776,16 @@
     .accent-b .card-ring { --ring-accent: var(--azure); }
     .accent-c .card-ring { --ring-accent: var(--violet); }
 
-    .accent-b .service-icon, .accent-b .industry-icon { color: var(--azure); background: rgba(46,142,255,0.1); border-color: rgba(46,142,255,0.18); }
+    .accent-b .service-icon, .accent-b .industry-icon, .accent-b .product-icon { color: var(--azure); background: rgba(46,142,255,0.1); border-color: rgba(46,142,255,0.18); }
     .accent-b .assistant-icon, .accent-b .benefit-icon { color: var(--azure); }
-    .accent-c .service-icon, .accent-c .industry-icon { color: var(--violet); background: rgba(124,92,255,0.1); border-color: rgba(124,92,255,0.18); }
+    .accent-c .service-icon, .accent-c .industry-icon, .accent-c .product-icon { color: var(--violet); background: rgba(124,92,255,0.1); border-color: rgba(124,92,255,0.18); }
     .accent-c .assistant-icon, .accent-c .benefit-icon { color: var(--violet); }
 
-    .service-card.accent-b:hover, .assistant-card.accent-b:hover, .benefit-card.accent-b:hover, .industry-card.accent-b:hover {
+    .service-card.accent-b:hover, .assistant-card.accent-b:hover, .benefit-card.accent-b:hover, .industry-card.accent-b:hover, .product-card.accent-b:hover {
       border-color: rgba(46,142,255,0.35);
       box-shadow: 0 20px 60px rgba(46,142,255,0.18), inset 0 1px 0 rgba(46,142,255,0.12);
     }
-    .service-card.accent-c:hover, .assistant-card.accent-c:hover, .benefit-card.accent-c:hover, .industry-card.accent-c:hover {
+    .service-card.accent-c:hover, .assistant-card.accent-c:hover, .benefit-card.accent-c:hover, .industry-card.accent-c:hover, .product-card.accent-c:hover {
       border-color: rgba(124,92,255,0.35);
       box-shadow: 0 20px 60px rgba(124,92,255,0.18), inset 0 1px 0 rgba(124,92,255,0.12);
     }
@@ -1786,6 +1834,7 @@
   </a>
   <ul class="nav-links" id="navLinks">
     <li><a href="#services">Services</a></li>
+    <li><a href="#products">Products</a></li>
     <li><a href="#demo">Demo</a></li>
     <li><a href="#assistants">AI Assistants</a></li>
     <li><a href="#how-it-works">How It Works</a></li>
@@ -1984,6 +2033,86 @@
       <h3>AI Camera Systems</h3>
       <p>Advanced Vision AI with real-time monitoring, anomaly detection, and intelligent surveillance powered by predictive analytics.</p>
       <span class="service-tag">Vision AI · Real-time</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── PRODUCTS & SOLUTIONS ─────────────────────────── -->
+<section id="products">
+  <div class="section-header center">
+    <div class="section-label">Products &amp; Solutions</div>
+    <h2 class="section-title">Everything You Need.<br><span class="grad-text">Ready to Deploy.</span></h2>
+    <p class="section-desc">From AI assistants to specialized access-control systems — explore Vouza's full product lineup, built for real business outcomes.</p>
+  </div>
+  <div class="products-grid">
+    <div class="product-card">
+      <div class="product-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="9" width="14" height="11" rx="2"/><path d="M12 9V5"/><circle cx="12" cy="3.5" r="1.5"/><circle cx="9" cy="14" r="1.2"/><circle cx="15" cy="14" r="1.2"/><path d="M9 17.5h6"/><path d="M2 12h3"/><path d="M19 12h3"/></svg></div>
+      <h4>AI Assistants Platform</h4>
+      <p>One platform, multiple AI assistants — WhatsApp, website chat, and vision AI working together across every part of your business, 24/7.</p>
+      <div class="product-chips">
+        <span class="service-tag">WhatsApp AI</span>
+        <span class="service-tag">Website AI</span>
+        <span class="service-tag">Vision AI</span>
+        <span class="service-tag">Reports AI</span>
+      </div>
+      <a href="#contact" class="product-cta" data-solution="AI Assistants">Get a Quote →</a>
+    </div>
+    <div class="product-card">
+      <div class="product-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1.2-3.6A8 8 0 1 1 8.6 19.2L4 20z"/><path d="M8.5 10.5c0 3 2.5 5 5 5"/></svg></div>
+      <h4>WhatsApp AI</h4>
+      <p>Turn your WhatsApp Business number into a 24/7 AI-powered support and sales agent — instant replies, order tracking, bookings, and seamless handover to your team.</p>
+      <div class="product-chips">
+        <span class="service-tag">24/7 Auto-Reply</span>
+        <span class="service-tag">CRM/ERP Integration</span>
+        <span class="service-tag">Human Handover</span>
+      </div>
+      <a href="#contact" class="product-cta" data-solution="WhatsApp AI">Get a Quote →</a>
+    </div>
+    <div class="product-card">
+      <div class="product-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.6 3.8 6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-6-3.8-9s1.3-6.4 3.8-9z"/></svg></div>
+      <h4>AI-Powered Website Design</h4>
+      <p>AI-assisted design and development that ships modern, responsive, SEO-optimized websites tailored to your brand — from discovery to launch.</p>
+      <div class="product-chips">
+        <span class="service-tag">Responsive &amp; Fast</span>
+        <span class="service-tag">SEO Optimized</span>
+        <span class="service-tag">Easy CMS Updates</span>
+      </div>
+      <a href="#contact" class="product-cta" data-solution="Website Design">Get a Quote →</a>
+    </div>
+    <div class="product-card">
+      <div class="product-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="14" width="17" height="6.5" rx="1.5"/><path d="M7 17.2h5"/><path d="M6.5 10.3a6 6 0 0 1 11 0"/><path d="M9 7.8a3 3 0 0 1 6 0"/></svg></div>
+      <h4>Smart ANPR Resident Access</h4>
+      <p>AI license-plate recognition for condominiums and gated communities — automated, secure vehicle access tied to real-time maintenance-fee verification.</p>
+      <div class="product-chips">
+        <span class="service-tag">&gt;98% Plate Accuracy</span>
+        <span class="service-tag">Anti-Tailgating Detection</span>
+        <span class="service-tag">Full Audit Trail</span>
+      </div>
+      <a href="#contact" class="product-cta" data-solution="Smart ANPR">Get a Quote →</a>
+    </div>
+    <div class="product-card">
+      <div class="product-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg></div>
+      <h4>Smart Memorial Access &amp; Security</h4>
+      <p>AI-powered access control and monitoring for columbariums and memorial niches — secure, dignified, and built for peace of mind.</p>
+      <div class="product-chips">
+        <span class="service-tag">AI Face Recognition</span>
+        <span class="service-tag">Dynamic QR Access</span>
+        <span class="service-tag">Anomaly Detection</span>
+      </div>
+      <a href="#contact" class="product-cta" data-solution="Smart Memorial">Get a Quote →</a>
+    </div>
+    <div class="product-card">
+      <div class="product-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15 9l-2 6-6 2 2-6 6-2z"/></svg></div>
+      <h4>AI Implementation Consultancy</h4>
+      <p>Need more than off-the-shelf? Our team scopes, builds, and integrates custom AI solutions into your existing systems and workflows — as much or as little hands-on help as you need.</p>
+      <div class="product-chips">
+        <span class="service-tag">AI Strategy &amp; Roadmapping</span>
+        <span class="service-tag">Custom Integration</span>
+        <span class="service-tag">Managed Support</span>
+      </div>
+      <a href="#contact" class="product-cta" data-solution="AI Implementation Consultancy">Get a Quote →</a>
     </div>
   </div>
 </section>
@@ -2361,9 +2490,14 @@
             <label for="f-solution">Solution of Interest</label>
             <select id="f-solution" name="solution">
               <option>AI Assistants</option>
+              <option>WhatsApp AI</option>
               <option>Website & App Integration</option>
+              <option>Website Design</option>
               <option>Robotics Solutions</option>
               <option>AI Camera Systems</option>
+              <option>Smart ANPR</option>
+              <option>Smart Memorial</option>
+              <option>AI Implementation Consultancy</option>
               <option>Full Suite</option>
             </select>
           </div>
@@ -3075,7 +3209,7 @@
 
   /* ── SCROLLSPY ──────────────────────────────────────── */
   (function () {
-    const sectionIds = ['services', 'demo', 'assistants', 'how-it-works', 'industries', 'contact'];
+    const sectionIds = ['services', 'products', 'demo', 'assistants', 'how-it-works', 'industries', 'contact'];
     const navLinksMap = {};
     sectionIds.forEach(function (id) {
       const link = document.querySelector('#navLinks a[href="#' + id + '"]');
@@ -3914,6 +4048,18 @@
         });
       });
 
+      /* Products grid */
+      document.querySelectorAll('.products-grid').forEach(function (grid) {
+        const cards = grid.querySelectorAll('.product-card');
+        if (!cards.length) return;
+        killTransition(cards);
+        gsap.from(cards, {
+          opacity: 0, y: 36, rotationX: -12, transformPerspective: 800, transformOrigin: 'center 80%',
+          duration: 0.7, stagger: 0.08, ease: 'power3.out', clearProps: 'transition,transform',
+          scrollTrigger: { trigger: grid, start: 'top 82%', once: true },
+        });
+      });
+
       /* Assistants grid */
       document.querySelectorAll('.assistants-grid').forEach(function (grid) {
         const cards = grid.querySelectorAll('.assistant-card');
@@ -4090,6 +4236,7 @@
       });
     }
     applyAccents('.services-grid', '.service-card');
+    applyAccents('.products-grid', '.product-card');
     applyAccents('.assistants-grid', '.assistant-card');
     applyAccents('.benefits-grid', '.benefit-card');
     applyAccents('.industries-grid', '.industry-card');
@@ -4101,7 +4248,7 @@
       && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!canTilt) return;
 
-    const cards = document.querySelectorAll('.service-card, .assistant-card, .benefit-card, .industry-card');
+    const cards = document.querySelectorAll('.service-card, .product-card, .assistant-card, .benefit-card, .industry-card');
 
     cards.forEach(function (card) {
       const glare = document.createElement('div');
@@ -4156,6 +4303,20 @@
         lastEvent = null;
         glare.style.opacity = '0';
         ring.classList.remove('is-active');
+      });
+    });
+  })();
+
+  /* ── PRODUCT CARD CTA → PRE-SELECT SOLUTION DROPDOWN ── */
+  (function () {
+    const solutionSelect = document.getElementById('f-solution');
+    if (!solutionSelect) return;
+    const options = Array.prototype.slice.call(solutionSelect.options);
+    document.querySelectorAll('.product-cta[data-solution]').forEach(function (link) {
+      link.addEventListener('click', function () {
+        const value = link.dataset.solution;
+        const hasMatch = options.some(function (opt) { return opt.value === value; });
+        if (hasMatch) solutionSelect.value = value;
       });
     });
   })();
