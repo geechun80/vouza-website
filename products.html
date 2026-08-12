@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vouza – AI Assistant Solutions for Enterprise</title>
-  <meta name="description" content="Vouza delivers AI-powered assistants integrated across your website, mobile apps, and WhatsApp — automating workflows and driving smarter business decisions across Southeast Asia." />
-  <meta property="og:title" content="Vouza – AI Assistant Solutions for Enterprise" />
-  <meta property="og:description" content="One AI Assistant. Many Capabilities. Automate, optimize, and grow your business with Vouza." />
+  <title>Vouza Products & Solutions — AI Assistants, WhatsApp AI, Smart ANPR, Smart Memorial & More</title>
+  <meta name="description" content="Explore Vouza's full product lineup — AI Assistants Platform, WhatsApp AI, AI-powered website design, Smart ANPR resident access, Smart Memorial security, and AI implementation consultancy." />
+  <meta property="og:title" content="Vouza Products & Solutions — AI Assistants, WhatsApp AI, Smart ANPR, Smart Memorial & More" />
+  <meta property="og:description" content="Explore Vouza's full product lineup — AI Assistants Platform, WhatsApp AI, AI-powered website design, Smart ANPR resident access, Smart Memorial security, and AI implementation consultancy." />
   <meta property="og:url" content="https://vouza.ai" />
   <meta property="og:image" content="https://vouza.ai/og-image.jpg" />
   <meta property="og:image:width" content="1200" />
@@ -1809,6 +1809,24 @@
         animation: none !important;
       }
     }
+
+    /* ── PRODUCT DETAIL SECTIONS (products.html) ──── */
+    .product-detail-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    @media (max-width: 900px) {
+      .product-detail-inner { grid-template-columns: 1fr; gap: 40px; }
+    }
+    .product-detail-solo {
+      max-width: 760px;
+      margin: 0 auto;
+      text-align: left;
+    }
   </style>
 </head>
 <body>
@@ -1828,554 +1846,167 @@
 
 <!-- ── NAVBAR ──────────────────────────────────────── -->
 <nav>
-  <a class="nav-logo" href="#">
+  <a class="nav-logo" href="index.html">
     <img src="vouza-logo.png" alt="Vouza" onerror="this.style.display='none'" />
     <span class="nav-logo-text" style="display:none"></span>
   </a>
   <ul class="nav-links" id="navLinks">
-    <li><a href="#services">Services</a></li>
-    <li><a href="#products">Products</a></li>
-    <li><a href="#demo">Demo</a></li>
-    <li><a href="#assistants">AI Assistants</a></li>
-    <li><a href="#how-it-works">How It Works</a></li>
-    <li><a href="#industries">Industries</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="index.html#services">Services</a></li>
+    <li><a href="index.html#products">Products</a></li>
+    <li><a href="index.html#demo">Demo</a></li>
+    <li><a href="index.html#assistants">AI Assistants</a></li>
+    <li><a href="index.html#how-it-works">How It Works</a></li>
+    <li><a href="index.html#industries">Industries</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
   </ul>
   <div class="nav-cta">
-    <a href="#contact" class="btn btn-ghost">Talk to Us</a>
-    <a href="#contact" class="btn btn-primary">Get Started</a>
+    <a href="index.html#contact" class="btn btn-ghost">Talk to Us</a>
+    <a href="index.html#contact" class="btn btn-primary">Get Started</a>
   </div>
   <div class="hamburger" id="hamburger" onclick="toggleNav()">
     <span></span><span></span><span></span>
   </div>
 </nav>
 
-<!-- ── HERO ────────────────────────────────────────── -->
-<section class="hero" id="home">
-  <div class="hero-video-bg">
-    <video class="hero-video" autoplay muted loop playsinline>
-      <source src="Vee Said Hello.mp4" type="video/mp4">
-    </video>
-  </div>
-  <div class="hero-beams">
-    <div class="beam"></div>
-    <div class="beam"></div>
-    <div class="beam"></div>
-  </div>
-  <div class="hero-radial"></div>
-  <div class="hero-overlay"></div>
-  <div class="hero-hud">
-    <!-- HUD corners -->
-    <div class="hud-corner tl"></div>
-    <div class="hud-corner tr"></div>
-    <div class="hud-corner bl"></div>
-    <div class="hud-corner br"></div>
-    <!-- Scan line -->
-    <div class="scan-line"></div>
-    <!-- Floating agent status cards -->
-    <div class="agent-card agent-card-1">
-      <div class="ac-dot cyan"></div>
-      <div>
-        <div class="ac-label">AI Agents</div>
-        <div class="ac-value cyan">8 / 8 Active</div>
-      </div>
-    </div>
-    <div class="agent-card agent-card-2">
-      <div class="ac-dot green"></div>
-      <div>
-        <div class="ac-label">Tasks Today</div>
-        <div class="ac-value">1,247 Done</div>
-      </div>
-    </div>
-    <div class="agent-card agent-card-3">
-      <div class="ac-dot cyan"></div>
-      <div>
-        <div class="ac-label">Response Time</div>
-        <div class="ac-value">~1.2s avg</div>
-      </div>
-    </div>
-  </div>
-  <div class="hero-inner">
-    <div class="hero-left">
-      <div class="hero-badge">
-        <div class="badge-dot"></div>
-        Vouza AI Platform Live
-      </div>
-      <h1>Vouza: AI Assistant<br><span class="grad-text">Solutions for SMEs</span></h1>
-      <p class="hero-sub">Deploy autonomous, highly-specialized AI assistants to scale your operations, automate workflows, and drive smarter business decisions across Southeast Asia.</p>
-      <div class="hero-actions">
-        <a href="#contact" class="btn btn-primary btn-lg">Initialize System</a>
-        <a href="#services" class="btn btn-outline btn-lg">View Solutions</a>
-      </div>
-      <div class="hero-stats">
-        <div class="stat-card">
-          <div class="stat-value">8+</div>
-          <div class="stat-label">AI Assistants</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value">3</div>
-          <div class="stat-label">Platforms</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value">70%</div>
-          <div class="stat-label">Time Saved</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value">SEA</div>
-          <div class="stat-label">Regional Focus</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ── AI CORE — 3D Sphere ──────────────────────────── -->
-<section class="sphere-showcase">
-  <div class="sphere-inner">
-    <div>
-      <div class="section-label">Vouza AI Core</div>
-      <h2 class="section-title">Always Learning.<br><span class="grad-text">Always Evolving.</span></h2>
-      <p class="section-desc" style="margin-bottom:32px;">A continuously adapting neural engine at the heart of every Vouza assistant — every interaction makes it smarter, every workflow makes it faster.</p>
-      <div style="display:flex;flex-direction:column;gap:14px;">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div style="width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);flex-shrink:0;"></div>
-          <span style="font-size:0.9rem;color:var(--muted);">Real-time context awareness across all channels</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div style="width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);flex-shrink:0;"></div>
-          <span style="font-size:0.9rem;color:var(--muted);">Continuous self-improvement from every interaction</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div style="width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);flex-shrink:0;"></div>
-          <span style="font-size:0.9rem;color:var(--muted);">Enterprise-grade accuracy trained on SEA business context</span>
-        </div>
-      </div>
-    </div>
-    <!-- 3D Sphere — reuses hero-right styling -->
-    <div class="hero-right">
-      <canvas id="hero3d"></canvas>
-      <div class="hud-corner tl"></div>
-      <div class="hud-corner tr"></div>
-      <div class="hud-corner bl"></div>
-      <div class="hud-corner br"></div>
-      <div class="scan-line"></div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ── VEE DEMO VIDEO ──────────────────────────────── -->
-<section class="vee-demo" id="demo">
-  <div class="vee-demo-inner">
-    <div class="section-header center">
-      <div class="section-label">See Vee in Action</div>
-      <h2 class="section-title">Watch How<br><span class="grad-text">Vee Transforms Your Business</span></h2>
-      <p class="section-desc">Tap to watch Vee — your AI assistant — explain how Vouza's platform works across real enterprise workflows.</p>
-    </div>
-    <div class="vee-video-wrap" id="veeDemoWrap" onclick="playVeeDemo()">
-      <video id="veeDemoVideo" playsinline preload="metadata">
-        <source src="Vee Explaination.mp4" type="video/mp4">
-      </video>
-      <!-- HUD frame -->
-      <div class="hud-corner tl"></div>
-      <div class="hud-corner tr"></div>
-      <div class="hud-corner bl"></div>
-      <div class="hud-corner br"></div>
-      <div class="scan-line"></div>
-      <!-- Play overlay -->
-      <div class="vee-play-overlay" id="veePlayOverlay">
-        <div class="vee-play-btn">
-          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-        </div>
-        <div class="vee-play-hint">Click to play</div>
-      </div>
-    </div>
-    <div class="vee-sound-badge">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
-      Sound On — turn up your volume
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ── SERVICES ─────────────────────────────────────── -->
-<section class="services" id="services">
-  <div class="section-header">
-    <div class="section-label">Core Services</div>
-    <h2 class="section-title">One Platform.<br><span class="grad-text">Many Capabilities.</span></h2>
-    <p class="section-desc">From AI-powered assistants to robotics and vision systems — Vouza delivers a complete enterprise automation suite built for Southeast Asia.</p>
-  </div>
-  <div class="services-grid">
-    <div class="service-card">
-      <div class="service-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="9" width="14" height="11" rx="2"/><path d="M12 9V5"/><circle cx="12" cy="3.5" r="1.5"/><circle cx="9" cy="14" r="1.2"/><circle cx="15" cy="14" r="1.2"/><path d="M9 17.5h6"/><path d="M2 12h3"/><path d="M19 12h3"/></svg></div>
-      <h3>Jobs Localize AI Assistants</h3>
-      <p>Deploy specialized AI assistants across every department — admin, accounting, marketing, engineering, sourcing, and more. Intelligent, context-aware automation.</p>
-      <span class="service-tag">8 Specialized Assistants</span>
-    </div>
-    <div class="service-card">
-      <div class="service-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.6 3.8 6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-6-3.8-9s1.3-6.4 3.8-9z"/></svg></div>
-      <h3>Website & App Integration</h3>
-      <p>Embed a unified AI Assistant directly into your website and mobile apps. One centralized intelligence layer connecting all your business functions seamlessly.</p>
-      <span class="service-tag">Web · iOS · Android</span>
-    </div>
-    <div class="service-card">
-      <div class="service-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="3"/><path d="M12 9v3"/><rect x="7" y="12" width="10" height="7" rx="2"/><path d="M9 19v2"/><path d="M15 19v2"/><path d="M7 15H4.5A1.5 1.5 0 0 1 3 13.5V13"/><path d="M17 15h2.5A1.5 1.5 0 0 0 21 13.5V13"/></svg></div>
-      <h3>Robotics Solutions</h3>
-      <p>Deploy humanoid robots for customer service, logistics, and facility management. Autonomous robot dogs for industrial inspection and patrolling.</p>
-      <span class="service-tag">Humanoid · Robot Dogs</span>
-    </div>
-    <div class="service-card">
-      <div class="service-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2.19a1.5 1.5 0 0 0 1.28-.72l.66-1.08A1.5 1.5 0 0 1 10.91 4.5h2.18a1.5 1.5 0 0 1 1.28.7l.66 1.08A1.5 1.5 0 0 0 16.31 7h2.19A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5v-9z"/><circle cx="12" cy="13" r="3.4"/></svg></div>
-      <h3>AI Camera Systems</h3>
-      <p>Advanced Vision AI with real-time monitoring, anomaly detection, and intelligent surveillance powered by predictive analytics.</p>
-      <span class="service-tag">Vision AI · Real-time</span>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ── PRODUCTS & SOLUTIONS ─────────────────────────── -->
-<section id="products">
+<!-- ── PRODUCTS PAGE HEADER ──────────────────────────── -->
+<section style="padding-top:140px;">
   <div class="section-header center">
     <div class="section-label">Products &amp; Solutions</div>
-    <h2 class="section-title">Everything You Need.<br><span class="grad-text">Ready to Deploy.</span></h2>
-    <p class="section-desc">From AI assistants to specialized access-control systems — explore Vouza's full product lineup, built for real business outcomes.</p>
-  </div>
-  <div class="products-grid">
-    <div class="product-card">
-      <div class="product-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="9" width="14" height="11" rx="2"/><path d="M12 9V5"/><circle cx="12" cy="3.5" r="1.5"/><circle cx="9" cy="14" r="1.2"/><circle cx="15" cy="14" r="1.2"/><path d="M9 17.5h6"/><path d="M2 12h3"/><path d="M19 12h3"/></svg></div>
-      <h4>AI Assistants Platform</h4>
-      <p>One platform, multiple AI assistants — WhatsApp, website chat, and vision AI working together across every part of your business, 24/7.</p>
-      <div class="product-chips">
-        <span class="service-tag">WhatsApp AI</span>
-        <span class="service-tag">Website AI</span>
-        <span class="service-tag">Vision AI</span>
-        <span class="service-tag">Reports AI</span>
-      </div>
-      <a href="products.html#ai-assistants" class="product-cta" data-solution="AI Assistants">Learn More →</a>
-    </div>
-    <div class="product-card">
-      <div class="product-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1.2-3.6A8 8 0 1 1 8.6 19.2L4 20z"/><path d="M8.5 10.5c0 3 2.5 5 5 5"/></svg></div>
-      <h4>WhatsApp AI</h4>
-      <p>Turn your WhatsApp Business number into a 24/7 AI-powered support and sales agent — instant replies, order tracking, bookings, and seamless handover to your team.</p>
-      <div class="product-chips">
-        <span class="service-tag">24/7 Auto-Reply</span>
-        <span class="service-tag">CRM/ERP Integration</span>
-        <span class="service-tag">Human Handover</span>
-      </div>
-      <a href="products.html#whatsapp-ai" class="product-cta" data-solution="WhatsApp AI">Learn More →</a>
-    </div>
-    <div class="product-card">
-      <div class="product-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.6 3.8 6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-6-3.8-9s1.3-6.4 3.8-9z"/></svg></div>
-      <h4>AI-Powered Website Design</h4>
-      <p>AI-assisted design and development that ships modern, responsive, SEO-optimized websites tailored to your brand — from discovery to launch.</p>
-      <div class="product-chips">
-        <span class="service-tag">Responsive &amp; Fast</span>
-        <span class="service-tag">SEO Optimized</span>
-        <span class="service-tag">Easy CMS Updates</span>
-      </div>
-      <a href="products.html#website-design" class="product-cta" data-solution="Website Design">Learn More →</a>
-    </div>
-    <div class="product-card">
-      <div class="product-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="14" width="17" height="6.5" rx="1.5"/><path d="M7 17.2h5"/><path d="M6.5 10.3a6 6 0 0 1 11 0"/><path d="M9 7.8a3 3 0 0 1 6 0"/></svg></div>
-      <h4>Smart ANPR Resident Access</h4>
-      <p>AI license-plate recognition for condominiums and gated communities — automated, secure vehicle access tied to real-time maintenance-fee verification.</p>
-      <div class="product-chips">
-        <span class="service-tag">&gt;98% Plate Accuracy</span>
-        <span class="service-tag">Anti-Tailgating Detection</span>
-        <span class="service-tag">Full Audit Trail</span>
-      </div>
-      <a href="products.html#smart-anpr" class="product-cta" data-solution="Smart ANPR">Learn More →</a>
-    </div>
-    <div class="product-card">
-      <div class="product-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg></div>
-      <h4>Smart Memorial Access &amp; Security</h4>
-      <p>AI-powered access control and monitoring for columbariums and memorial niches — secure, dignified, and built for peace of mind.</p>
-      <div class="product-chips">
-        <span class="service-tag">AI Face Recognition</span>
-        <span class="service-tag">Dynamic QR Access</span>
-        <span class="service-tag">Anomaly Detection</span>
-      </div>
-      <a href="products.html#smart-memorial" class="product-cta" data-solution="Smart Memorial">Learn More →</a>
-    </div>
-    <div class="product-card">
-      <div class="product-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15 9l-2 6-6 2 2-6 6-2z"/></svg></div>
-      <h4>AI Implementation Consultancy</h4>
-      <p>Need more than off-the-shelf? Our team scopes, builds, and integrates custom AI solutions into your existing systems and workflows — as much or as little hands-on help as you need.</p>
-      <div class="product-chips">
-        <span class="service-tag">AI Strategy &amp; Roadmapping</span>
-        <span class="service-tag">Custom Integration</span>
-        <span class="service-tag">Managed Support</span>
-      </div>
-      <a href="products.html#consultancy" class="product-cta" data-solution="AI Implementation Consultancy">Learn More →</a>
-    </div>
+    <h2 class="section-title">Explore Our Full<br><span class="grad-text">Product Lineup</span></h2>
+    <p class="section-desc">From AI assistants to specialized access-control systems — here's an in-depth look at what Vouza builds and deploys.</p>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- ── AI ASSISTANTS ────────────────────────────────── -->
-<section id="assistants">
-  <div class="section-header center">
-    <div class="section-label">Meet Your AI Team</div>
-    <h2 class="section-title">Specialized Support for<br><span class="grad-text">Every Department</span></h2>
-    <p class="section-desc">Each assistant is purpose-built for its domain — trained to handle real business workflows with accuracy and speed.</p>
-  </div>
-  <div class="assistants-grid">
-    <a class="assistant-card" href="#download">
-      <div class="assistant-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a1.5 1.5 0 0 1 1.5-1.5h4l1.5 2h9A1.5 1.5 0 0 1 20.5 9v8A1.5 1.5 0 0 1 19 18.5H5A1.5 1.5 0 0 1 3.5 17V7z"/></svg></div>
-      <h4>Admin AI</h4>
-      <p>Automates scheduling, document handling, task coordination, and internal communications.</p>
-      <span class="service-tag" style="margin-top:12px;">Free to Try →</span>
-    </a>
-    <div class="assistant-card">
-      <div class="assistant-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M3 20h18"/></svg></div>
-      <h4>Accounting AI</h4>
-      <p>Manages invoicing, payroll, bookkeeping, and generates real-time financial reports.</p>
-    </div>
-    <div class="assistant-card">
-      <div class="assistant-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 3.5h6a1 1 0 0 1 1 1V6H8V4.5a1 1 0 0 1 1-1z"/><path d="M9 12l2 2 4-4"/></svg></div>
-      <h4>Quality Engineering AI</h4>
-      <p>Maintains ISO documentation, updates procedures, and generates audit-ready reports.</p>
-    </div>
-    <div class="assistant-card">
-      <div class="assistant-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v2a2 2 0 0 0 2 2h1l2 5h2l-1.5-5H10l8 4V5l-8 4H5a2 2 0 0 0-2 2z"/><path d="M18 9.5v5"/></svg></div>
-      <h4>Marketing AI</h4>
-      <p>Creates personas, manages campaigns, and generates data-driven insights and reports.</p>
-    </div>
-    <div class="assistant-card">
-      <div class="assistant-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg></div>
-      <h4>Sourcing AI</h4>
-      <p>Identifies suppliers, manages vendor relationships, and improves sourcing efficiency.</p>
-    </div>
-    <div class="assistant-card">
-      <div class="assistant-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.1"/><circle cx="17" cy="20" r="1.1"/><path d="M3 4h2l2.2 11a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6L20 8H6"/></svg></div>
-      <h4>Buyer AI</h4>
-      <p>Streamlines purchasing, order processing, supplier negotiations, and cost optimization.</p>
-    </div>
-    <div class="assistant-card">
-      <div class="assistant-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2.5 12h3M18.5 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></div>
-      <h4>Engineering AI</h4>
-      <p>Supports design optimization, system monitoring, troubleshooting, and performance analysis.</p>
-    </div>
-    <div class="assistant-card">
-      <div class="assistant-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1.2-3.6A8 8 0 1 1 8.6 19.2L4 20z"/><path d="M8.5 10.5c0 3 2.5 5 5 5"/></svg></div>
-      <h4>WhatsApp AI</h4>
-      <p>Handles customer inquiries, automates responses, and generates conversation summaries via WhatsApp.</p>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ── ADMIN AI FREE DOWNLOAD ────────────────────────── -->
-<section class="cta-section" id="download">
-  <h2>Try Admin AI<br><span class="grad-text">Free. Open Source. Yours to Run.</span></h2>
-  <p>Your AI office assistant — runs on your own PC, controlled from your phone. Email, calendar, WhatsApp, Telegram, files, and voice, all in one agent. Bring your own AI key and you're live in minutes.</p>
-  <div class="cta-actions">
-    <a href="https://github.com/geechun80/vouza-admin-agent" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:6px;"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>Download on GitHub</a>
-    <a href="https://github.com/geechun80/vouza-admin-agent#-quickstart" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-lg">View Quickstart</a>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ── NETWORK VISUALIZER ──────────────────────────── -->
-<section class="network-viz">
-  <div class="section-header center">
-    <div class="section-label">Connected Intelligence</div>
-    <h2 class="section-title">Every Assistant.<br><span class="grad-text">One Network.</span></h2>
-    <p class="section-desc">Vouza's AI assistants don't operate in silos — they share context, hand off tasks, and coordinate in real time across your entire operation.</p>
-  </div>
-  <canvas id="net-canvas"></canvas>
-</section>
-
-<div class="divider"></div>
-
-<!-- ── HOW IT WORKS ──────────────────────────────────── -->
-<section class="how" id="how-it-works">
-  <div class="section-header center">
-    <div class="section-label">How It Works</div>
-    <h2 class="section-title">From Question to Action<br><span class="grad-text">in Seconds</span></h2>
-    <p class="section-desc">Vouza turns your requests into real business results — instantly, accurately, and at scale.</p>
-  </div>
-  <div class="steps">
-    <div class="step">
-      <div class="step-number">1</div>
-      <h3>You Ask</h3>
-      <p>Ask a question or request a task in natural language — via chat, app, or WhatsApp.</p>
-    </div>
-    <div class="step">
-      <div class="step-number">2</div>
-      <h3>AI Understands</h3>
-      <p>The AI analyzes your request, processes context, and identifies the optimal action path.</p>
-    </div>
-    <div class="step">
-      <div class="step-number">3</div>
-      <h3>AI Acts</h3>
-      <p>The assistant performs the task — generating reports, sending messages, updating records.</p>
-    </div>
-    <div class="step">
-      <div class="step-number">4</div>
-      <h3>You Achieve More</h3>
-      <p>Save time, reduce errors, and get better results with less manual effort every day.</p>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ── WORKS EVERYWHERE ──────────────────────────────── -->
-<section class="everywhere">
-  <div class="everywhere-inner">
+<!-- ── AI ASSISTANTS PLATFORM ─────────────────────────── -->
+<section id="ai-assistants" style="background:rgba(0,20,25,0.5);">
+  <div class="product-detail-inner">
     <div>
-      <div class="section-label">Works Everywhere You Do</div>
-      <h2 class="section-title">Access Your AI<br><span class="grad-text">Anytime, Anywhere</span></h2>
-      <p class="section-desc">One AI brain connected to all the channels your team and customers already use.</p>
-      <div class="channel-list">
-        <div class="channel-item">
-          <div class="channel-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M9 20h6"/><path d="M12 17v3"/></svg></div>
-          <div>
-            <h4>Website Portals</h4>
-            <p>Fully embedded AI assistant in your web portal — accessible to staff and customers 24/7.</p>
-          </div>
-        </div>
-        <div class="channel-item">
-          <div class="channel-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18.5h2"/></svg></div>
-          <div>
-            <h4>Mobile Apps (iOS & Android)</h4>
-            <p>Native integration into your mobile application for on-the-go AI-powered operations.</p>
-          </div>
-        </div>
-        <div class="channel-item">
-          <div class="channel-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1.2-3.6A8 8 0 1 1 8.6 19.2L4 20z"/><path d="M8.5 10.5c0 3 2.5 5 5 5"/></svg></div>
-          <div>
-            <h4>WhatsApp & Messaging</h4>
-            <p>Connect your AI assistant to WhatsApp for instant customer support and automated responses.</p>
-          </div>
-        </div>
-      </div>
+      <div class="section-label">AI Assistants Platform</div>
+      <h2 class="section-title">One Platform.<br><span class="grad-text">Multiple AI Assistants.</span></h2>
+      <p class="section-desc" style="max-width:100%;margin-bottom:24px;">Vouza's AI Assistants Platform brings together WhatsApp AI, Website AI, Vision AI, AI Training, Face AI, Social AI, Reports AI, and system integrations into a single, coordinated AI workforce for your business. Instead of stitching together separate tools, every assistant shares context and hands off tasks seamlessly — so your team gets consistent, always-on support across every channel your customers use.</p>
+      <ul style="list-style:none;padding:0;margin:0 0 32px;display:flex;flex-direction:column;gap:10px;">
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>8 specialized assistants working together</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>~1.2s average response time</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Connects to your CRM, ERP, calendar, and more</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Continuously learns from every interaction</span></li>
+      </ul>
+      <a href="index.html?solution=AI%20Assistants#contact" class="btn btn-primary btn-lg">Get a Quote →</a>
     </div>
-    <div class="everywhere-visual">
-      <div class="orbit orbit-1">
-        <div class="orbit-dot d1"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M9 20h6"/><path d="M12 17v3"/></svg></div>
-        <div class="orbit-dot d2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18.5h2"/></svg></div>
-        <div class="orbit-dot d3"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1.2-3.6A8 8 0 1 1 8.6 19.2L4 20z"/><path d="M8.5 10.5c0 3 2.5 5 5 5"/></svg></div>
-        <div class="orbit-dot d4"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a2 2 0 0 1 2-2h2l1.5-2h7L17 6h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8z"/><circle cx="12" cy="13" r="3.2"/></svg></div>
-      </div>
-      <div class="orbit orbit-2">
-        <div class="orbit-dot d5"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2.5 12h3M18.5 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></div>
-        <div class="orbit-dot d6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M3 20h18"/></svg></div>
-      </div>
-      <div class="orbit orbit-3"></div>
-      <div class="visual-center"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="9" width="14" height="11" rx="2"/><path d="M12 9V5"/><circle cx="12" cy="3.5" r="1.5"/><circle cx="9" cy="14" r="1.2"/><circle cx="15" cy="14" r="1.2"/><path d="M9 17.5h6"/><path d="M2 12h3"/><path d="M19 12h3"/></svg></div>
+    <div>
+      <img src="product-images/ai-assistants.webp" alt="AI Assistants Platform" loading="lazy" decoding="async" style="width:100%;border-radius:16px;border:1px solid var(--card-border);box-shadow:0 20px 60px rgba(0,0,0,0.4);">
     </div>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- ── BENEFITS ──────────────────────────────────────── -->
-<section class="benefits">
-  <div class="section-header center">
-    <div class="section-label">Powerful Benefits</div>
-    <h2 class="section-title">Built for Today.<br><span class="grad-text">Ready for Tomorrow.</span></h2>
-    <p class="section-desc">A future-ready AI platform that grows with your business and adapts to your needs.</p>
-  </div>
-  <div class="benefits-grid">
-    <div class="benefit-card">
-      <div class="benefit-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5"/><path d="M9 2h6"/></svg></div>
-      <h3>Automate Routine Tasks</h3>
-      <p>Save time and reduce manual work across every department with always-on AI execution.</p>
+<!-- ── WHATSAPP AI ─────────────────────────────────────── -->
+<section id="whatsapp-ai">
+  <div class="product-detail-inner">
+    <div>
+      <img src="product-images/whatsapp-ai.webp" alt="WhatsApp AI" loading="lazy" decoding="async" style="width:100%;border-radius:16px;border:1px solid var(--card-border);box-shadow:0 20px 60px rgba(0,0,0,0.4);">
     </div>
-    <div class="benefit-card">
-      <div class="benefit-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="M4 16l5-5 4 3 6-7"/><path d="M15 7h4v4"/></svg></div>
-      <h3>Improve Efficiency</h3>
-      <p>Make faster, smarter decisions powered by real-time data and AI-driven recommendations.</p>
-    </div>
-    <div class="benefit-card">
-      <div class="benefit-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4.5 13.5H11L9.5 22 19 10h-6.5L13 2z"/></svg></div>
-      <h3>Real-time Insights</h3>
-      <p>Get accurate data and reports instantly — no waiting, no manual compilation required.</p>
-    </div>
-    <div class="benefit-card">
-      <div class="benefit-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6"/><circle cx="16.5" cy="9.5" r="2.5"/><path d="M13.5 20c0-2.8 1.6-5 4.5-5 1.4 0 2.5.5 3 1.5"/><path d="M11 17.5l2.5 2.5 4-4.5"/></svg></div>
-      <h3>Better Customer Engagement</h3>
-      <p>Deliver instant, intelligent support that keeps your customers happy and coming back.</p>
-    </div>
-    <div class="benefit-card">
-      <div class="benefit-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15c-1-3 0-7.5 4-10.5 1.6-1.2 3.5-1.9 5-2-.1 1.5-.8 3.4-2 5-3 4-7.5 5-10.5 4"/><path d="M8.5 11.5c-2 .5-3.5 2-4.5 5 3-1 4.5-2.5 5-4.5"/><path d="M12.5 15.5c-.5 2-2 3.5-4.5 4.5 1-3 2.5-4.5 5-4.5"/><circle cx="15" cy="9" r="1.4"/></svg></div>
-      <h3>Scale with Confidence</h3>
-      <p>Grow your operations with lower costs and without proportional headcount increases.</p>
+    <div>
+      <div class="section-label">WhatsApp AI</div>
+      <h2 class="section-title">Smarter Conversations.<br><span class="grad-text">Better Business.</span></h2>
+      <p class="section-desc" style="max-width:100%;margin-bottom:24px;">Turn your WhatsApp Business number into a 24/7 AI-powered support and sales agent. Vouza's WhatsApp AI understands customer messages naturally, responds instantly, and takes action — checking order status, booking appointments, answering FAQs — while seamlessly escalating anything complex to your human team. It plugs directly into your CRM, ERP, helpdesk, and e-commerce systems, so every conversation is backed by real data.</p>
+      <ul style="list-style:none;padding:0;margin:0 0 32px;display:flex;flex-direction:column;gap:10px;">
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Instant, human-like responses, 24/7</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Seamless human handover for complex issues</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Integrates with CRM, ERP, Helpdesk, E-commerce</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Enterprise-grade security for customer data</span></li>
+      </ul>
+      <a href="index.html?solution=WhatsApp%20AI#contact" class="btn btn-primary btn-lg">Get a Quote →</a>
     </div>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- ── INDUSTRIES ────────────────────────────────────── -->
-<section id="industries">
-  <div class="section-header">
-    <div class="section-label">Industries We Serve</div>
-    <h2 class="section-title">AI Solutions Across<br><span class="grad-text">Every Major Sector</span></h2>
-    <p class="section-desc">Vouza serves enterprises across Singapore, Malaysia, and Southeast Asia in the industries that matter most.</p>
+<!-- ── AI-POWERED WEBSITE DESIGN ──────────────────────── -->
+<section id="website-design" style="background:rgba(0,20,25,0.5);">
+  <div class="product-detail-inner">
+    <div>
+      <div class="section-label">AI-Powered Website Design</div>
+      <h2 class="section-title">Beautiful. Smart.<br><span class="grad-text">Built for Your Business.</span></h2>
+      <p class="section-desc" style="max-width:100%;margin-bottom:24px;">We combine AI technology with creative design to build stunning, high-performing websites tailored to your brand and goals. Our AI-assisted process learns about your business, generates layout and content suggestions, and lets our team refine and customize every detail — so you get a site that's fast, responsive, SEO-optimized, and easy to manage long after launch.</p>
+      <ul style="list-style:none;padding:0;margin:0 0 32px;display:flex;flex-direction:column;gap:10px;">
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>AI-powered layout &amp; content suggestions</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Responsive across every device</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>SEO &amp; speed optimized</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Easy-to-manage CMS for ongoing updates</span></li>
+      </ul>
+      <a href="index.html?solution=Website%20Design#contact" class="btn btn-primary btn-lg">Get a Quote →</a>
+    </div>
+    <div>
+      <img src="product-images/website-design.webp" alt="AI-Powered Website Design" loading="lazy" decoding="async" style="width:100%;border-radius:16px;border:1px solid var(--card-border);box-shadow:0 20px 60px rgba(0,0,0,0.4);">
+    </div>
   </div>
-  <div class="industries-grid">
-    <div class="industry-card">
-      <div class="industry-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V12l4.5 3V12l4.5 3V12l6-3.5V21H3z"/><path d="M15 8.5V5h2.5v2"/><path d="M3 21h16.5"/></svg></div>
-      <h4>Manufacturing</h4>
-      <p>Vision-AI quality inspection, predictive maintenance, and automated production reporting.</p>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── SMART ANPR RESIDENT ACCESS ─────────────────────── -->
+<section id="smart-anpr">
+  <div class="product-detail-inner">
+    <div>
+      <img src="product-images/smart-anpr.webp" alt="Smart ANPR Resident Access" loading="lazy" decoding="async" style="width:100%;border-radius:16px;border:1px solid var(--card-border);box-shadow:0 20px 60px rgba(0,0,0,0.4);">
     </div>
-    <div class="industry-card">
-      <div class="industry-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="11" height="9" rx="1"/><path d="M13 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg></div>
-      <h4>Logistics</h4>
-      <p>Route optimisation, shipment-tracking assistants, and warehouse workflow automation.</p>
+    <div>
+      <div class="section-label">Smart ANPR Resident Access</div>
+      <h2 class="section-title">AI License Plate Recognition<br><span class="grad-text">+ Fee Verification</span></h2>
+      <p class="section-desc" style="max-width:100%;margin-bottom:24px;">Smart ANPR gives condominiums and gated communities intelligent, automated vehicle access — verifying number plates with over 98% accuracy and cross-checking maintenance-fee payment status in real time before granting entry. Suspicious or tailgating vehicles are automatically flagged, every access event is logged for audit, and your guard house gets a live dashboard of activity across the property.</p>
+      <ul style="list-style:none;padding:0;margin:0 0 32px;display:flex;flex-direction:column;gap:10px;">
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>&gt;98% plate recognition accuracy</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Real-time maintenance-fee verification</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Anti-tailgating &amp; behavior detection</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Full audit trail, PDPA compliant</span></li>
+      </ul>
+      <a href="index.html?solution=Smart%20ANPR#contact" class="btn btn-primary btn-lg">Get a Quote →</a>
     </div>
-    <div class="industry-card">
-      <div class="industry-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M15 9.5c0-1.4-1.3-2-3-2s-3 .8-3 2 1.3 1.8 3 2 3 .6 3 2-1.3 2-3 2-3-.6-3-2"/></svg></div>
-      <h4>Finance &amp; Banking</h4>
-      <p>Customer-service AI, document processing, and compliance-ready reporting.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── SMART MEMORIAL ACCESS & SECURITY ───────────────── -->
+<section id="smart-memorial" style="background:rgba(0,20,25,0.5);">
+  <div class="product-detail-inner">
+    <div>
+      <div class="section-label">Smart Memorial Access &amp; Security</div>
+      <h2 class="section-title">Protecting Memories.<br><span class="grad-text">Respecting Trust.</span></h2>
+      <p class="section-desc" style="max-width:100%;margin-bottom:24px;">Smart Memorial brings AI-powered access control and real-time monitoring to columbariums and memorial niches — secure, intelligent, and designed for peace of mind. Registered family members can access their loved one's niche via face recognition, a dynamic QR code that refreshes every 5 minutes, or the mobile app, while our AI continuously watches for anomalies and alerts management if a niche is left open too long.</p>
+      <ul style="list-style:none;padding:0;margin:0 0 32px;display:flex;flex-direction:column;gap:10px;">
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>AI face recognition &amp; dynamic QR access</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Anomaly detection &amp; predictive alerts</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Centralized dashboard for thousands of niches</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Multi-factor, PDPA-compliant security</span></li>
+      </ul>
+      <a href="index.html?solution=Smart%20Memorial#contact" class="btn btn-primary btn-lg">Get a Quote →</a>
     </div>
-    <div class="industry-card">
-      <div class="industry-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></div>
-      <h4>Retail &amp; E-Commerce</h4>
-      <p>24/7 conversational commerce, order support, and inventory insights.</p>
+    <div>
+      <img src="product-images/smart-memorial.webp" alt="Smart Memorial Access &amp; Security" loading="lazy" decoding="async" style="width:100%;border-radius:16px;border:1px solid var(--card-border);box-shadow:0 20px 60px rgba(0,0,0,0.4);">
     </div>
-    <div class="industry-card">
-      <div class="industry-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M12 8v8M8 12h8"/></svg></div>
-      <h4>Healthcare</h4>
-      <p>Appointment scheduling, patient enquiry triage, and admin automation.</p>
-    </div>
-    <div class="industry-card">
-      <div class="industry-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1"/><path d="M10 21v-4h4v4"/></svg></div>
-      <h4>Hospitality</h4>
-      <p>Guest-services chat, booking assistance, and multilingual concierge AI.</p>
-    </div>
-    <div class="industry-card">
-      <div class="industry-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M7 21h10"/><path d="M4 7h6M14 7h6"/><path d="M4 7l-2.5 5a2.5 2.5 0 0 0 5 0L4 7z"/><path d="M20 7l-2.5 5a2.5 2.5 0 0 0 5 0L20 7z"/></svg></div>
-      <h4>Professional Services</h4>
-      <p>Client intake, document drafting, and internal knowledge assistants.</p>
-    </div>
-    <div class="industry-card">
-      <div class="industry-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16a8 8 0 0 1 16 0z"/><path d="M2 16h20"/><path d="M12 6v4"/></svg></div>
-      <h4>Construction</h4>
-      <p>Site-inspection vision AI, safety monitoring, and progress reporting.</p>
-    </div>
-    <div class="industry-card">
-      <div class="industry-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13a9 9 0 0 1 9-9"/><path d="M3 13l8 8"/><circle cx="3" cy="13" r="1.6"/><path d="M12 4l3.5-2.5M17 9l3-2"/></svg></div>
-      <h4>Technology</h4>
-      <p>Support-desk automation, documentation assistants, and system integrations.</p>
-    </div>
-    <div class="industry-card">
-      <div class="industry-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-4 10 4-10 4L2 9z"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/><path d="M22 9v6"/></svg></div>
-      <h4>Education</h4>
-      <p>Student enquiry assistants, enrolment support, and administrative workflows.</p>
-    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── AI IMPLEMENTATION CONSULTANCY ──────────────────── -->
+<section id="consultancy">
+  <div class="product-detail-solo">
+    <div class="section-label">AI Implementation Consultancy</div>
+    <h2 class="section-title">When You Need More<br><span class="grad-text">Than Off-the-Shelf</span></h2>
+    <p class="section-desc" style="max-width:100%;margin-bottom:24px;">Some businesses need more than a ready-made product — they need an AI strategy built around their existing systems, workflows, and team. Vouza's implementation consultancy works alongside you to scope the right solution, integrate it into your current CRM/ERP/operations stack, train your team, and provide ongoing managed support — as much or as little hands-on help as you need, at every stage from strategy to go-live.</p>
+    <ul style="list-style:none;padding:0;margin:0 0 32px;display:flex;flex-direction:column;gap:10px;">
+      <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>AI strategy &amp; roadmapping</span></li>
+      <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Custom integration with your existing systems</span></li>
+      <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Team training &amp; change management</span></li>
+      <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Ongoing managed AI support</span></li>
+    </ul>
+    <a href="index.html?solution=AI%20Implementation%20Consultancy#contact" class="btn btn-primary btn-lg">Get a Quote →</a>
   </div>
 </section>
 
@@ -2383,225 +2014,20 @@
 
 <!-- ── CTA ───────────────────────────────────────────── -->
 <section class="cta-section">
-  <h2>Let's Build a Smarter<br><span class="grad-text">Future Together</span></h2>
-  <p>Empower your business with AI that works for you, everywhere. Smarter today. Stronger tomorrow.</p>
+  <h2>Not Sure Which<br><span class="grad-text">Solution Fits?</span></h2>
+  <p>Tell our team a bit about your business and we'll help you find the right AI solution — no pressure, just a conversation.</p>
   <div class="cta-actions">
-    <a href="#contact" class="btn btn-primary btn-lg">Start a Conversation</a>
-    <a href="#services" class="btn btn-outline btn-lg">View All Solutions</a>
+    <a href="index.html#contact" class="btn btn-primary btn-lg">Talk to Us</a>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- ── CONTACT ───────────────────────────────────────── -->
-<section id="contact">
-  <div class="contact-inner">
-    <div class="contact-info">
-      <div class="section-label">Contact Us</div>
-      <h2 class="section-title">Ready to Transform<br><span class="grad-text">Your Business?</span></h2>
-      <p class="section-desc" style="margin-bottom:36px;">Get in touch with our team. We'll help you find the right AI solution for your enterprise.</p>
-      <div class="info-item">
-        <div class="info-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.4"/></svg></div>
-        <div>
-          <h4>Headquarters</h4>
-          <p>Singapore</p>
-        </div>
-      </div>
-      <div class="info-item">
-        <div class="info-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="M4.5 6.5l7.5 6 7.5-6"/></svg></div>
-        <div>
-          <h4>Email</h4>
-          <p>hello@vouza.ai</p>
-        </div>
-      </div>
-      <div class="info-item">
-        <div class="info-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1.2-3.6A8 8 0 1 1 8.6 19.2L4 20z"/><path d="M8.5 10.5c0 3 2.5 5 5 5"/></svg></div>
-        <div>
-          <h4>WhatsApp</h4>
-          <p><a href="https://wa.me/6587747989?text=Hi%20Vouza%2C%20I%27d%20like%20to%20find%20out%20more" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none;">+65 8774 7989</a></p>
-        </div>
-      </div>
-      <div class="info-item">
-        <div class="info-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 9h18M3 15h18"/><path d="M12 3c2.5 2.6 3.8 6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-6-3.8-9s1.3-6.4 3.8-9z"/></svg></div>
-        <div>
-          <h4>Serving</h4>
-          <p>Singapore · Malaysia · Southeast Asia</p>
-        </div>
-      </div>
-      <div class="region-tags">
-        <span class="region-tag">🇸🇬 Singapore</span>
-        <span class="region-tag">🇲🇾 Malaysia</span>
-        <span class="region-tag">🇹🇭 Thailand</span>
-        <span class="region-tag">🇮🇩 Indonesia</span>
-        <span class="region-tag">🇻🇳 Vietnam</span>
-      </div>
-      <div class="pdpa-trust-badge">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          <polyline points="9 12 11 14 15 10"/>
-        </svg>
-        <div>
-          <strong>PDPA Compliant · Singapore</strong>
-          Your personal data is collected and handled in accordance with Singapore's Personal Data Protection Act 2012. We use your information solely to respond to your enquiry.
-        </div>
-      </div>
-    </div>
-    <div class="contact-form-col">
-      <div class="contact-tabs" role="tablist" aria-label="Contact options">
-        <button type="button" class="contact-tab active" id="tabMessageBtn" role="tab" aria-selected="true" aria-controls="messagePanel">Send a Message</button>
-        <button type="button" class="contact-tab" id="tabBookingBtn" role="tab" aria-selected="false" aria-controls="bookingPanel">Book a Consultation</button>
-      </div>
-
-      <div class="contact-panel" id="messagePanel" role="tabpanel" aria-labelledby="tabMessageBtn">
-        <form class="contact-form" id="contactForm">
-          <!-- Web3Forms: get your free key at web3forms.com → enter hello@vouza.ai -->
-          <input type="hidden" name="access_key" value="b8ca7e0e-3a3c-472b-ac08-4e66542f2375" />
-          <input type="hidden" name="subject" value="New enquiry from vouza.ai" />
-          <input type="hidden" name="from_name" value="Vouza Website" />
-          <input type="checkbox" name="botcheck" style="display:none;" tabindex="-1" autocomplete="off" aria-hidden="true" />
-          <div class="form-group">
-            <label for="f-name">Full Name *</label>
-            <input id="f-name" type="text" name="name" placeholder="Your name" required />
-          </div>
-          <div class="form-group">
-            <label for="f-company">Company Name *</label>
-            <input id="f-company" type="text" name="company" placeholder="Your company" required />
-          </div>
-          <div class="form-group">
-            <label for="f-email">Email Address *</label>
-            <input id="f-email" type="email" name="email" placeholder="you@company.com" required />
-          </div>
-          <div class="form-group">
-            <label for="f-phone">Phone / WhatsApp</label>
-            <input id="f-phone" type="tel" name="phone" placeholder="+65 9123 4567" />
-          </div>
-          <div class="form-group">
-            <label for="f-country">Country</label>
-            <select id="f-country" name="country">
-              <option>Singapore</option>
-              <option>Malaysia</option>
-              <option>Thailand</option>
-              <option>Indonesia</option>
-              <option>Vietnam</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="f-solution">Solution of Interest</label>
-            <select id="f-solution" name="solution">
-              <option>AI Assistants</option>
-              <option>WhatsApp AI</option>
-              <option>Website & App Integration</option>
-              <option>Website Design</option>
-              <option>Robotics Solutions</option>
-              <option>AI Camera Systems</option>
-              <option>Smart ANPR</option>
-              <option>Smart Memorial</option>
-              <option>AI Implementation Consultancy</option>
-              <option>Full Suite</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="f-message">Message</label>
-            <textarea id="f-message" name="message" placeholder="Tell us about your business needs..."></textarea>
-          </div>
-          <!-- PDPA Consent -->
-          <label class="pdpa-consent" for="pdpa-check">
-            <input type="checkbox" id="pdpa-check" name="pdpa_consent" required />
-            <span class="pdpa-consent-text">
-              I consent to Vouza AI collecting and using my personal data to respond to this enquiry, in accordance with Singapore's <a onclick="openPrivacy(event)">Personal Data Protection Act (PDPA) 2012</a>. My data will not be shared with third parties without consent.
-            </span>
-          </label>
-          <button type="submit" id="submitBtn" class="btn btn-primary btn-lg" style="width:100%;border-radius:12px;margin-top:4px;" disabled>
-            Send Message →
-          </button>
-          <p id="form-success" style="display:none;font-size:0.85rem;color:var(--cyan);text-align:center;margin-top:12px;padding:12px;border:1px solid rgba(0,212,212,0.3);border-radius:10px;background:rgba(0,212,212,0.06);">
-            ✓ Message sent! We'll be in touch within 1 business day.
-          </p>
-          <p id="form-error" style="display:none;font-size:0.85rem;color:#ff6b6b;text-align:center;margin-top:12px;padding:12px;border:1px solid rgba(255,100,100,0.3);border-radius:10px;background:rgba(255,100,100,0.06);">
-            ✗ Something went wrong. Please email us directly at hello@vouza.ai
-          </p>
-        </form>
-      </div>
-
-      <div class="contact-panel" id="bookingPanel" role="tabpanel" aria-labelledby="tabBookingBtn" style="display:none;">
-        <form class="contact-form" id="bookingForm">
-          <input type="hidden" name="access_key" value="b8ca7e0e-3a3c-472b-ac08-4e66542f2375" />
-          <input type="hidden" name="subject" value="Appointment Request — vouza.ai" />
-          <input type="hidden" name="from_name" value="Vouza Booking Widget" />
-          <input type="hidden" name="requested_slot" id="booking-requested-slot" value="" />
-          <input type="hidden" name="booking_date" id="booking-date" value="" />
-          <input type="hidden" name="booking_time" id="booking-time" value="" />
-          <input type="checkbox" name="botcheck" style="display:none;" tabindex="-1" autocomplete="off" aria-hidden="true" />
-
-          <div class="booking-calendar">
-            <div class="calendar-header">
-              <button type="button" class="calendar-nav" id="calPrevBtn" aria-label="Previous month">‹</button>
-              <span class="calendar-label" id="calLabel" aria-live="polite">&nbsp;</span>
-              <button type="button" class="calendar-nav" id="calNextBtn" aria-label="Next month">›</button>
-            </div>
-            <div class="calendar-weekdays">
-              <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
-            </div>
-            <div class="calendar-grid" id="calGrid" aria-label="Choose an appointment date"></div>
-          </div>
-
-          <div class="booking-timeslots">
-            <label class="timeslots-label" id="timeslotsLabel">Available times (SGT)</label>
-            <div class="timeslots-grid" id="timeSlotsGrid" aria-labelledby="timeslotsLabel">
-              <p class="timeslots-placeholder" id="timeSlotsPlaceholder">Select a date to see available times</p>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="b-name">Full Name *</label>
-            <input id="b-name" type="text" name="name" placeholder="Your name" required />
-          </div>
-          <div class="form-group">
-            <label for="b-company">Company Name</label>
-            <input id="b-company" type="text" name="company" placeholder="Your company" />
-          </div>
-          <div class="form-group">
-            <label for="b-email">Email Address *</label>
-            <input id="b-email" type="email" name="email" placeholder="you@company.com" required />
-          </div>
-          <div class="form-group">
-            <label for="b-phone">Phone / WhatsApp</label>
-            <input id="b-phone" type="tel" name="phone" placeholder="+65 9123 4567" />
-          </div>
-          <div class="form-group">
-            <label for="b-message">What would you like to discuss?</label>
-            <textarea id="b-message" name="message" placeholder="Tell us a bit about what you'd like to cover..."></textarea>
-          </div>
-
-          <!-- PDPA Consent -->
-          <label class="pdpa-consent" for="pdpa-check-booking">
-            <input type="checkbox" id="pdpa-check-booking" name="pdpa_consent" required />
-            <span class="pdpa-consent-text">
-              I consent to Vouza AI collecting and using my personal data to respond to this enquiry, in accordance with Singapore's <a onclick="openPrivacy(event)">Personal Data Protection Act (PDPA) 2012</a>. My data will not be shared with third parties without consent.
-            </span>
-          </label>
-
-          <button type="submit" id="bookingSubmitBtn" class="btn btn-primary btn-lg" style="width:100%;border-radius:12px;margin-top:4px;" disabled>
-            Request Appointment →
-          </button>
-          <p id="booking-form-success" style="display:none;font-size:0.85rem;color:var(--cyan);text-align:center;margin-top:12px;padding:12px;border:1px solid rgba(0,212,212,0.3);border-radius:10px;background:rgba(0,212,212,0.06);">
-            ✓ Appointment requested! We'll confirm your slot by email within 1 business day.
-          </p>
-          <p id="booking-form-error" style="display:none;font-size:0.85rem;color:#ff6b6b;text-align:center;margin-top:12px;padding:12px;border:1px solid rgba(255,100,100,0.3);border-radius:10px;background:rgba(255,100,100,0.06);">
-            ✗ Something went wrong. Please email us directly at hello@vouza.ai
-          </p>
-        </form>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ── FOOTER ────────────────────────────────────────── -->
 <footer>
   <div class="footer-top">
     <div class="footer-brand">
-      <a class="footer-logo" href="#">
+      <a class="footer-logo" href="index.html">
         <img src="vouza-logo.png" alt="Vouza" loading="lazy" decoding="async" onerror="this.style.display='none'" />
         <span>VOUZA</span>
       </a>
@@ -2619,29 +2045,29 @@
     <div class="footer-col">
       <h4>Solutions</h4>
       <ul>
-        <li><a href="#assistants">AI Assistants</a></li>
-        <li><a href="#services">Web & App Integration</a></li>
-        <li><a href="#services">Robotics</a></li>
-        <li><a href="#services">AI Camera Systems</a></li>
+        <li><a href="index.html#assistants">AI Assistants</a></li>
+        <li><a href="index.html#services">Web & App Integration</a></li>
+        <li><a href="index.html#services">Robotics</a></li>
+        <li><a href="index.html#services">AI Camera Systems</a></li>
       </ul>
     </div>
     <div class="footer-col">
       <h4>Company</h4>
       <ul>
-        <li><a href="#home">About Vouza</a></li>
-        <li><a href="#industries">Industries</a></li>
-        <li><a href="#how-it-works">How It Works</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="index.html#home">About Vouza</a></li>
+        <li><a href="index.html#industries">Industries</a></li>
+        <li><a href="index.html#how-it-works">How It Works</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
       </ul>
     </div>
     <div class="footer-col">
       <h4>Markets</h4>
       <ul>
-        <li><a href="#contact">Singapore</a></li>
-        <li><a href="#contact">Malaysia</a></li>
-        <li><a href="#contact">Thailand</a></li>
-        <li><a href="#contact">Indonesia</a></li>
-        <li><a href="#contact">Vietnam</a></li>
+        <li><a href="index.html#contact">Singapore</a></li>
+        <li><a href="index.html#contact">Malaysia</a></li>
+        <li><a href="index.html#contact">Thailand</a></li>
+        <li><a href="index.html#contact">Indonesia</a></li>
+        <li><a href="index.html#contact">Vietnam</a></li>
       </ul>
     </div>
   </div>
@@ -2801,7 +2227,7 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19l1.3-3.9A8 8 0 1 1 8.7 18.6L4 19z"/></svg>
     <span>Chat</span>
   </button>
-  <a href="#contact" class="mab-item" id="mabBookBtn">
+  <a href="index.html#contact" class="mab-item" id="mabBookBtn">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="16" rx="2"/><path d="M3.5 9.5h17M8 3v3M16 3v3"/></svg>
     <span>Book</span>
   </a>
@@ -2810,160 +2236,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
-  /* ── THREE.JS HERO 3D ───────────────────────────── */
-  (function () {
-    const script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
-    script.onload = initHero3D;
-    document.head.appendChild(script);
-
-    function initHero3D() {
-      const canvas = document.getElementById('hero3d');
-      const container = canvas.parentElement;
-
-      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-      renderer.setPixelRatio(window.devicePixelRatio);
-      renderer.setClearColor(0x000000, 0);
-
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 1000);
-      camera.position.set(0, 0, 5.5);
-
-      /* ── LIGHTS — wide orbits, never face-on ── */
-      scene.add(new THREE.AmbientLight(0x001133, 3.5));
-      const pLight1 = new THREE.PointLight(0x0066ff, 1.6, 45);
-      pLight1.position.set(8, 5, 4);
-      scene.add(pLight1);
-      const pLight2 = new THREE.PointLight(0x00aaff, 1.2, 40);
-      pLight2.position.set(-7, -4, 3);
-      scene.add(pLight2);
-      const pLight3 = new THREE.PointLight(0x4400ff, 0.9, 35);
-      pLight3.position.set(2, -8, 2);
-      scene.add(pLight3);
-
-      /* ── ICOSAHEDRON — detail 2 = smooth sphere ── */
-      const geo = new THREE.IcosahedronGeometry(1.7, 2);
-      const mat = new THREE.MeshPhongMaterial({
-        color: 0x1144cc,
-        emissive: 0x001166,
-        specular: 0x3388cc,
-        shininess: 55,
-        transparent: true,
-        opacity: 0.92,
-      });
-      const mesh = new THREE.Mesh(geo, mat);
-      scene.add(mesh);
-
-      /* ── DUAL RINGS ── */
-      const ring1 = new THREE.Mesh(
-        new THREE.TorusGeometry(2.6, 0.013, 8, 100),
-        new THREE.MeshBasicMaterial({ color: 0x0055ff, transparent: true, opacity: 0.4 })
-      );
-      ring1.rotation.x = Math.PI / 3;
-      scene.add(ring1);
-      const ring2 = new THREE.Mesh(
-        new THREE.TorusGeometry(3.1, 0.008, 8, 100),
-        new THREE.MeshBasicMaterial({ color: 0x0033aa, transparent: true, opacity: 0.25 })
-      );
-      ring2.rotation.x = -Math.PI / 4;
-      ring2.rotation.y = Math.PI / 5;
-      scene.add(ring2);
-
-      /* ── 9 SWIRL LINES (natural curves, no sharp angles) ── */
-      function makeSwirlLine(radius, turns, pts, color, opacity) {
-        const positions = [];
-        for (let i = 0; i < pts; i++) {
-          const t = i / pts;
-          const a = t * Math.PI * 2 * turns;
-          const wobble = Math.sin(t * Math.PI * 4) * 0.25 + Math.cos(t * Math.PI * 7) * 0.12;
-          const r = radius + wobble;
-          const y = (t - 0.5) * 5.5 + Math.sin(t * Math.PI * 3) * 0.3;
-          positions.push(Math.cos(a) * r, y, Math.sin(a) * r);
-        }
-        const g = new THREE.BufferGeometry();
-        g.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-        return new THREE.Line(g, new THREE.LineBasicMaterial({ color, transparent: true, opacity }));
-      }
-      for (let i = 0; i < 9; i++) {
-        const l = makeSwirlLine(
-          2.0 + Math.random() * 1.2,
-          2.5 + Math.random() * 2.5,
-          300,
-          new THREE.Color().setHSL(0.58 + Math.random() * 0.18, 1, 0.5 + Math.random() * 0.3),
-          0.18 + Math.random() * 0.25
-        );
-        l.rotation.y = (i / 9) * Math.PI * 2;
-        l.rotation.x = (Math.random() - 0.5) * 1.0;
-        scene.add(l);
-      }
-
-      /* ── 220 DOT PARTICLES ── */
-      const dotCount = 220;
-      const dotPos = new Float32Array(dotCount * 3);
-      for (let i = 0; i < dotCount; i++) {
-        const r = 2.8 + Math.random() * 1.8;
-        const theta = Math.random() * Math.PI * 2;
-        const phi   = Math.acos(2 * Math.random() - 1);
-        dotPos[i*3]   = r * Math.sin(phi) * Math.cos(theta);
-        dotPos[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
-        dotPos[i*3+2] = r * Math.cos(phi);
-      }
-      const dotGeo = new THREE.BufferGeometry();
-      dotGeo.setAttribute('position', new THREE.Float32BufferAttribute(dotPos, 3));
-      const dots = new THREE.Points(dotGeo, new THREE.PointsMaterial({
-        color: 0x88ccff, size: 0.055, transparent: true, opacity: 0.7,
-      }));
-      scene.add(dots);
-
-      /* ── RESIZE ── */
-      function resize() {
-        const w = container.clientWidth;
-        const h = container.clientHeight;
-        renderer.setSize(w, h);
-        camera.aspect = w / h;
-        camera.updateProjectionMatrix();
-      }
-      resize();
-      window.addEventListener('resize', resize);
-
-      /* ── ANIMATE ── */
-      let t = 0;
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      let hero3dVisible = true;
-      function animate() {
-        t += 0.005;
-        mesh.rotation.x = t * 0.35;
-        mesh.rotation.y = t * 0.55;
-        ring1.rotation.z = t * 0.28;
-        ring2.rotation.z = -t * 0.2;
-        ring2.rotation.x = -Math.PI / 4 + Math.sin(t * 0.5) * 0.1;
-        dots.rotation.y = t * 0.09;
-        /* Keep lights in offset orbits — never on the camera axis */
-        pLight1.position.x = Math.cos(t * 0.38) * 7 + 3;
-        pLight1.position.y = Math.sin(t * 0.27) * 5 + 2;
-        pLight2.position.x = Math.cos(t * 0.44 + 2.1) * 6 - 3;
-        pLight2.position.y = Math.sin(t * 0.31 + 1.3) * 4 - 2;
-        renderer.render(scene, camera);
-        if (hero3dVisible) requestAnimationFrame(animate);
-      }
-      if (reduceMotion) {
-        renderer.render(scene, camera);
-      } else {
-        animate();
-        if ('IntersectionObserver' in window) {
-          const hero3dObserver = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-              const wasVisible = hero3dVisible;
-              hero3dVisible = entry.isIntersecting;
-              if (hero3dVisible && !wasVisible) requestAnimationFrame(animate);
-            });
-          }, { threshold: 0 });
-          hero3dObserver.observe(canvas);
-        }
-      }
-    }
-  })();
-
   /* ── STARFIELD ───────────────────────────────────── */
   const canvas = document.getElementById('starfield');
   const ctx = canvas.getContext('2d');
@@ -3095,15 +2367,6 @@
     window.addEventListener('resize', () => { resizeCC(); initPieces(); if (confettiReduceMotion) drawConfetti(); });
   })();
 
-  /* ── PDPA CONSENT — enable submit only when checked ─ */
-  const pdpaCheck  = document.getElementById('pdpa-check');
-  const submitBtn  = document.getElementById('submitBtn');
-  pdpaCheck.addEventListener('change', function() {
-    submitBtn.disabled = !this.checked;
-    submitBtn.style.opacity = this.checked ? '1' : '0.45';
-  });
-  submitBtn.style.opacity = '0.45';
-
   /* ── PRIVACY POLICY MODAL ──────────────────────── */
   function openPrivacy(e) {
     if (e) e.preventDefault();
@@ -3134,24 +2397,6 @@
 
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') { closePrivacy(); closeTerms(); }
-  });
-
-  /* ── VEE DEMO CLICK-TO-PLAY ─────────────────────── */
-  function playVeeDemo() {
-    const wrap  = document.getElementById('veeDemoWrap');
-    const video = document.getElementById('veeDemoVideo');
-    if (video.paused) {
-      video.play();
-      wrap.classList.add('playing');
-    } else {
-      video.pause();
-      wrap.classList.remove('playing');
-    }
-  }
-  // Re-show overlay when video ends
-  document.getElementById('veeDemoVideo').addEventListener('ended', function() {
-    document.getElementById('veeDemoWrap').classList.remove('playing');
-    this.currentTime = 0;
   });
 
   /* ── NAVBAR ──────────────────────────────────────── */
@@ -3290,59 +2535,6 @@
     });
   })();
 
-  /* ── CONTACT FORM — Web3Forms AJAX ──────────────── */
-  document.getElementById('contactForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const btn     = document.getElementById('submitBtn');
-    const success = document.getElementById('form-success');
-    const error   = document.getElementById('form-error');
-    success.style.display = 'none';
-    error.style.display   = 'none';
-    btn.textContent = 'Sending…';
-    btn.disabled = true;
-
-    try {
-      const res  = await fetch('https://api.web3forms.com/submit', {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body:    JSON.stringify(Object.fromEntries(new FormData(this)))
-      });
-      const data = await res.json();
-      if (data.success) {
-        success.style.display = 'block';
-        this.reset();
-        btn.textContent = '✓ Sent!';
-      } else {
-        throw new Error(data.message);
-      }
-    } catch (err) {
-      error.style.display = 'block';
-      btn.textContent = 'Send Message →';
-      btn.disabled = false;
-    }
-  });
-
-  /* ── CONTACT TABS — Send a Message / Book a Consultation ── */
-  (function () {
-    const tabMessageBtn = document.getElementById('tabMessageBtn');
-    const tabBookingBtn = document.getElementById('tabBookingBtn');
-    const messagePanel  = document.getElementById('messagePanel');
-    const bookingPanel  = document.getElementById('bookingPanel');
-    if (!tabMessageBtn || !tabBookingBtn) return;
-
-    function activateTab(tab) {
-      const isBooking = tab === 'booking';
-      tabBookingBtn.classList.toggle('active', isBooking);
-      tabMessageBtn.classList.toggle('active', !isBooking);
-      tabBookingBtn.setAttribute('aria-selected', String(isBooking));
-      tabMessageBtn.setAttribute('aria-selected', String(!isBooking));
-      bookingPanel.style.display = isBooking ? '' : 'none';
-      messagePanel.style.display = isBooking ? 'none' : '';
-    }
-    tabMessageBtn.addEventListener('click', function () { activateTab('message'); });
-    tabBookingBtn.addEventListener('click', function () { activateTab('booking'); });
-  })();
-
   /* ── MOBILE APP BAR — Chat / Book wiring ─────────────── */
   (function () {
     const mabChatBtn = document.getElementById('mabChatBtn');
@@ -3356,259 +2548,6 @@
     if (mabBookBtn && tabBookingBtn) {
       mabBookBtn.addEventListener('click', function () { tabBookingBtn.click(); });
     }
-  })();
-
-  /* ── BOOKING WIDGET — custom calendar + SGT time slots ──── */
-  (function () {
-    const bookingForm = document.getElementById('bookingForm');
-    if (!bookingForm) return;
-
-    const MONTH_NAMES  = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-    const WEEKDAY_FULL = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-    const MAX_DAYS_OUT = 45;
-
-    // "Now", expressed in Singapore Time (UTC+8) wall-clock components,
-    // computed from the universal epoch timestamp — independent of the
-    // visitor's local timezone.
-    function sgtNow() {
-      const ms = Date.now() + 8 * 60 * 60 * 1000;
-      const d  = new Date(ms);
-      return {
-        year:    d.getUTCFullYear(),
-        month:   d.getUTCMonth(),
-        date:    d.getUTCDate(),
-        hours:   d.getUTCHours(),
-        minutes: d.getUTCMinutes(),
-      };
-    }
-
-    const today    = sgtNow();
-    const todayUTC = Date.UTC(today.year, today.month, today.date);
-
-    let viewYear     = today.year;
-    let viewMonth    = today.month;
-    let selected     = null; // { year, month, date, display }
-    let selectedTime = null; // { value: '09:00', label: '9:00 AM' }
-
-    const calLabel    = document.getElementById('calLabel');
-    const calGrid     = document.getElementById('calGrid');
-    const calPrevBtn  = document.getElementById('calPrevBtn');
-    const calNextBtn  = document.getElementById('calNextBtn');
-    const slotsGrid   = document.getElementById('timeSlotsGrid');
-    const dateInput   = document.getElementById('booking-date');
-    const timeInput   = document.getElementById('booking-time');
-    const slotInput   = document.getElementById('booking-requested-slot');
-    const pdpaCheckB  = document.getElementById('pdpa-check-booking');
-    const bookingBtn  = document.getElementById('bookingSubmitBtn');
-    const bNameInput  = document.getElementById('b-name');
-    const bEmailInput = document.getElementById('b-email');
-
-    function pad(n) { return String(n).padStart(2, '0'); }
-    function daysInMonth(y, m) { return new Date(Date.UTC(y, m + 1, 0)).getUTCDate(); }
-    function firstWeekdayMon(y, m) {
-      const jsDay = new Date(Date.UTC(y, m, 1)).getUTCDay(); // 0=Sun..6=Sat
-      return (jsDay + 6) % 7; // 0=Mon..6=Sun
-    }
-
-    function renderCalendar() {
-      calLabel.textContent = MONTH_NAMES[viewMonth] + ' ' + viewYear;
-      calPrevBtn.disabled  = (viewYear === today.year && viewMonth === today.month);
-
-      calGrid.innerHTML = '';
-      const total  = daysInMonth(viewYear, viewMonth);
-      const offset = firstWeekdayMon(viewYear, viewMonth);
-
-      for (let i = 0; i < offset; i++) {
-        const empty = document.createElement('span');
-        empty.className = 'cal-day empty';
-        empty.setAttribute('aria-hidden', 'true');
-        calGrid.appendChild(empty);
-      }
-
-      for (let d = 1; d <= total; d++) {
-        const cellUTC   = Date.UTC(viewYear, viewMonth, d);
-        const dow       = new Date(cellUTC).getUTCDay(); // 0=Sun..6=Sat
-        const isWeekend = (dow === 0 || dow === 6);
-        const diffDays  = Math.round((cellUTC - todayUTC) / 86400000);
-        const isPast    = diffDays < 0;
-        const isTooFar  = diffDays > MAX_DAYS_OUT;
-        const isToday   = diffDays === 0;
-        const disabled  = isPast || isWeekend || isTooFar;
-        const dateLabel = MONTH_NAMES[viewMonth] + ' ' + d + ', ' + viewYear;
-
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'cal-day';
-        btn.textContent = String(d);
-        btn.setAttribute('aria-pressed', 'false');
-        if (isToday) btn.classList.add('today');
-
-        if (disabled) {
-          btn.disabled = true;
-          btn.setAttribute('aria-disabled', 'true');
-          btn.setAttribute('aria-label', dateLabel + ', unavailable');
-        } else {
-          btn.setAttribute('aria-label', dateLabel + ', available');
-          btn.addEventListener('click', function () { selectDate(viewYear, viewMonth, d); });
-        }
-
-        if (selected && selected.year === viewYear && selected.month === viewMonth && selected.date === d) {
-          btn.classList.add('selected');
-          btn.setAttribute('aria-pressed', 'true');
-        }
-
-        calGrid.appendChild(btn);
-      }
-    }
-
-    function selectDate(y, m, d) {
-      const weekday = WEEKDAY_FULL[new Date(Date.UTC(y, m, d)).getUTCDay()];
-      selected = {
-        year: y, month: m, date: d,
-        display: weekday + ', ' + d + ' ' + MONTH_NAMES[m] + ' ' + y,
-      };
-      selectedTime = null;
-      timeInput.value = '';
-      dateInput.value = y + '-' + pad(m + 1) + '-' + pad(d);
-      renderCalendar();
-      renderTimeSlots();
-      updateRequestedSlot();
-      updateSubmitState();
-    }
-
-    function renderTimeSlots() {
-      slotsGrid.innerHTML = '';
-      if (!selected) {
-        const p = document.createElement('p');
-        p.className = 'timeslots-placeholder';
-        p.id = 'timeSlotsPlaceholder';
-        p.textContent = 'Select a date to see available times';
-        slotsGrid.appendChild(p);
-        return;
-      }
-
-      const isToday    = (selected.year === today.year && selected.month === today.month && selected.date === today.date);
-      const nowMinutes = today.hours * 60 + today.minutes;
-
-      for (let h = 9; h <= 17; h++) {
-        for (let mm = 0; mm <= 30; mm += 30) {
-          const totalMin = h * 60 + mm;
-          const value    = pad(h) + ':' + pad(mm);
-          const hour12   = (h % 12 === 0) ? 12 : (h % 12);
-          const ampm     = h < 12 ? 'AM' : 'PM';
-          const label    = hour12 + (mm === 0 ? ':00' : ':30') + ' ' + ampm;
-          const isPast   = isToday && totalMin <= nowMinutes;
-
-          const btn = document.createElement('button');
-          btn.type = 'button';
-          btn.className = 'time-slot';
-          btn.textContent = label;
-          btn.setAttribute('aria-pressed', 'false');
-
-          if (isPast) {
-            btn.disabled = true;
-            btn.setAttribute('aria-disabled', 'true');
-            btn.setAttribute('aria-label', label + ', unavailable');
-          } else {
-            btn.setAttribute('aria-label', label + ', select');
-            btn.addEventListener('click', function () { selectTime(value, label); });
-          }
-
-          if (selectedTime && selectedTime.value === value) {
-            btn.classList.add('selected');
-            btn.setAttribute('aria-pressed', 'true');
-          }
-
-          slotsGrid.appendChild(btn);
-        }
-      }
-    }
-
-    function selectTime(value, label) {
-      selectedTime = { value: value, label: label };
-      timeInput.value = value;
-      renderTimeSlots();
-      updateRequestedSlot();
-      updateSubmitState();
-    }
-
-    function updateRequestedSlot() {
-      slotInput.value = (selected && selectedTime)
-        ? (selected.display + ' at ' + selectedTime.label + ' (SGT)')
-        : '';
-    }
-
-    function updateSubmitState() {
-      const hasDate = !!selected;
-      const hasTime = !!selectedTime;
-      const pdpaOk  = pdpaCheckB.checked;
-      const nameOk  = bNameInput.value.trim().length > 0;
-      const emailOk = bEmailInput.value.trim().length > 0 && bEmailInput.checkValidity();
-      const enabled = hasDate && hasTime && pdpaOk && nameOk && emailOk;
-      bookingBtn.disabled = !enabled;
-      bookingBtn.style.opacity = enabled ? '1' : '0.45';
-    }
-
-    calPrevBtn.addEventListener('click', function () {
-      viewMonth--;
-      if (viewMonth < 0) { viewMonth = 11; viewYear--; }
-      renderCalendar();
-    });
-    calNextBtn.addEventListener('click', function () {
-      viewMonth++;
-      if (viewMonth > 11) { viewMonth = 0; viewYear++; }
-      renderCalendar();
-    });
-
-    pdpaCheckB.addEventListener('change', updateSubmitState);
-    bNameInput.addEventListener('input', updateSubmitState);
-    bEmailInput.addEventListener('input', updateSubmitState);
-
-    bookingBtn.style.opacity = '0.45';
-    renderCalendar();
-    renderTimeSlots();
-
-    /* ── Booking form submit — Web3Forms AJAX ────────── */
-    bookingForm.addEventListener('submit', async function (e) {
-      e.preventDefault();
-      updateRequestedSlot();
-      const btn     = bookingBtn;
-      const success = document.getElementById('booking-form-success');
-      const error   = document.getElementById('booking-form-error');
-      success.style.display = 'none';
-      error.style.display   = 'none';
-      const originalLabel = btn.textContent;
-      btn.textContent = 'Sending…';
-      btn.disabled = true;
-
-      try {
-        const res  = await fetch('https://api.web3forms.com/submit', {
-          method:  'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body:    JSON.stringify(Object.fromEntries(new FormData(this)))
-        });
-        const data = await res.json();
-        if (data.success) {
-          success.style.display = 'block';
-          this.reset();
-          selected = null;
-          selectedTime = null;
-          dateInput.value = '';
-          timeInput.value = '';
-          slotInput.value = '';
-          renderCalendar();
-          renderTimeSlots();
-          updateSubmitState();
-          btn.textContent = '✓ Requested!';
-        } else {
-          throw new Error(data.message);
-        }
-      } catch (err) {
-        error.style.display = 'block';
-        btn.textContent = originalLabel;
-        updateSubmitState();
-      }
-    });
   })();
 
   /* ── NEWSLETTER SIGNUP — Web3Forms AJAX ─────────── */
@@ -3644,137 +2583,6 @@
       btn.disabled = false;
     }
   });
-
-  /* ── NETWORK VISUALIZER — hub-and-spoke agent map ── */
-  (function () {
-    const canvas = document.getElementById('net-canvas');
-    const ctx    = canvas.getContext('2d');
-
-    const NAMES = [
-      'Admin AI', 'Accounting AI', 'Quality Engineering AI', 'Marketing AI',
-      'Sourcing AI', 'Buyer AI', 'Engineering AI', 'WhatsApp AI',
-    ];
-
-    let nodes = [];
-    let t = 0;
-
-    function resize() {
-      const rect = canvas.getBoundingClientRect();
-      canvas.width  = rect.width;
-      canvas.height = rect.height;
-      initNodes();
-    }
-
-    function initNodes() {
-      const cx = canvas.width / 2;
-      const cy = canvas.height / 2;
-      nodes = [];
-
-      nodes.push({ x: cx, y: cy, r: 10, name: 'Vouza Core', isHub: true });
-
-      const orbitR = Math.min(canvas.width, canvas.height) * 0.35;
-      for (let i = 0; i < NAMES.length; i++) {
-        const angle = (i / NAMES.length) * Math.PI * 2;
-        nodes.push({
-          x: cx + Math.cos(angle) * orbitR,
-          y: cy + Math.sin(angle) * orbitR,
-          r: 6,
-          name: NAMES[i],
-          isHub: false,
-          baseAngle: angle,
-          dist: orbitR,
-        });
-      }
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      t += 0.008;
-
-      for (const n of nodes) {
-        if (!n.isHub) {
-          n.baseAngle += 0.003;
-          n.x = canvas.width / 2 + Math.cos(n.baseAngle) * n.dist;
-          n.y = canvas.height / 2 + Math.sin(n.baseAngle) * n.dist;
-        }
-      }
-
-      const hub = nodes[0];
-
-      for (let i = 1; i < nodes.length; i++) {
-        const grad = ctx.createLinearGradient(hub.x, hub.y, nodes[i].x, nodes[i].y);
-        grad.addColorStop(0, 'rgba(0,212,212,0.56)');
-        grad.addColorStop(1, 'rgba(0,102,255,0.11)');
-        ctx.beginPath();
-        ctx.moveTo(hub.x, hub.y);
-        ctx.lineTo(nodes[i].x, nodes[i].y);
-        ctx.strokeStyle = grad;
-        ctx.lineWidth = 1;
-        ctx.stroke();
-      }
-
-      for (let i = 1; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          const dx = nodes[i].x - nodes[j].x;
-          const dy = nodes[i].y - nodes[j].y;
-          const dist = Math.sqrt(dx*dx + dy*dy);
-          if (dist < 140) {
-            const alpha = (1 - dist / 140) * 0.14;
-            ctx.beginPath();
-            ctx.moveTo(nodes[i].x, nodes[i].y);
-            ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.strokeStyle = `rgba(0,212,212,${alpha})`;
-            ctx.lineWidth = 0.6;
-            ctx.stroke();
-          }
-        }
-      }
-
-      for (const n of nodes) {
-        if (n.isHub) {
-          const ring = 16 + Math.sin(t * 2) * 4;
-          ctx.beginPath();
-          ctx.arc(n.x, n.y, ring, 0, Math.PI * 2);
-          ctx.strokeStyle = `rgba(0,212,212,${0.2 + Math.sin(t * 2) * 0.1})`;
-          ctx.lineWidth = 1.5;
-          ctx.stroke();
-        }
-
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-        ctx.fillStyle = n.isHub ? '#00d4d4' : 'rgba(0,212,212,0.7)';
-        ctx.fill();
-
-        ctx.font = n.isHub ? '700 11px Inter, sans-serif' : '500 10px Inter, sans-serif';
-        ctx.fillStyle = n.isHub ? '#00d4d4' : 'rgba(200,230,240,0.75)';
-        ctx.textAlign = 'center';
-        ctx.fillText(n.name, n.x, n.y + n.r + 16);
-      }
-    }
-
-    const netCanvasReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let netCanvasVisible = true;
-    function loop() { draw(); if (netCanvasVisible) requestAnimationFrame(loop); }
-
-    const ro = new ResizeObserver(resize);
-    ro.observe(canvas.parentElement);
-    resize();
-    if (netCanvasReduceMotion) {
-      draw();
-    } else {
-      loop();
-      if ('IntersectionObserver' in window) {
-        const netCanvasObserver = new IntersectionObserver(function (entries) {
-          entries.forEach(function (entry) {
-            const wasVisible = netCanvasVisible;
-            netCanvasVisible = entry.isIntersecting;
-            if (netCanvasVisible && !wasVisible) requestAnimationFrame(loop);
-          });
-        }, { threshold: 0 });
-        netCanvasObserver.observe(canvas);
-      }
-    }
-  })();
 
   /* ── VEE CHAT WIDGET ──────────────────────────────── */
   (function () {
@@ -4218,6 +3026,23 @@
         }
       });
 
+      /* Product detail sections (products.html) — fade + slight y-offset */
+      document.querySelectorAll('.product-detail-inner').forEach(function (inner) {
+        const cols = Array.prototype.slice.call(inner.children);
+        if (!cols.length) return;
+        killTransition(cols);
+        gsap.from(cols, {
+          opacity: 0, y: 32, duration: 0.7, stagger: 0.12, ease: 'power3.out', clearProps: 'transition',
+          scrollTrigger: { trigger: inner, start: 'top 82%', once: true },
+        });
+      });
+      document.querySelectorAll('.product-detail-solo').forEach(function (el) {
+        gsap.from(el, {
+          opacity: 0, y: 32, duration: 0.7, ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 82%', once: true },
+        });
+      });
+
     });
   })();
 
@@ -4305,17 +3130,6 @@
         ring.classList.remove('is-active');
       });
     });
-  })();
-
-  /* ── CROSS-PAGE PRE-SELECT — ?solution= from products.html CTAs ── */
-  (function () {
-    var params = new URLSearchParams(location.search);
-    var solution = params.get('solution');
-    if (!solution) return;
-    var select = document.getElementById('f-solution');
-    if (!select) return;
-    var match = Array.from(select.options).some(function (o) { return o.value === solution; });
-    if (match) select.value = solution;
   })();
 </script>
 </body>
