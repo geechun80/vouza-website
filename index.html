@@ -836,33 +836,30 @@
     .team-card p.team-role { color: var(--cyan); font-weight: 600; font-size: 0.85rem; margin-bottom: 10px; }
 
     /* ── OUR OFFICES ────────────────────────────────── */
-    .offices-grid {
+    .office-photo-wrap { max-width: 1000px; margin: 0 auto 36px; }
+    .office-full-photo {
+      width: 100%;
+      display: block;
+      border-radius: 16px;
+      border: 1px solid var(--card-border);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    .office-addresses {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 24px;
-      max-width: 900px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
       margin: 0 auto;
     }
-    .office-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      overflow: hidden;
-      transition: all 0.25s;
-      backdrop-filter: blur(10px);
-      position: relative;
+    .office-address-block {
+      background: rgba(0,212,212,0.06);
+      border: 1px solid rgba(0,212,212,0.25);
+      border-radius: 14px;
+      padding: 24px 26px;
       text-align: center;
     }
-    .office-card:hover {
-      border-color: rgba(0,212,212,0.3);
-      background: rgba(0,60,70,0.4);
-      box-shadow: 0 8px 40px rgba(0,100,100,0.2);
-    }
-    .office-photo { width: 100%; height: 220px; object-fit: cover; display: block; }
-    .office-card-body { padding: 28px 28px 32px; }
-    .office-card-body-noimg { padding-top: 44px; }
-    .office-card h4 { font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; }
-    .office-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.65; margin-bottom: 18px; }
+    .office-address-block h4 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; color: var(--white); }
+    .office-address-block p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
 
     /* ── PRODUCTS & SOLUTIONS ──────────────────────── */
     .products-grid {
@@ -2508,22 +2505,19 @@
     <h2 class="section-title">Two Countries.<br><span class="grad-text">One Regional Team.</span></h2>
     <p class="section-desc">Vouza operates from offices in Singapore and Malaysia, serving clients across Southeast Asia.</p>
   </div>
-  <div class="offices-grid">
-    <div class="office-card">
-      <img src="office-images/singapore-office.webp" alt="Vouza Singapore Office — Primz Bizhub, 21 Woodlands Close" loading="lazy" decoding="async" class="office-photo">
-      <div class="office-card-body">
-        <h4>🇸🇬 Singapore Office</h4>
-        <p>21 Woodlands Cl, Singapore 737854<br>(Primz Bizhub)</p>
-        <a href="https://www.google.com/maps/search/?api=1&query=21+Woodlands+Cl%2C+Singapore+737854" target="_blank" rel="noopener noreferrer" class="product-cta">Get Directions →</a>
-      </div>
+  <div class="office-photo-wrap">
+    <img src="office-images/singapore-office-full.webp" alt="Vouza Singapore Office — Primz Bizhub, 21 Woodlands Close" loading="lazy" decoding="async" class="office-full-photo">
+  </div>
+  <div class="office-addresses">
+    <div class="office-address-block">
+      <h4>🇸🇬 Singapore Office</h4>
+      <p>21 Woodlands Cl, Singapore 737854 (Primz Bizhub)</p>
+      <a href="https://www.google.com/maps/search/?api=1&query=21+Woodlands+Cl%2C+Singapore+737854" target="_blank" rel="noopener noreferrer" class="product-cta">Get Directions →</a>
     </div>
-    <div class="office-card">
-      <div class="office-card-body office-card-body-noimg">
-        <div class="info-icon" style="margin:0 auto 16px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.4"/></svg></div>
-        <h4>🇲🇾 Malaysia Office</h4>
-        <p>10G, Jalan SP 3/5,<br>Taman Saujana Puchong,<br>47100 Puchong, Selangor, Malaysia</p>
-        <a href="https://www.google.com/maps/search/?api=1&query=10G%2C+Jalan+SP+3%2F5%2C+Taman+Saujana+Puchong%2C+47100+Puchong%2C+Selangor%2C+Malaysia" target="_blank" rel="noopener noreferrer" class="product-cta">Get Directions →</a>
-      </div>
+    <div class="office-address-block">
+      <h4>🇲🇾 Malaysia Office</h4>
+      <p>10G, Jalan SP 3/5, Taman Saujana Puchong, 47100 Puchong, Selangor, Malaysia</p>
+      <a href="https://www.google.com/maps/search/?api=1&query=10G%2C+Jalan+SP+3%2F5%2C+Taman+Saujana+Puchong%2C+47100+Puchong%2C+Selangor%2C+Malaysia" target="_blank" rel="noopener noreferrer" class="product-cta">Get Directions →</a>
     </div>
   </div>
 </section>
@@ -4305,15 +4299,19 @@
         });
       });
 
-      /* Offices grid */
-      document.querySelectorAll('.offices-grid').forEach(function (grid) {
-        const cards = grid.querySelectorAll('.office-card');
-        if (!cards.length) return;
-        killTransition(cards);
-        gsap.from(cards, {
-          opacity: 0, y: 36, rotationX: -12, transformPerspective: 800, transformOrigin: 'center 80%',
-          duration: 0.7, stagger: 0.12, ease: 'power3.out', clearProps: 'transition,transform',
-          scrollTrigger: { trigger: grid, start: 'top 82%', once: true },
+      /* Offices photo + address blocks */
+      document.querySelectorAll('#offices .office-photo-wrap').forEach(function (photo) {
+        gsap.from(photo, {
+          opacity: 0, y: 32, scale: 0.98, duration: 0.7, ease: 'power3.out',
+          scrollTrigger: { trigger: photo, start: 'top 85%', once: true },
+        });
+      });
+      document.querySelectorAll('.office-addresses').forEach(function (grid) {
+        const blocks = grid.querySelectorAll('.office-address-block');
+        if (!blocks.length) return;
+        gsap.from(blocks, {
+          opacity: 0, y: 24, duration: 0.6, stagger: 0.1, ease: 'power3.out',
+          scrollTrigger: { trigger: grid, start: 'top 85%', once: true },
         });
       });
 
@@ -4403,7 +4401,6 @@
     applyAccents('.benefits-grid', '.benefit-card');
     applyAccents('.industries-grid', '.industry-card');
     applyAccents('.team-grid', '.team-card');
-    applyAccents('.offices-grid', '.office-card');
 
     /* Pointer-tracking 3D tilt is desktop-mouse-only and respects
        prefers-reduced-motion; touch/keyboard users keep the plain CSS
@@ -4412,7 +4409,7 @@
       && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!canTilt) return;
 
-    const cards = document.querySelectorAll('.service-card, .product-card, .assistant-card, .benefit-card, .industry-card, .team-card, .office-card');
+    const cards = document.querySelectorAll('.service-card, .product-card, .assistant-card, .benefit-card, .industry-card, .team-card');
 
     cards.forEach(function (card) {
       const glare = document.createElement('div');
