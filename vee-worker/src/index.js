@@ -9,6 +9,10 @@ Vouza's offerings:
 
 Keep replies concise (2-4 sentences), friendly, and helpful. If someone wants a demo, pricing, or to talk to the team, direct them to the contact form on this page or hello@vouza.ai — do not invent pricing or specific SLAs. If they ask about trying something for free, mention Admin AI's GitHub download. Stay on topic: you represent Vouza, so politely redirect unrelated requests back to how Vouza can help their business.`;
 
+const LANG_SUFFIX = {
+  zh: '\n\nThe visitor has the website set to Simplified Chinese. Reply in natural, professional Simplified Chinese (简体中文) regardless of what script the visitor writes in, unless they explicitly ask for English.',
+};
+
 const MAX_MESSAGES = 20;
 const MAX_MESSAGE_LEN = 2000;
 const RATE_LIMIT = 8;        // requests…
@@ -107,6 +111,8 @@ export default {
     }
 
     const wantStream = body.stream === true;
+    const lang = body.lang === 'zh' ? 'zh' : 'en';
+    const systemPrompt = SYSTEM_PROMPT + (LANG_SUFFIX[lang] || '');
 
     let upstream;
     try {
@@ -120,7 +126,7 @@ export default {
         },
         body: JSON.stringify({
           model: 'anthropic/claude-haiku-4.5',
-          messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
+          messages: [{ role: 'system', content: systemPrompt }, ...messages],
           max_tokens: 500,
           temperature: 0.6,
           stream: wantStream,
