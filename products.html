@@ -1482,6 +1482,12 @@
     .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
     .hamburger span { width: 22px; height: 2px; background: var(--white); border-radius: 2px; }
 
+    /* ── LANGUAGE TOGGLE ───────────────────────────── */
+    .lang-toggle { display: flex; gap: 2px; padding: 3px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 100px; margin-left: 12px; flex-shrink: 0; }
+    .lang-btn { padding: 6px 12px; border: none; border-radius: 100px; background: transparent; color: var(--muted); font-family: 'Inter', sans-serif; font-size: 0.76rem; font-weight: 700; cursor: pointer; transition: background 0.25s, color 0.25s; }
+    .lang-btn.active { background: linear-gradient(135deg, var(--cyan), var(--blue)); color: #01181c; }
+    .lang-btn:not(.active):hover { color: var(--white); }
+
     @media (max-width: 900px) {
       .nav-links, .nav-cta { display: none; }
       .hamburger { display: flex; }
@@ -1840,7 +1846,7 @@
 <div id="scroll-progress"></div>
 
 <!-- ── BACK TO TOP ────────────────────────────────────── -->
-<button id="backToTop" aria-label="Back to top">
+<button id="backToTop" aria-label="Back to top" data-i18n-attr="backToTop.ariaLabel">
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
 </button>
 
@@ -1851,18 +1857,22 @@
     <span class="nav-logo-text" style="display:none"></span>
   </a>
   <ul class="nav-links" id="navLinks">
-    <li><a href="index.html#services">Services</a></li>
-    <li><a href="index.html#products">Products</a></li>
-    <li><a href="index.html#demo">Demo</a></li>
-    <li><a href="index.html#assistants">AI Assistants</a></li>
-    <li><a href="index.html#how-it-works">How It Works</a></li>
-    <li><a href="index.html#industries">Industries</a></li>
-    <li><a href="careers.html">Careers</a></li>
-    <li><a href="index.html#contact">Contact</a></li>
+    <li><a href="index.html#services" data-i18n="nav.services">Services</a></li>
+    <li><a href="index.html#products" data-i18n="nav.products">Products</a></li>
+    <li><a href="index.html#demo" data-i18n="nav.demo">Demo</a></li>
+    <li><a href="index.html#assistants" data-i18n="nav.assistants">AI Assistants</a></li>
+    <li><a href="index.html#how-it-works" data-i18n="nav.how">How It Works</a></li>
+    <li><a href="index.html#industries" data-i18n="nav.industries">Industries</a></li>
+    <li><a href="careers.html" data-i18n="nav.careers">Careers</a></li>
+    <li><a href="index.html#contact" data-i18n="nav.contact">Contact</a></li>
   </ul>
   <div class="nav-cta">
-    <a href="index.html#contact" class="btn btn-ghost">Talk to Us</a>
-    <a href="index.html#contact" class="btn btn-primary">Get Started</a>
+    <a href="index.html#contact" class="btn btn-ghost" data-i18n="nav.talkToUs">Talk to Us</a>
+    <a href="index.html#contact" class="btn btn-primary" data-i18n="nav.getStarted">Get Started</a>
+  </div>
+  <div class="lang-toggle" id="langToggle" role="group" aria-label="Language">
+    <button type="button" class="lang-btn active" data-lang="en">EN</button>
+    <button type="button" class="lang-btn" data-lang="zh">中文</button>
   </div>
   <div class="hamburger" id="hamburger" onclick="toggleNav()">
     <span></span><span></span><span></span>
@@ -1872,9 +1882,9 @@
 <!-- ── PRODUCTS PAGE HEADER ──────────────────────────── -->
 <section style="padding-top:140px;">
   <div class="section-header center">
-    <div class="section-label">Products &amp; Solutions</div>
-    <h2 class="section-title">Explore Our Full<br><span class="grad-text">Product Lineup</span></h2>
-    <p class="section-desc">From AI assistants to specialized access-control systems — here's an in-depth look at what Vouza builds and deploys.</p>
+    <div class="section-label" data-i18n="header.label">Products &amp; Solutions</div>
+    <h2 class="section-title" data-i18n="header.title">Explore Our Full<br><span class="grad-text">Product Lineup</span></h2>
+    <p class="section-desc" data-i18n="header.desc">From AI assistants to specialized access-control systems — here's an in-depth look at what Vouza builds and deploys.</p>
   </div>
 </section>
 
@@ -1884,16 +1894,16 @@
 <section id="ai-assistants" style="background:rgba(0,20,25,0.5);">
   <div class="product-detail-inner">
     <div>
-      <div class="section-label">AI Assistants Platform</div>
-      <h2 class="section-title">One Platform.<br><span class="grad-text">Multiple AI Assistants.</span></h2>
-      <p class="section-desc" style="max-width:100%;margin-bottom:24px;">Vouza's AI Assistants Platform brings together WhatsApp AI, Website AI, Vision AI, AI Training, Face AI, Social AI, Reports AI, and system integrations into a single, coordinated AI workforce for your business. Instead of stitching together separate tools, every assistant shares context and hands off tasks seamlessly — so your team gets consistent, always-on support across every channel your customers use.</p>
+      <div class="section-label" data-i18n="products.assistants.label">AI Assistants Platform</div>
+      <h2 class="section-title" data-i18n="products.assistants.title">One Platform.<br><span class="grad-text">Multiple AI Assistants.</span></h2>
+      <p class="section-desc" style="max-width:100%;margin-bottom:24px;" data-i18n="products.assistants.desc">Vouza's AI Assistants Platform brings together WhatsApp AI, Website AI, Vision AI, AI Training, Face AI, Social AI, Reports AI, and system integrations into a single, coordinated AI workforce for your business. Instead of stitching together separate tools, every assistant shares context and hands off tasks seamlessly — so your team gets consistent, always-on support across every channel your customers use.</p>
       <ul style="list-style:none;padding:0;margin:0 0 32px;display:flex;flex-direction:column;gap:10px;">
-        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>8 specialized assistants working together</span></li>
-        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>~1.2s average response time</span></li>
-        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Connects to your CRM, ERP, calendar, and more</span></li>
-        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Continuously learns from every interaction</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span data-i18n="products.assistants.bullet1">8 specialized assistants working together</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span data-i18n="products.assistants.bullet2">~1.2s average response time</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span data-i18n="products.assistants.bullet3">Connects to your CRM, ERP, calendar, and more</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span data-i18n="products.assistants.bullet4">Continuously learns from every interaction</span></li>
       </ul>
-      <a href="index.html?solution=AI%20Assistants#contact" class="btn btn-primary btn-lg">Get a Quote →</a>
+      <a href="index.html?solution=AI%20Assistants#contact" class="btn btn-primary btn-lg" data-i18n="products.assistants.cta">Get a Quote →</a>
     </div>
     <div>
       <img src="product-images/ai-assistants.webp" alt="AI Assistants Platform" loading="lazy" decoding="async" style="width:100%;border-radius:16px;border:1px solid var(--card-border);box-shadow:0 20px 60px rgba(0,0,0,0.4);">
@@ -1910,16 +1920,16 @@
       <img src="product-images/whatsapp-ai.webp" alt="WhatsApp AI" loading="lazy" decoding="async" style="width:100%;border-radius:16px;border:1px solid var(--card-border);box-shadow:0 20px 60px rgba(0,0,0,0.4);">
     </div>
     <div>
-      <div class="section-label">WhatsApp AI</div>
-      <h2 class="section-title">Smarter Conversations.<br><span class="grad-text">Better Business.</span></h2>
-      <p class="section-desc" style="max-width:100%;margin-bottom:24px;">Turn your WhatsApp Business number into a 24/7 AI-powered support and sales agent. Vouza's WhatsApp AI understands customer messages naturally, responds instantly, and takes action — checking order status, booking appointments, answering FAQs — while seamlessly escalating anything complex to your human team. It plugs directly into your CRM, ERP, helpdesk, and e-commerce systems, so every conversation is backed by real data.</p>
+      <div class="section-label" data-i18n="products.whatsapp.label">WhatsApp AI</div>
+      <h2 class="section-title" data-i18n="products.whatsapp.title">Smarter Conversations.<br><span class="grad-text">Better Business.</span></h2>
+      <p class="section-desc" style="max-width:100%;margin-bottom:24px;" data-i18n="products.whatsapp.desc">Turn your WhatsApp Business number into a 24/7 AI-powered support and sales agent. Vouza's WhatsApp AI understands customer messages naturally, responds instantly, and takes action — checking order status, booking appointments, answering FAQs — while seamlessly escalating anything complex to your human team. It plugs directly into your CRM, ERP, helpdesk, and e-commerce systems, so every conversation is backed by real data.</p>
       <ul style="list-style:none;padding:0;margin:0 0 32px;display:flex;flex-direction:column;gap:10px;">
-        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Instant, human-like responses, 24/7</span></li>
-        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Seamless human handover for complex issues</span></li>
-        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Integrates with CRM, ERP, Helpdesk, E-commerce</span></li>
-        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Enterprise-grade security for customer data</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span data-i18n="products.whatsapp.bullet1">Instant, human-like responses, 24/7</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span data-i18n="products.whatsapp.bullet2">Seamless human handover for complex issues</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span data-i18n="products.whatsapp.bullet3">Integrates with CRM, ERP, Helpdesk, E-commerce</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span data-i18n="products.whatsapp.bullet4">Enterprise-grade security for customer data</span></li>
       </ul>
-      <a href="index.html?solution=WhatsApp%20AI#contact" class="btn btn-primary btn-lg">Get a Quote →</a>
+      <a href="index.html?solution=WhatsApp%20AI#contact" class="btn btn-primary btn-lg" data-i18n="products.whatsapp.cta">Get a Quote →</a>
     </div>
   </div>
 </section>
@@ -1930,16 +1940,16 @@
 <section id="website-design" style="background:rgba(0,20,25,0.5);">
   <div class="product-detail-inner">
     <div>
-      <div class="section-label">AI-Powered Website Design</div>
-      <h2 class="section-title">Beautiful. Smart.<br><span class="grad-text">Built for Your Business.</span></h2>
-      <p class="section-desc" style="max-width:100%;margin-bottom:24px;">We combine AI technology with creative design to build stunning, high-performing websites tailored to your brand and goals. Our AI-assisted process learns about your business, generates layout and content suggestions, and lets our team refine and customize every detail — so you get a site that's fast, responsive, SEO-optimized, and easy to manage long after launch.</p>
+      <div class="section-label" data-i18n="products.website.label">AI-Powered Website Design</div>
+      <h2 class="section-title" data-i18n="products.website.title">Beautiful. Smart.<br><span class="grad-text">Built for Your Business.</span></h2>
+      <p class="section-desc" style="max-width:100%;margin-bottom:24px;" data-i18n="products.website.desc">We combine AI technology with creative design to build stunning, high-performing websites tailored to your brand and goals. Our AI-assisted process learns about your business, generates layout and content suggestions, and lets our team refine and customize every detail — so you get a site that's fast, responsive, SEO-optimized, and easy to manage long after launch.</p>
       <ul style="list-style:none;padding:0;margin:0 0 32px;display:flex;flex-direction:column;gap:10px;">
-        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>AI-powered layout &amp; content suggestions</span></li>
-        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Responsive across every device</span></li>
-        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>SEO &amp; speed optimized</span></li>
-        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Easy-to-manage CMS for ongoing updates</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span data-i18n="products.website.bullet1">AI-powered layout &amp; content suggestions</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span data-i18n="products.website.bullet2">Responsive across every device</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span data-i18n="products.website.bullet3">SEO &amp; speed optimized</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span data-i18n="products.website.bullet4">Easy-to-manage CMS for ongoing updates</span></li>
       </ul>
-      <a href="index.html?solution=Website%20Design#contact" class="btn btn-primary btn-lg">Get a Quote →</a>
+      <a href="index.html?solution=Website%20Design#contact" class="btn btn-primary btn-lg" data-i18n="products.website.cta">Get a Quote →</a>
     </div>
     <div>
       <img src="product-images/website-design.webp" alt="AI-Powered Website Design" loading="lazy" decoding="async" style="width:100%;border-radius:16px;border:1px solid var(--card-border);box-shadow:0 20px 60px rgba(0,0,0,0.4);">
@@ -1956,16 +1966,16 @@
       <img src="product-images/smart-anpr.webp" alt="Smart ANPR Resident Access" loading="lazy" decoding="async" style="width:100%;border-radius:16px;border:1px solid var(--card-border);box-shadow:0 20px 60px rgba(0,0,0,0.4);">
     </div>
     <div>
-      <div class="section-label">Smart ANPR Resident Access</div>
-      <h2 class="section-title">AI License Plate Recognition<br><span class="grad-text">+ Fee Verification</span></h2>
-      <p class="section-desc" style="max-width:100%;margin-bottom:24px;">Smart ANPR gives condominiums and gated communities intelligent, automated vehicle access — verifying number plates with over 98% accuracy and cross-checking maintenance-fee payment status in real time before granting entry. Suspicious or tailgating vehicles are automatically flagged, every access event is logged for audit, and your guard house gets a live dashboard of activity across the property.</p>
+      <div class="section-label" data-i18n="products.anpr.label">Smart ANPR Resident Access</div>
+      <h2 class="section-title" data-i18n="products.anpr.title">AI License Plate Recognition<br><span class="grad-text">+ Fee Verification</span></h2>
+      <p class="section-desc" style="max-width:100%;margin-bottom:24px;" data-i18n="products.anpr.desc">Smart ANPR gives condominiums and gated communities intelligent, automated vehicle access — verifying number plates with over 98% accuracy and cross-checking maintenance-fee payment status in real time before granting entry. Suspicious or tailgating vehicles are automatically flagged, every access event is logged for audit, and your guard house gets a live dashboard of activity across the property.</p>
       <ul style="list-style:none;padding:0;margin:0 0 32px;display:flex;flex-direction:column;gap:10px;">
-        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>&gt;98% plate recognition accuracy</span></li>
-        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Real-time maintenance-fee verification</span></li>
-        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Anti-tailgating &amp; behavior detection</span></li>
-        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Full audit trail, PDPA compliant</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span data-i18n="products.anpr.bullet1">&gt;98% plate recognition accuracy</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span data-i18n="products.anpr.bullet2">Real-time maintenance-fee verification</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span data-i18n="products.anpr.bullet3">Anti-tailgating &amp; behavior detection</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span data-i18n="products.anpr.bullet4">Full audit trail, PDPA compliant</span></li>
       </ul>
-      <a href="index.html?solution=Smart%20ANPR#contact" class="btn btn-primary btn-lg">Get a Quote →</a>
+      <a href="index.html?solution=Smart%20ANPR#contact" class="btn btn-primary btn-lg" data-i18n="products.anpr.cta">Get a Quote →</a>
     </div>
   </div>
 </section>
@@ -1976,16 +1986,16 @@
 <section id="smart-memorial" style="background:rgba(0,20,25,0.5);">
   <div class="product-detail-inner">
     <div>
-      <div class="section-label">Smart Memorial Access &amp; Security</div>
-      <h2 class="section-title">Protecting Memories.<br><span class="grad-text">Respecting Trust.</span></h2>
-      <p class="section-desc" style="max-width:100%;margin-bottom:24px;">Smart Memorial brings AI-powered access control and real-time monitoring to columbariums and memorial niches — secure, intelligent, and designed for peace of mind. Registered family members can access their loved one's niche via face recognition, a dynamic QR code that refreshes every 5 minutes, or the mobile app, while our AI continuously watches for anomalies and alerts management if a niche is left open too long.</p>
+      <div class="section-label" data-i18n="products.memorial.label">Smart Memorial Access &amp; Security</div>
+      <h2 class="section-title" data-i18n="products.memorial.title">Protecting Memories.<br><span class="grad-text">Respecting Trust.</span></h2>
+      <p class="section-desc" style="max-width:100%;margin-bottom:24px;" data-i18n="products.memorial.desc">Smart Memorial brings AI-powered access control and real-time monitoring to columbariums and memorial niches — secure, intelligent, and designed for peace of mind. Registered family members can access their loved one's niche via face recognition, a dynamic QR code that refreshes every 5 minutes, or the mobile app, while our AI continuously watches for anomalies and alerts management if a niche is left open too long.</p>
       <ul style="list-style:none;padding:0;margin:0 0 32px;display:flex;flex-direction:column;gap:10px;">
-        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>AI face recognition &amp; dynamic QR access</span></li>
-        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Anomaly detection &amp; predictive alerts</span></li>
-        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Centralized dashboard for thousands of niches</span></li>
-        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Multi-factor, PDPA-compliant security</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span data-i18n="products.memorial.bullet1">AI face recognition &amp; dynamic QR access</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span data-i18n="products.memorial.bullet2">Anomaly detection &amp; predictive alerts</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span data-i18n="products.memorial.bullet3">Centralized dashboard for thousands of niches</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span data-i18n="products.memorial.bullet4">Multi-factor, PDPA-compliant security</span></li>
       </ul>
-      <a href="index.html?solution=Smart%20Memorial#contact" class="btn btn-primary btn-lg">Get a Quote →</a>
+      <a href="index.html?solution=Smart%20Memorial#contact" class="btn btn-primary btn-lg" data-i18n="products.memorial.cta">Get a Quote →</a>
     </div>
     <div>
       <img src="product-images/smart-memorial.webp" alt="Smart Memorial Access &amp; Security" loading="lazy" decoding="async" style="width:100%;border-radius:16px;border:1px solid var(--card-border);box-shadow:0 20px 60px rgba(0,0,0,0.4);">
@@ -2002,16 +2012,16 @@
       <img src="product-images/smart-access-security.webp" alt="Smart Access &amp; Security Monitoring" loading="lazy" decoding="async" style="width:100%;border-radius:16px;border:1px solid var(--card-border);box-shadow:0 20px 60px rgba(0,0,0,0.4);">
     </div>
     <div>
-      <div class="section-label">Smart Access &amp; Security Monitoring</div>
-      <h2 class="section-title">Smart Access.<br><span class="grad-text">AI Surveillance.</span></h2>
-      <p class="section-desc" style="max-width:100%;margin-bottom:24px;">From visitor registration to real-time security alerts, Vouza's Smart Access &amp; Security Monitoring Solution keeps your premises secure and accountable. Visitors register online and receive a QR pass, a Face AI terminal grants contactless access, AI-powered CCTV continuously scans for known and unknown individuals, and the moment something needs attention your security team gets an instant WhatsApp alert — complete with image, location, and voice note.</p>
+      <div class="section-label" data-i18n="products.security.label">Smart Access &amp; Security Monitoring</div>
+      <h2 class="section-title" data-i18n="products.security.title">Smart Access.<br><span class="grad-text">AI Surveillance.</span></h2>
+      <p class="section-desc" style="max-width:100%;margin-bottom:24px;" data-i18n="products.security.desc">From visitor registration to real-time security alerts, Vouza's Smart Access &amp; Security Monitoring Solution keeps your premises secure and accountable. Visitors register online and receive a QR pass, a Face AI terminal grants contactless access, AI-powered CCTV continuously scans for known and unknown individuals, and the moment something needs attention your security team gets an instant WhatsApp alert — complete with image, location, and voice note.</p>
       <ul style="list-style:none;padding:0;margin:0 0 32px;display:flex;flex-direction:column;gap:10px;">
-        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Contactless face-recognition access</span></li>
-        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Real-time AI CCTV monitoring</span></li>
-        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Instant WhatsApp security alerts</span></li>
-        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Visitor logs, reports &amp; PDPA-compliant data</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span data-i18n="products.security.bullet1">Contactless face-recognition access</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span data-i18n="products.security.bullet2">Real-time AI CCTV monitoring</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span data-i18n="products.security.bullet3">Instant WhatsApp security alerts</span></li>
+        <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span data-i18n="products.security.bullet4">Visitor logs, reports &amp; PDPA-compliant data</span></li>
       </ul>
-      <a href="index.html?solution=Smart%20Access%20%26%20Security%20Monitoring#contact" class="btn btn-primary btn-lg">Get a Quote →</a>
+      <a href="index.html?solution=Smart%20Access%20%26%20Security%20Monitoring#contact" class="btn btn-primary btn-lg" data-i18n="products.security.cta">Get a Quote →</a>
     </div>
   </div>
 </section>
@@ -2021,16 +2031,16 @@
 <!-- ── AI IMPLEMENTATION CONSULTANCY ──────────────────── -->
 <section id="consultancy">
   <div class="product-detail-solo">
-    <div class="section-label">AI Implementation Consultancy</div>
-    <h2 class="section-title">When You Need More<br><span class="grad-text">Than Off-the-Shelf</span></h2>
-    <p class="section-desc" style="max-width:100%;margin-bottom:24px;">Some businesses need more than a ready-made product — they need an AI strategy built around their existing systems, workflows, and team. Vouza's implementation consultancy works alongside you to scope the right solution, integrate it into your current CRM/ERP/operations stack, train your team, and provide ongoing managed support — as much or as little hands-on help as you need, at every stage from strategy to go-live.</p>
+    <div class="section-label" data-i18n="products.consultancy.label">AI Implementation Consultancy</div>
+    <h2 class="section-title" data-i18n="products.consultancy.title">When You Need More<br><span class="grad-text">Than Off-the-Shelf</span></h2>
+    <p class="section-desc" style="max-width:100%;margin-bottom:24px;" data-i18n="products.consultancy.desc">Some businesses need more than a ready-made product — they need an AI strategy built around their existing systems, workflows, and team. Vouza's implementation consultancy works alongside you to scope the right solution, integrate it into your current CRM/ERP/operations stack, train your team, and provide ongoing managed support — as much or as little hands-on help as you need, at every stage from strategy to go-live.</p>
     <ul style="list-style:none;padding:0;margin:0 0 32px;display:flex;flex-direction:column;gap:10px;">
-      <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>AI strategy &amp; roadmapping</span></li>
-      <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Custom integration with your existing systems</span></li>
-      <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Team training &amp; change management</span></li>
-      <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Ongoing managed AI support</span></li>
+      <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span data-i18n="products.consultancy.bullet1">AI strategy &amp; roadmapping</span></li>
+      <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span data-i18n="products.consultancy.bullet2">Custom integration with your existing systems</span></li>
+      <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span data-i18n="products.consultancy.bullet3">Team training &amp; change management</span></li>
+      <li style="display:flex;align-items:flex-start;gap:10px;color:var(--muted);font-size:0.9rem;line-height:1.6;"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span data-i18n="products.consultancy.bullet4">Ongoing managed AI support</span></li>
     </ul>
-    <a href="index.html?solution=AI%20Implementation%20Consultancy#contact" class="btn btn-primary btn-lg">Get a Quote →</a>
+    <a href="index.html?solution=AI%20Implementation%20Consultancy#contact" class="btn btn-primary btn-lg" data-i18n="products.consultancy.cta">Get a Quote →</a>
   </div>
 </section>
 
@@ -2040,12 +2050,12 @@
 <section id="rapid-prototyping" style="background:rgba(0,20,25,0.5);">
   <div class="product-detail-inner">
     <div>
-      <div class="section-label">Rapid Prototyping</div>
-      <h2 class="section-title">Building the Bridge Between<br><span class="grad-text">AI Software &amp; Hardware</span></h2>
-      <p class="section-desc" style="max-width:100%;margin-bottom:20px;">Vouza AI is investing in rapid hardware prototyping capabilities, including 3D printing, to accelerate the development of AI-powered products and smart solutions.</p>
-      <p class="section-desc" style="max-width:100%;margin-bottom:24px;">From custom enclosures and mechanical components to sensor mounts, robotics and smart devices, this capability allows us to quickly prototype, test and refine hardware that integrates with our AI software platforms.</p>
-      <p style="font-weight:700;font-size:1.02rem;line-height:1.6;padding:18px 22px;border-radius:12px;background:linear-gradient(135deg, rgba(0,212,212,0.12), rgba(124,92,255,0.12));border:1px solid var(--card-border);margin-bottom:28px;">AI + Software + Hardware + Rapid Prototyping = From Idea to Working Solution.</p>
-      <a href="index.html#contact" class="btn btn-primary btn-lg">Talk to Us →</a>
+      <div class="section-label" data-i18n="products.prototyping.label">Rapid Prototyping</div>
+      <h2 class="section-title" data-i18n="products.prototyping.title">Building the Bridge Between<br><span class="grad-text">AI Software &amp; Hardware</span></h2>
+      <p class="section-desc" style="max-width:100%;margin-bottom:20px;" data-i18n="products.prototyping.desc1">Vouza AI is investing in rapid hardware prototyping capabilities, including 3D printing, to accelerate the development of AI-powered products and smart solutions.</p>
+      <p class="section-desc" style="max-width:100%;margin-bottom:24px;" data-i18n="products.prototyping.desc2">From custom enclosures and mechanical components to sensor mounts, robotics and smart devices, this capability allows us to quickly prototype, test and refine hardware that integrates with our AI software platforms.</p>
+      <p style="font-weight:700;font-size:1.02rem;line-height:1.6;padding:18px 22px;border-radius:12px;background:linear-gradient(135deg, rgba(0,212,212,0.12), rgba(124,92,255,0.12));border:1px solid var(--card-border);margin-bottom:28px;" data-i18n="products.prototyping.highlight">AI + Software + Hardware + Rapid Prototyping = From Idea to Working Solution.</p>
+      <a href="index.html#contact" class="btn btn-primary btn-lg" data-i18n="products.prototyping.cta">Talk to Us →</a>
     </div>
     <div>
       <img src="product-images/rapid-prototyping.webp" alt="Vouza AI Rapid Prototyping Lab — AI, hardware, and 3D printing" loading="lazy" decoding="async" style="width:100%;border-radius:16px;border:1px solid var(--card-border);box-shadow:0 20px 60px rgba(0,0,0,0.4);">
@@ -2057,10 +2067,10 @@
 
 <!-- ── CTA ───────────────────────────────────────────── -->
 <section class="cta-section">
-  <h2>Not Sure Which<br><span class="grad-text">Solution Fits?</span></h2>
-  <p>Tell our team a bit about your business and we'll help you find the right AI solution — no pressure, just a conversation.</p>
+  <h2 data-i18n="cta.title">Not Sure Which<br><span class="grad-text">Solution Fits?</span></h2>
+  <p data-i18n="cta.desc">Tell our team a bit about your business and we'll help you find the right AI solution — no pressure, just a conversation.</p>
   <div class="cta-actions">
-    <a href="index.html#contact" class="btn btn-primary btn-lg">Talk to Us</a>
+    <a href="index.html#contact" class="btn btn-primary btn-lg" data-i18n="cta.button">Talk to Us</a>
   </div>
 </section>
 
@@ -2074,56 +2084,56 @@
         <img src="vouza-logo.png" alt="Vouza" loading="lazy" decoding="async" onerror="this.style.display='none'" />
         <span>VOUZA</span>
       </a>
-      <p>AI-powered enterprise solutions for businesses across Singapore, Malaysia, and Southeast Asia. Smarter workflows, better decisions, stronger business.</p>
+      <p data-i18n="footer.brand.desc">AI-powered enterprise solutions for businesses across Singapore, Malaysia, and Southeast Asia. Smarter workflows, better decisions, stronger business.</p>
       <form class="newsletter-form" id="newsletterForm">
         <input type="hidden" name="access_key" value="b8ca7e0e-3a3c-472b-ac08-4e66542f2375" />
         <input type="hidden" name="subject" value="Newsletter Signup — vouza.ai" />
         <input type="hidden" name="from_name" value="Vouza Website Newsletter" />
         <input type="checkbox" name="botcheck" style="display:none;" tabindex="-1" autocomplete="off" aria-hidden="true" />
-        <input id="newsletter-email" type="email" name="email" placeholder="you@company.com" required aria-label="Email address" />
-        <button type="submit" id="newsletterBtn" class="btn btn-primary">Subscribe</button>
+        <input id="newsletter-email" type="email" name="email" placeholder="you@company.com" required aria-label="Email address" data-i18n-attr="footer.newsletter.emailAria" />
+        <button type="submit" id="newsletterBtn" class="btn btn-primary" data-i18n="footer.newsletter.button">Subscribe</button>
       </form>
       <p id="newsletter-msg" class="newsletter-msg" aria-live="polite"></p>
     </div>
     <div class="footer-col">
-      <h4>Solutions</h4>
+      <h4 data-i18n="footer.solutions.title">Solutions</h4>
       <ul>
-        <li><a href="index.html#assistants">AI Assistants</a></li>
-        <li><a href="index.html#services">Web & App Integration</a></li>
-        <li><a href="index.html#services">Robotics</a></li>
-        <li><a href="index.html#services">AI Camera Systems</a></li>
+        <li><a href="index.html#assistants" data-i18n="footer.solutions.item1">AI Assistants</a></li>
+        <li><a href="index.html#services" data-i18n="footer.solutions.item2">Web & App Integration</a></li>
+        <li><a href="index.html#services" data-i18n="footer.solutions.item3">Robotics</a></li>
+        <li><a href="index.html#services" data-i18n="footer.solutions.item4">AI Camera Systems</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Company</h4>
+      <h4 data-i18n="footer.company.title">Company</h4>
       <ul>
-        <li><a href="index.html#home">About Vouza</a></li>
-        <li><a href="index.html#industries">Industries</a></li>
-        <li><a href="index.html#how-it-works">How It Works</a></li>
-        <li><a href="index.html#contact">Contact</a></li>
-        <li><a href="careers.html">Careers</a></li>
+        <li><a href="index.html#home" data-i18n="footer.company.item1">About Vouza</a></li>
+        <li><a href="index.html#industries" data-i18n="footer.company.item2">Industries</a></li>
+        <li><a href="index.html#how-it-works" data-i18n="footer.company.item3">How It Works</a></li>
+        <li><a href="index.html#contact" data-i18n="footer.company.item4">Contact</a></li>
+        <li><a href="careers.html" data-i18n="footer.company.item5">Careers</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Markets</h4>
+      <h4 data-i18n="footer.markets.title">Markets</h4>
       <ul>
-        <li><a href="index.html#contact">Singapore</a></li>
-        <li><a href="index.html#contact">Malaysia</a></li>
-        <li><a href="index.html#contact">Thailand</a></li>
-        <li><a href="index.html#contact">Indonesia</a></li>
-        <li><a href="index.html#contact">Vietnam</a></li>
+        <li><a href="index.html#contact" data-i18n="footer.markets.item1">Singapore</a></li>
+        <li><a href="index.html#contact" data-i18n="footer.markets.item2">Malaysia</a></li>
+        <li><a href="index.html#contact" data-i18n="footer.markets.item3">Thailand</a></li>
+        <li><a href="index.html#contact" data-i18n="footer.markets.item4">Indonesia</a></li>
+        <li><a href="index.html#contact" data-i18n="footer.markets.item5">Vietnam</a></li>
       </ul>
     </div>
   </div>
-  <div class="footer-tech">
+  <div class="footer-tech" data-i18n="footer.tech.text">
     <span>Technology &amp; Infrastructure</span> — Built on Twilio's Customer Engagement Platform · AWS Cloud · Hostinger Cloud
   </div>
   <div class="footer-bottom">
-    <span>© 2026 Vouza AI. All rights reserved. Registered in Singapore.</span>
+    <span data-i18n="footer.bottom.copyright">© 2026 Vouza AI. All rights reserved. Registered in Singapore.</span>
     <span style="display:flex;gap:20px;align-items:center;">
-      <a href="#" onclick="openPrivacy(event)" style="color:var(--muted);text-decoration:none;font-size:0.78rem;transition:color 0.2s;" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--muted)'">Privacy Policy</a>
+      <a href="#" onclick="openPrivacy(event)" style="color:var(--muted);text-decoration:none;font-size:0.78rem;transition:color 0.2s;" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--muted)'" data-i18n="footer.bottom.privacy">Privacy Policy</a>
       <span style="opacity:0.3;">·</span>
-      <a href="#" onclick="openTerms(event)" style="color:var(--muted);text-decoration:none;font-size:0.78rem;transition:color 0.2s;" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--muted)'">Terms of Service</a>
+      <a href="#" onclick="openTerms(event)" style="color:var(--muted);text-decoration:none;font-size:0.78rem;transition:color 0.2s;" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--muted)'" data-i18n="footer.bottom.terms">Terms of Service</a>
       <span style="opacity:0.3;">·</span>
       <span>hello@vouza.ai</span>
     </span>
@@ -2238,30 +2248,30 @@
 </div>
 
 <!-- ── VEE CHAT WIDGET ──────────────────────────────── -->
-<button class="vee-chat-launcher" id="veeChatLauncher" aria-label="Chat with Vee, Vouza's AI assistant">
+<button class="vee-chat-launcher" id="veeChatLauncher" aria-label="Chat with Vee, Vouza's AI assistant" data-i18n-attr="vee.launcher.ariaLabel">
   <span class="vee-chat-bubble-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19l1.3-3.9A8 8 0 1 1 8.7 18.6L4 19z"/></svg></span>
   <span class="vee-chat-close-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span>
 </button>
-<div class="vee-chat-panel" id="veeChatPanel" role="dialog" aria-label="Chat with Vee">
+<div class="vee-chat-panel" id="veeChatPanel" role="dialog" aria-label="Chat with Vee" data-i18n-attr="vee.panel.ariaLabel">
   <div class="vee-chat-header">
     <div class="vee-chat-avatar">V</div>
     <div class="vee-chat-header-text">
-      <h4>Vee</h4>
-      <span>Vouza AI Assistant</span>
+      <h4 data-i18n="vee.header.name">Vee</h4>
+      <span data-i18n="vee.header.subtitle">Vouza AI Assistant</span>
     </div>
   </div>
   <div class="vee-chat-messages" id="veeChatMessages"></div>
   <form class="vee-chat-form" id="veeChatForm">
-    <input type="text" id="veeChatInput" placeholder="Ask Vee anything…" autocomplete="off" maxlength="2000" />
-    <button type="submit" id="veeChatSend">Send</button>
+    <input type="text" id="veeChatInput" placeholder="Ask Vee anything…" autocomplete="off" maxlength="2000" data-i18n-attr="vee.input.placeholder" />
+    <button type="submit" id="veeChatSend" data-i18n="vee.send.button">Send</button>
   </form>
 </div>
 
 <!-- ── MOBILE APP BAR ────────────────────────────────── -->
-<nav class="mobile-app-bar" id="mobileAppBar" aria-label="Quick contact">
+<nav class="mobile-app-bar" id="mobileAppBar" aria-label="Quick contact" data-i18n-attr="mab.ariaLabel">
   <a href="tel:+6587747989" class="mab-item">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-    <span>Call</span>
+    <span data-i18n="mab.call">Call</span>
   </a>
   <a href="https://wa.me/6587747989?text=Hi%20Vouza%2C%20I%27d%20like%20to%20find%20out%20more" target="_blank" rel="noopener noreferrer" class="mab-item">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1.2-3.6A8 8 0 1 1 8.6 19.2L4 20z"/><path d="M8.5 10.5c0 3 2.5 5 5 5"/></svg>
@@ -2269,21 +2279,238 @@
   </a>
   <a href="careers.html" class="mab-item">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7.5" width="18" height="12.5" rx="2"/><path d="M8.5 7.5V6a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v1.5"/><path d="M3 13h18"/></svg>
-    <span>Careers</span>
+    <span data-i18n="mab.careers">Careers</span>
   </a>
   <a href="index.html#contact" class="mab-item" id="mabBookBtn">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="16" rx="2"/><path d="M3.5 9.5h17M8 3v3M16 3v3"/></svg>
-    <span>Book</span>
+    <span data-i18n="mab.book">Book</span>
   </a>
   <a href="products.html" class="mab-item">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7.5" height="7.5" rx="1.5"/><rect x="13" y="3.5" width="7.5" height="7.5" rx="1.5"/><rect x="3.5" y="13" width="7.5" height="7.5" rx="1.5"/><rect x="13" y="13" width="7.5" height="7.5" rx="1.5"/></svg>
-    <span>Products</span>
+    <span data-i18n="mab.products">Products</span>
   </a>
 </nav>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
+  /* ── LANGUAGE TOGGLE (EN / 简体中文) ──────────────── */
+  (function () {
+    var LANG_KEY = 'vouza_lang';
+    var ZH = {
+      'nav.services': '服务',
+      'nav.products': '产品',
+      'nav.demo': '演示',
+      'nav.assistants': 'AI 智能助手',
+      'nav.how': '运作方式',
+      'nav.industries': '行业应用',
+      'nav.careers': '招聘',
+      'nav.contact': '联系我们',
+      'nav.talkToUs': '联系我们',
+      'nav.getStarted': '立即开始',
+
+      'header.label': '产品与解决方案',
+      'header.title': '探索我们的<br><span class="grad-text">完整产品阵容</span>',
+      'header.desc': '从 AI 智能助手到专业门禁系统 —— 详细了解 Vouza 打造与部署的一切。',
+
+      'products.assistants.label': 'AI 智能助手平台',
+      'products.assistants.title': '一个平台。<br><span class="grad-text">多个 AI 智能助手。</span>',
+      'products.assistants.desc': 'Vouza 的 AI 智能助手平台将 WhatsApp AI、网站 AI、视觉 AI、AI 培训、人脸 AI、社交媒体 AI、报告 AI 以及系统集成整合为一支协同运作的 AI 团队,为您的企业服务。无需拼凑多个独立工具 —— 每个助手都共享上下文并无缝交接任务,让您的团队在客户使用的每个渠道上都能获得始终如一、全天候的支持。',
+      'products.assistants.bullet1': '8 个专业助手协同工作',
+      'products.assistants.bullet2': '平均响应时间约 1.2 秒',
+      'products.assistants.bullet3': '可对接您的 CRM、ERP、日历等系统',
+      'products.assistants.bullet4': '从每一次互动中持续学习',
+      'products.assistants.cta': '获取报价 →',
+
+      'products.whatsapp.label': 'WhatsApp AI',
+      'products.whatsapp.title': '更智能的对话。<br><span class="grad-text">更出色的业务表现。</span>',
+      'products.whatsapp.desc': '让您的 WhatsApp Business 号码化身 24/7 AI 智能客服与销售助手。Vouza 的 WhatsApp AI 能自然理解客户消息、即时响应并主动执行操作 —— 查询订单状态、预约安排、解答常见问题 —— 同时将复杂问题无缝转接给您的人工团队。它可直接对接您的 CRM、ERP、客服系统与电商平台,确保每一次对话都有真实数据支撑。',
+      'products.whatsapp.bullet1': '全天候即时、拟人化响应',
+      'products.whatsapp.bullet2': '复杂问题无缝转接人工',
+      'products.whatsapp.bullet3': '对接 CRM、ERP、客服系统、电商平台',
+      'products.whatsapp.bullet4': '企业级客户数据安全保障',
+      'products.whatsapp.cta': '获取报价 →',
+
+      'products.website.label': 'AI 驱动网站设计',
+      'products.website.title': '美观。智能。<br><span class="grad-text">为您的业务量身打造。</span>',
+      'products.website.desc': '我们将 AI 技术与创意设计相结合,打造契合您品牌与目标的精美高性能网站。我们的 AI 辅助流程会深入了解您的业务,生成版面与内容建议,再由我们的团队精心打磨每一处细节 —— 让您获得一个快速、响应式、SEO 优化且易于长期维护的网站。',
+      'products.website.bullet1': 'AI 驱动的版面与内容建议',
+      'products.website.bullet2': '适配各类设备的响应式设计',
+      'products.website.bullet3': 'SEO 与速度优化',
+      'products.website.bullet4': '易于管理的 CMS,方便持续更新',
+      'products.website.cta': '获取报价 →',
+
+      'products.anpr.label': '智能车牌识别门禁系统',
+      'products.anpr.title': 'AI 车牌识别<br><span class="grad-text">+ 费用核验</span>',
+      'products.anpr.desc': '智能 ANPR 为公寓与门禁社区提供智能自动化车辆通行管理 —— 以超过 98% 的准确率识别车牌,并在放行前实时核验管理费缴纳状态。可疑或尾随车辆会被自动标记,每一次通行记录都会留存备查,保安亭还可查看全物业的实时活动仪表盘。',
+      'products.anpr.bullet1': '车牌识别准确率超过 98%',
+      'products.anpr.bullet2': '实时管理费核验',
+      'products.anpr.bullet3': '防尾随与行为检测',
+      'products.anpr.bullet4': '完整审计记录,符合 PDPA 合规要求',
+      'products.anpr.cta': '获取报价 →',
+
+      'products.memorial.label': '智能骨灰龛门禁与安防系统',
+      'products.memorial.title': '守护记忆。<br><span class="grad-text">尊重信任。</span>',
+      'products.memorial.desc': '智能骨灰龛系统为灵骨塔与纪念龛位带来 AI 驱动的门禁管理与实时监控 —— 安全、智能,让人安心。已登记的家属可通过人脸识别、每 5 分钟自动刷新的动态二维码或手机应用访问其先人的龛位,而我们的 AI 会持续监测异常情况,并在龛位开启过久时提醒管理方。',
+      'products.memorial.bullet1': 'AI 人脸识别与动态二维码通行',
+      'products.memorial.bullet2': '异常检测与预测性提醒',
+      'products.memorial.bullet3': '面向数千个龛位的集中管理仪表盘',
+      'products.memorial.bullet4': '多重验证、符合 PDPA 合规的安全保障',
+      'products.memorial.cta': '获取报价 →',
+
+      'products.security.label': '智能门禁与安防监控系统',
+      'products.security.title': '智能门禁。<br><span class="grad-text">AI 安防监控。</span>',
+      'products.security.desc': '从访客登记到实时安防警报,Vouza 的智能门禁与安防监控解决方案让您的场所安全且责任可溯。访客在线登记并获得二维码通行证,人脸 AI 终端提供无接触通行,AI 摄像头持续扫描识别已知与未知人员,一旦出现需要关注的情况,您的安保团队会立即收到 WhatsApp 警报 —— 附带图像、位置与语音留言。',
+      'products.security.bullet1': '无接触人脸识别通行',
+      'products.security.bullet2': '实时 AI 摄像头监控',
+      'products.security.bullet3': '即时 WhatsApp 安防警报',
+      'products.security.bullet4': '访客记录、报告及符合 PDPA 的数据管理',
+      'products.security.cta': '获取报价 →',
+
+      'products.consultancy.label': 'AI 实施顾问服务',
+      'products.consultancy.title': '当您需要的不仅仅是<br><span class="grad-text">现成产品</span>',
+      'products.consultancy.desc': '有些企业需要的不只是现成产品 —— 他们需要一套围绕自身现有系统、工作流程与团队量身打造的 AI 战略。Vouza 的实施顾问服务与您携手合作,规划合适的解决方案,将其整合进您现有的 CRM/ERP/运营体系,培训您的团队,并提供持续的托管支持 —— 从战略制定到正式上线的每个阶段,按您所需提供或多或少的深度协助。',
+      'products.consultancy.bullet1': 'AI 战略与路线图规划',
+      'products.consultancy.bullet2': '与您现有系统的定制集成',
+      'products.consultancy.bullet3': '团队培训与变革管理',
+      'products.consultancy.bullet4': '持续的 AI 托管支持',
+      'products.consultancy.cta': '获取报价 →',
+
+      'products.prototyping.label': '快速原型开发',
+      'products.prototyping.title': '连接<br><span class="grad-text">AI 软件与硬件的桥梁</span>',
+      'products.prototyping.desc1': 'Vouza AI 正在投资快速硬件原型开发能力(包括 3D 打印),以加速 AI 驱动产品与智能解决方案的开发进程。',
+      'products.prototyping.desc2': '从定制外壳、机械部件到传感器支架、机器人与智能设备,这项能力让我们能够快速制作原型、测试并完善与我们 AI 软件平台集成的硬件。',
+      'products.prototyping.highlight': 'AI + 软件 + 硬件 + 快速原型开发 = 从创意到可用方案。',
+      'products.prototyping.cta': '联系我们 →',
+
+      'cta.title': '不确定<br><span class="grad-text">哪种方案适合您?</span>',
+      'cta.desc': '向我们的团队简单介绍一下您的业务,我们会帮您找到合适的 AI 解决方案 —— 没有压力,只是一次交流。',
+      'cta.button': '联系我们',
+
+      'footer.brand.desc': '为新加坡、马来西亚及东南亚各地企业提供 AI 驱动的企业解决方案。更智能的工作流程,更明智的决策,更强大的业务。',
+      'footer.newsletter.button': '订阅',
+      'footer.solutions.title': '解决方案',
+      'footer.solutions.item1': 'AI 智能助手',
+      'footer.solutions.item2': '网站与应用集成',
+      'footer.solutions.item3': '机器人解决方案',
+      'footer.solutions.item4': 'AI 摄像系统',
+      'footer.company.title': '公司',
+      'footer.company.item1': '关于 Vouza',
+      'footer.company.item2': '行业应用',
+      'footer.company.item3': '运作方式',
+      'footer.company.item4': '联系我们',
+      'footer.company.item5': '招聘',
+      'footer.markets.title': '市场',
+      'footer.markets.item1': '新加坡',
+      'footer.markets.item2': '马来西亚',
+      'footer.markets.item3': '泰国',
+      'footer.markets.item4': '印度尼西亚',
+      'footer.markets.item5': '越南',
+      'footer.tech.text': '<span>技术与基础设施</span> — 基于 Twilio 客户互动平台 · AWS 云服务 · Hostinger 云构建',
+      'footer.bottom.copyright': '© 2026 Vouza AI. 版权所有。新加坡注册公司。',
+      'footer.bottom.privacy': '隐私政策',
+      'footer.bottom.terms': '服务条款',
+
+      'vee.header.name': 'Vee',
+      'vee.header.subtitle': 'Vouza AI 智能助手',
+      'vee.send.button': '发送',
+
+      'mab.call': '拨打电话',
+      'mab.careers': '招聘',
+      'mab.book': '预约',
+      'mab.products': '产品'
+    };
+    var ZH_ATTR = {
+      'footer.newsletter.emailAria': { attr: 'aria-label', zh: '电子邮箱地址' },
+      'vee.launcher.ariaLabel': { attr: 'aria-label', zh: '与 Vouza AI 助手 Vee 聊天' },
+      'vee.panel.ariaLabel': { attr: 'aria-label', zh: '与 Vee 聊天' },
+      'vee.input.placeholder': { attr: 'placeholder', zh: '向 Vee 提问…' },
+      'mab.ariaLabel': { attr: 'aria-label', zh: '快速联系' },
+      'backToTop.ariaLabel': { attr: 'aria-label', zh: '返回顶部' }
+    };
+
+    var VEE_STRINGS = {
+      en: {
+        welcome: "Hi, I'm Vee 👋 Ask me about Vouza's AI assistants, robotics, or how to get started — or try Admin AI free on GitHub.",
+        leadChip: '📩 Leave your email — get a callback',
+        leadPrompt: "Great — drop your email below and our team will reach out within 1 business day.",
+        leadPlaceholder: 'you@company.com',
+        invalidEmail: "Hmm, that doesn't look like an email address — mind trying again?",
+        leadSuccess: "Got it — thanks! Our team will be in touch within 1 business day. Anything else I can help with meanwhile?",
+        leadError: "Sorry, that didn't go through — please email us directly at hello@vouza.ai.",
+        inputPlaceholder: 'Ask Vee anything…',
+        typing: 'Typing…',
+        rateLimited: "You're sending messages a little too quickly — give me a moment, then try again. 😊",
+        connectionError: "Sorry, I'm having trouble connecting right now — please try again, or reach us at hello@vouza.ai."
+      },
+      zh: {
+        welcome: '您好,我是 Vee 👋 欢迎咨询 Vouza 的 AI 智能助手、机器人解决方案,或如何开始使用 —— 也可以在 GitHub 上免费试用 Admin AI。',
+        leadChip: '📩 留下您的邮箱 —— 我们将回电联系',
+        leadPrompt: '好的 —— 请在下方留下您的邮箱,我们的团队将在 1 个工作日内与您联系。',
+        leadPlaceholder: 'you@company.com',
+        invalidEmail: '嗯,这似乎不是一个有效的邮箱地址 —— 可以再试一次吗?',
+        leadSuccess: '已收到,谢谢!我们的团队将在 1 个工作日内与您联系。还有什么我可以帮忙的吗?',
+        leadError: '抱歉,提交未成功 —— 请直接发送邮件至 hello@vouza.ai。',
+        inputPlaceholder: '向 Vee 提问…',
+        typing: '正在输入…',
+        rateLimited: '您发送消息的速度有点快 —— 请稍等片刻后再试一次。😊',
+        connectionError: '抱歉,目前连接出现问题 —— 请重试,或通过 hello@vouza.ai 联系我们。'
+      }
+    };
+    window.__vouzaVeeStrings = VEE_STRINGS;
+
+    var NEWS_STRINGS = {
+      en: {
+        sending: 'Sending…',
+        success: '✓ Subscribed! Thanks for joining.',
+        done: '✓ Done',
+        error: '✗ Something went wrong. Please try again.'
+      },
+      zh: {
+        sending: '发送中…',
+        success: '✓ 订阅成功!感谢您的加入。',
+        done: '✓ 完成',
+        error: '✗ 出现问题,请重试。'
+      }
+    };
+    window.__vouzaNewsStrings = NEWS_STRINGS;
+
+    function applyLang(lang) {
+      document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+      document.querySelectorAll('[data-i18n]').forEach(function (el) {
+        var key = el.getAttribute('data-i18n');
+        if (el.dataset.enCache === undefined) el.dataset.enCache = el.innerHTML;
+        if (lang === 'zh' && ZH[key] !== undefined) {
+          el.innerHTML = ZH[key];
+        } else {
+          el.innerHTML = el.dataset.enCache;
+        }
+      });
+      document.querySelectorAll('[data-i18n-attr]').forEach(function (el) {
+        var key = el.getAttribute('data-i18n-attr');
+        var spec = ZH_ATTR[key];
+        if (!spec) return;
+        var cacheProp = 'enCache_' + spec.attr.replace(/-/g, '_');
+        if (el.dataset[cacheProp] === undefined) el.dataset[cacheProp] = el.getAttribute(spec.attr) || '';
+        el.setAttribute(spec.attr, lang === 'zh' ? spec.zh : el.dataset[cacheProp]);
+      });
+      document.querySelectorAll('.lang-btn').forEach(function (btn) {
+        btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+      });
+      window.__vouzaLang = lang;
+      try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+    }
+    window.__vouzaApplyLang = applyLang;
+
+    document.querySelectorAll('.lang-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () { applyLang(btn.getAttribute('data-lang')); });
+    });
+
+    var saved = 'en';
+    try { saved = localStorage.getItem(LANG_KEY) || 'en'; } catch (e) {}
+    applyLang(saved);
+  })();
+
   /* ── STARFIELD ───────────────────────────────────── */
   const canvas = document.getElementById('starfield');
   const ctx = canvas.getContext('2d');
@@ -2598,10 +2825,11 @@
     e.preventDefault();
     const btn = document.getElementById('newsletterBtn');
     const msg = document.getElementById('newsletter-msg');
+    const newsStrings = (window.__vouzaNewsStrings || {})[window.__vouzaLang || 'en'] || { sending: 'Sending…', success: '✓ Subscribed! Thanks for joining.', done: '✓ Done', error: '✗ Something went wrong. Please try again.' };
     msg.textContent = '';
     msg.className = 'newsletter-msg';
     const originalLabel = btn.textContent;
-    btn.textContent = 'Sending…';
+    btn.textContent = newsStrings.sending;
     btn.disabled = true;
 
     try {
@@ -2612,15 +2840,15 @@
       });
       const data = await res.json();
       if (data.success) {
-        msg.textContent = '✓ Subscribed! Thanks for joining.';
+        msg.textContent = newsStrings.success;
         msg.className = 'newsletter-msg success';
         this.reset();
-        btn.textContent = '✓ Done';
+        btn.textContent = newsStrings.done;
       } else {
         throw new Error(data.message);
       }
     } catch (err) {
-      msg.textContent = '✗ Something went wrong. Please try again.';
+      msg.textContent = newsStrings.error;
       msg.className = 'newsletter-msg error';
       btn.textContent = originalLabel;
       btn.disabled = false;
@@ -2643,6 +2871,10 @@
     let opened  = false;
     let leadMode = false;
 
+    function veeStr() {
+      return (window.__vouzaVeeStrings || {})[window.__vouzaLang || 'en'] || (window.__vouzaVeeStrings || {}).en || {};
+    }
+
     function addBubble(role, text) {
       const div = document.createElement('div');
       div.className = 'vee-msg ' + (role === 'user' ? 'user' : 'vee');
@@ -2656,12 +2888,12 @@
       const chip = document.createElement('button');
       chip.type = 'button';
       chip.className = 'vee-chip';
-      chip.textContent = '📩 Leave your email — get a callback';
+      chip.textContent = veeStr().leadChip;
       chip.addEventListener('click', function () {
         chip.remove();
         leadMode = true;
-        addBubble('vee', "Great — drop your email below and our team will reach out within 1 business day.");
-        input.placeholder = 'you@company.com';
+        addBubble('vee', veeStr().leadPrompt);
+        input.placeholder = veeStr().leadPlaceholder;
         input.focus();
       });
       messages.appendChild(chip);
@@ -2673,7 +2905,7 @@
       launcher.classList.toggle('open', opened);
       panel.classList.toggle('open', opened);
       if (opened && messages.children.length === 0) {
-        addBubble('vee', "Hi, I'm Vee 👋 Ask me about Vouza's AI assistants, robotics, or how to get started — or try Admin AI free on GitHub.");
+        addBubble('vee', veeStr().welcome);
         addLeadChip();
         input.focus();
       }
@@ -2705,7 +2937,7 @@
 
       if (leadMode) {
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(text)) {
-          addBubble('vee', "Hmm, that doesn't look like an email address — mind trying again?");
+          addBubble('vee', veeStr().invalidEmail);
           return;
         }
         addBubble('user', text);
@@ -2714,11 +2946,11 @@
         sendBtn.disabled = true;
         try {
           await submitLead(text);
-          addBubble('vee', "Got it — thanks! Our team will be in touch within 1 business day. Anything else I can help with meanwhile?");
+          addBubble('vee', veeStr().leadSuccess);
           leadMode = false;
-          input.placeholder = 'Ask Vee anything…';
+          input.placeholder = veeStr().inputPlaceholder;
         } catch (err) {
-          addBubble('vee', "Sorry, that didn't go through — please email us directly at hello@vouza.ai.");
+          addBubble('vee', veeStr().leadError);
         } finally {
           input.disabled = false;
           sendBtn.disabled = false;
@@ -2734,18 +2966,18 @@
       input.value = '';
       input.disabled = true;
       sendBtn.disabled = true;
-      const typing = addBubble('vee', 'Typing…');
+      const typing = addBubble('vee', veeStr().typing);
       typing.classList.add('typing');
 
       try {
         const res = await fetch(VEE_API_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ stream: true, messages: history }),
+          body: JSON.stringify({ stream: true, messages: history, lang: window.__vouzaLang || 'en' }),
         });
         if (res.status === 429) {
           typing.remove();
-          addBubble('vee', "You're sending messages a little too quickly — give me a moment, then try again. 😊");
+          addBubble('vee', veeStr().rateLimited);
           history.pop();
           return;
         }
@@ -2799,7 +3031,7 @@
         if (history.length > MAX_HISTORY) history = history.slice(-MAX_HISTORY);
       } catch (err) {
         if (typing.parentNode) typing.remove();
-        addBubble('vee', "Sorry, I'm having trouble connecting right now — please try again, or reach us at hello@vouza.ai.");
+        addBubble('vee', veeStr().connectionError);
       } finally {
         input.disabled = false;
         sendBtn.disabled = false;

@@ -1478,6 +1478,12 @@
       z-index: 1;
     }
 
+    /* ── LANGUAGE TOGGLE ───────────────────────────── */
+    .lang-toggle { display: flex; gap: 2px; padding: 3px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 100px; margin-left: 12px; flex-shrink: 0; }
+    .lang-btn { padding: 6px 12px; border: none; border-radius: 100px; background: transparent; color: var(--muted); font-family: 'Inter', sans-serif; font-size: 0.76rem; font-weight: 700; cursor: pointer; transition: background 0.25s, color 0.25s; }
+    .lang-btn.active { background: linear-gradient(135deg, var(--cyan), var(--blue)); color: #01181c; }
+    .lang-btn:not(.active):hover { color: var(--white); }
+
     /* ── HAMBURGER / RESPONSIVE ───────────────────── */
     .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
     .hamburger span { width: 22px; height: 2px; background: var(--white); border-radius: 2px; }
@@ -1863,18 +1869,22 @@
     <span class="nav-logo-text" style="display:none"></span>
   </a>
   <ul class="nav-links" id="navLinks">
-    <li><a href="index.html#services">Services</a></li>
-    <li><a href="index.html#products">Products</a></li>
-    <li><a href="index.html#demo">Demo</a></li>
-    <li><a href="index.html#assistants">AI Assistants</a></li>
-    <li><a href="index.html#how-it-works">How It Works</a></li>
-    <li><a href="index.html#industries">Industries</a></li>
-    <li><a href="careers.html">Careers</a></li>
-    <li><a href="index.html#contact">Contact</a></li>
+    <li><a href="index.html#services" data-i18n="nav.services">Services</a></li>
+    <li><a href="index.html#products" data-i18n="nav.products">Products</a></li>
+    <li><a href="index.html#demo" data-i18n="nav.demo">Demo</a></li>
+    <li><a href="index.html#assistants" data-i18n="nav.assistants">AI Assistants</a></li>
+    <li><a href="index.html#how-it-works" data-i18n="nav.howitworks">How It Works</a></li>
+    <li><a href="index.html#industries" data-i18n="nav.industries">Industries</a></li>
+    <li><a href="careers.html" data-i18n="nav.careers">Careers</a></li>
+    <li><a href="index.html#contact" data-i18n="nav.contact">Contact</a></li>
   </ul>
   <div class="nav-cta">
-    <a href="index.html#contact" class="btn btn-ghost">Talk to Us</a>
-    <a href="index.html#contact" class="btn btn-primary">Get Started</a>
+    <a href="index.html#contact" class="btn btn-ghost" data-i18n="nav.talktous">Talk to Us</a>
+    <a href="index.html#contact" class="btn btn-primary" data-i18n="nav.getstarted">Get Started</a>
+  </div>
+  <div class="lang-toggle" id="langToggle" role="group" aria-label="Language">
+    <button type="button" class="lang-btn active" data-lang="en">EN</button>
+    <button type="button" class="lang-btn" data-lang="zh">中文</button>
   </div>
   <div class="hamburger" id="hamburger" onclick="toggleNav()">
     <span></span><span></span><span></span>
@@ -1884,9 +1894,9 @@
 <!-- ── CAREERS PAGE HEADER ────────────────────────────── -->
 <section style="padding-top:140px;">
   <div class="section-header center">
-    <div class="section-label">Careers</div>
-    <h2 class="section-title">Join the Team<br><span class="grad-text">Building Vouza</span></h2>
-    <p class="section-desc">We're hiring across sales, finance, operations, and people — help us bring AI, robotics, and smart access systems to businesses across Southeast Asia.</p>
+    <div class="section-label" data-i18n="careers.header.label">Careers</div>
+    <h2 class="section-title" data-i18n="careers.header.title">Join the Team<br><span class="grad-text">Building Vouza</span></h2>
+    <p class="section-desc" data-i18n="careers.header.desc">We're hiring across sales, finance, operations, and people — help us bring AI, robotics, and smart access systems to businesses across Southeast Asia.</p>
   </div>
 </section>
 
@@ -1895,12 +1905,12 @@
 <!-- ── TECHNICAL SALES ENGINEER ───────────────────────── -->
 <section id="technical-sales-engineer" style="background:rgba(0,20,25,0.5);">
   <div class="product-detail-solo">
-    <div class="section-label">Now Hiring</div>
-    <h2 class="section-title">Technical Sales Engineer</h2>
-    <p style="color:var(--cyan);font-weight:600;font-size:0.9rem;margin-bottom:20px;">Full-time · Singapore / Malaysia</p>
-    <p class="section-desc" style="margin-bottom:28px;">Own the technical side of the sales cycle — from live product demos to scoping custom deployments — across Vouza's full product line, including AI assistants, smart access hardware, and robotics.</p>
-    <h3 style="font-size:1rem;font-weight:700;margin-bottom:12px;">What You'll Do</h3>
-    <ul style="margin-bottom:28px;">
+    <div class="section-label" data-i18n="careers.tse.label">Now Hiring</div>
+    <h2 class="section-title" data-i18n="careers.tse.title">Technical Sales Engineer</h2>
+    <p style="color:var(--cyan);font-weight:600;font-size:0.9rem;margin-bottom:20px;" data-i18n="careers.tse.subtitle">Full-time · Singapore / Malaysia</p>
+    <p class="section-desc" style="margin-bottom:28px;" data-i18n="careers.tse.intro">Own the technical side of the sales cycle — from live product demos to scoping custom deployments — across Vouza's full product line, including AI assistants, smart access hardware, and robotics.</p>
+    <h3 style="font-size:1rem;font-weight:700;margin-bottom:12px;" data-i18n="careers.tse.dohead">What You'll Do</h3>
+    <ul style="margin-bottom:28px;" data-i18n="careers.tse.dolist">
       <li>Present and demo Vouza's AI Assistants, WhatsApp AI, Smart ANPR, Smart Memorial, Smart Access &amp; Security Monitoring, and Robotics solutions to prospective clients</li>
       <li>Understand client requirements and translate them into tailored technical proposals spanning AI software, IoT/hardware, and robotics</li>
       <li>Run product demonstrations and proof-of-concept deployments — including on-site ANPR camera setup, robot demos, and WhatsApp AI configuration</li>
@@ -1908,15 +1918,15 @@
       <li>Support the sales cycle from technical discovery through to closing and handover</li>
       <li>Build and maintain relationships with property managers, enterprise clients, and channel partners across Southeast Asia</li>
     </ul>
-    <h3 style="font-size:1rem;font-weight:700;margin-bottom:12px;">What We're Looking For</h3>
-    <ul style="margin-bottom:28px;">
+    <h3 style="font-size:1rem;font-weight:700;margin-bottom:12px;" data-i18n="careers.tse.reqhead">What We're Looking For</h3>
+    <ul style="margin-bottom:28px;" data-i18n="careers.tse.reqlist">
       <li>Certificate, Diploma, or Degree in Engineering, IT, Computer Science, or a related field</li>
       <li>2+ years in technical sales, pre-sales engineering, or solutions consulting (AI/IoT/robotics background a plus)</li>
       <li>Comfortable presenting technical concepts to non-technical stakeholders</li>
       <li>Hands-on aptitude for hardware demos — cameras, access-control devices, robotics</li>
       <li>Strong communication skills; multilingual (English plus Mandarin or Malay) an advantage for the SEA market</li>
     </ul>
-    <a href="mailto:hello@vouza.ai?subject=Application%3A%20Technical%20Sales%20Engineer" class="btn btn-primary btn-lg">Apply Now →</a>
+    <a href="mailto:hello@vouza.ai?subject=Application%3A%20Technical%20Sales%20Engineer" class="btn btn-primary btn-lg" data-i18n="careers.tse.apply">Apply Now →</a>
   </div>
 </section>
 
@@ -1925,12 +1935,12 @@
 <!-- ── HEAD OF FINANCE ─────────────────────────────────── -->
 <section id="head-of-finance">
   <div class="product-detail-solo">
-    <div class="section-label">Now Hiring</div>
-    <h2 class="section-title">Head of Finance</h2>
-    <p style="color:var(--cyan);font-weight:600;font-size:0.9rem;margin-bottom:20px;">Full-time · Singapore</p>
-    <p class="section-desc" style="margin-bottom:28px;">Lead Vouza's finance function as we scale a mixed software, hardware, and project-based revenue business across Singapore, Malaysia, and Southeast Asia.</p>
-    <h3 style="font-size:1rem;font-weight:700;margin-bottom:12px;">What You'll Do</h3>
-    <ul style="margin-bottom:28px;">
+    <div class="section-label" data-i18n="careers.finance.label">Now Hiring</div>
+    <h2 class="section-title" data-i18n="careers.finance.title">Head of Finance</h2>
+    <p style="color:var(--cyan);font-weight:600;font-size:0.9rem;margin-bottom:20px;" data-i18n="careers.finance.subtitle">Full-time · Singapore</p>
+    <p class="section-desc" style="margin-bottom:28px;" data-i18n="careers.finance.intro">Lead Vouza's finance function as we scale a mixed software, hardware, and project-based revenue business across Singapore, Malaysia, and Southeast Asia.</p>
+    <h3 style="font-size:1rem;font-weight:700;margin-bottom:12px;" data-i18n="careers.finance.dohead">What You'll Do</h3>
+    <ul style="margin-bottom:28px;" data-i18n="careers.finance.dolist">
       <li>Own financial planning, budgeting, and cash flow management as Vouza scales regionally</li>
       <li>Manage billing and revenue recognition across subscription (AI Assistants, WhatsApp AI), project-based (Website Design, custom implementation), and hardware-inclusive (Smart ANPR, Smart Memorial, Smart Access &amp; Security Monitoring, robotics) revenue streams</li>
       <li>Oversee statutory compliance, tax filing, and audit readiness across Singapore and Malaysia</li>
@@ -1938,15 +1948,15 @@
       <li>Manage vendor contracts and procurement for hardware components — cameras, robots, access terminals — and drive cost control</li>
       <li>Support commercial agreements with technology partners (e.g. Twilio, AWS) as needed</li>
     </ul>
-    <h3 style="font-size:1rem;font-weight:700;margin-bottom:12px;">What We're Looking For</h3>
-    <ul style="margin-bottom:28px;">
+    <h3 style="font-size:1rem;font-weight:700;margin-bottom:12px;" data-i18n="careers.finance.reqhead">What We're Looking For</h3>
+    <ul style="margin-bottom:28px;" data-i18n="careers.finance.reqlist">
       <li>Certificate, Diploma, or Degree in Accounting, Finance, or a related field (ACCA/CPA a plus but not required)</li>
       <li>5+ years in finance or accounting, including leadership or managerial experience</li>
       <li>Experience with SaaS/subscription revenue and project-based billing is a strong advantage</li>
       <li>Familiarity with Singapore and Malaysia statutory and tax requirements</li>
       <li>Comfortable operating in a fast-growing startup environment — hands-on as well as strategic</li>
     </ul>
-    <a href="mailto:hello@vouza.ai?subject=Application%3A%20Head%20of%20Finance" class="btn btn-primary btn-lg">Apply Now →</a>
+    <a href="mailto:hello@vouza.ai?subject=Application%3A%20Head%20of%20Finance" class="btn btn-primary btn-lg" data-i18n="careers.finance.apply">Apply Now →</a>
   </div>
 </section>
 
@@ -1955,12 +1965,12 @@
 <!-- ── PROJECT MANAGER ─────────────────────────────────── -->
 <section id="project-manager" style="background:rgba(0,20,25,0.5);">
   <div class="product-detail-solo">
-    <div class="section-label">Now Hiring</div>
-    <h2 class="section-title">Project Manager</h2>
-    <p style="color:var(--cyan);font-weight:600;font-size:0.9rem;margin-bottom:20px;">Full-time · Singapore / Malaysia</p>
-    <p class="section-desc" style="margin-bottom:28px;">Manage delivery of client projects across Vouza's product lines — from AI software rollouts to on-site installation of security hardware and robotics.</p>
-    <h3 style="font-size:1rem;font-weight:700;margin-bottom:12px;">What You'll Do</h3>
-    <ul style="margin-bottom:28px;">
+    <div class="section-label" data-i18n="careers.pm.label">Now Hiring</div>
+    <h2 class="section-title" data-i18n="careers.pm.title">Project Manager</h2>
+    <p style="color:var(--cyan);font-weight:600;font-size:0.9rem;margin-bottom:20px;" data-i18n="careers.pm.subtitle">Full-time · Singapore / Malaysia</p>
+    <p class="section-desc" style="margin-bottom:28px;" data-i18n="careers.pm.intro">Manage delivery of client projects across Vouza's product lines — from AI software rollouts to on-site installation of security hardware and robotics.</p>
+    <h3 style="font-size:1rem;font-weight:700;margin-bottom:12px;" data-i18n="careers.pm.dohead">What You'll Do</h3>
+    <ul style="margin-bottom:28px;" data-i18n="careers.pm.dolist">
       <li>Manage end-to-end delivery of client projects across Vouza's product lines — AI Assistants deployment, WhatsApp AI rollout, Smart ANPR / Smart Memorial / Smart Access installations, robotics deployment, and website design projects</li>
       <li>Coordinate between sales, engineering, and clients to ensure on-time, on-budget delivery</li>
       <li>Develop project plans, timelines, and resource allocation for combined hardware-and-software implementations</li>
@@ -1968,15 +1978,15 @@
       <li>Track project risks, issues, and change requests, and report status to stakeholders</li>
       <li>Ensure quality handover and client training after deployment</li>
     </ul>
-    <h3 style="font-size:1rem;font-weight:700;margin-bottom:12px;">What We're Looking For</h3>
-    <ul style="margin-bottom:28px;">
+    <h3 style="font-size:1rem;font-weight:700;margin-bottom:12px;" data-i18n="careers.pm.reqhead">What We're Looking For</h3>
+    <ul style="margin-bottom:28px;" data-i18n="careers.pm.reqlist">
       <li>Certificate, Diploma, or Degree in any field; PMP or Prince2 certification a plus</li>
       <li>3+ years of project management experience, ideally spanning both software and hardware/physical deployments</li>
       <li>Strong organizational and stakeholder-management skills</li>
       <li>Comfortable coordinating on-site installation work at property sites, memorial facilities, and corporate offices</li>
       <li>Experience with project management tools such as Asana, Jira, or Monday.com</li>
     </ul>
-    <a href="mailto:hello@vouza.ai?subject=Application%3A%20Project%20Manager" class="btn btn-primary btn-lg">Apply Now →</a>
+    <a href="mailto:hello@vouza.ai?subject=Application%3A%20Project%20Manager" class="btn btn-primary btn-lg" data-i18n="careers.pm.apply">Apply Now →</a>
   </div>
 </section>
 
@@ -1985,12 +1995,12 @@
 <!-- ── HEAD OF HUMAN RESOURCE ──────────────────────────── -->
 <section id="head-of-hr">
   <div class="product-detail-solo">
-    <div class="section-label">Now Hiring</div>
-    <h2 class="section-title">Head of Human Resource</h2>
-    <p style="color:var(--cyan);font-weight:600;font-size:0.9rem;margin-bottom:20px;">Full-time · Singapore / Malaysia</p>
-    <p class="section-desc" style="margin-bottom:28px;">Build and lead Vouza's people function as we grow our engineering, sales, and operations teams across Southeast Asia.</p>
-    <h3 style="font-size:1rem;font-weight:700;margin-bottom:12px;">What You'll Do</h3>
-    <ul style="margin-bottom:28px;">
+    <div class="section-label" data-i18n="careers.hr.label">Now Hiring</div>
+    <h2 class="section-title" data-i18n="careers.hr.title">Head of Human Resource</h2>
+    <p style="color:var(--cyan);font-weight:600;font-size:0.9rem;margin-bottom:20px;" data-i18n="careers.hr.subtitle">Full-time · Singapore / Malaysia</p>
+    <p class="section-desc" style="margin-bottom:28px;" data-i18n="careers.hr.intro">Build and lead Vouza's people function as we grow our engineering, sales, and operations teams across Southeast Asia.</p>
+    <h3 style="font-size:1rem;font-weight:700;margin-bottom:12px;" data-i18n="careers.hr.dohead">What You'll Do</h3>
+    <ul style="margin-bottom:28px;" data-i18n="careers.hr.dolist">
       <li>Build and lead Vouza's HR function as the company scales its team across engineering, sales, and operations</li>
       <li>Own the full talent lifecycle — recruitment, onboarding, performance management, and retention</li>
       <li>Design compensation, benefits, and HR policies suited to a fast-growing AI/tech company operating across Singapore, Malaysia, and Southeast Asia</li>
@@ -1998,15 +2008,15 @@
       <li>Foster company culture and employee engagement across a distributed, cross-functional team</li>
       <li>Partner with leadership on organizational design and workforce planning as new product lines — including robotics and security systems — scale</li>
     </ul>
-    <h3 style="font-size:1rem;font-weight:700;margin-bottom:12px;">What We're Looking For</h3>
-    <ul style="margin-bottom:28px;">
+    <h3 style="font-size:1rem;font-weight:700;margin-bottom:12px;" data-i18n="careers.hr.reqhead">What We're Looking For</h3>
+    <ul style="margin-bottom:28px;" data-i18n="careers.hr.reqlist">
       <li>Certificate, Diploma, or Degree in Human Resources, Business Administration, or a related field</li>
       <li>5+ years of HR experience, including at least 2 years in a leadership or managerial capacity</li>
       <li>Knowledge of Singapore and Malaysia employment law and regulations</li>
       <li>Experience hiring for both technical (engineering) and commercial (sales) roles</li>
       <li>Strong interpersonal and organizational-design skills; comfortable building HR processes from the ground up</li>
     </ul>
-    <a href="mailto:hello@vouza.ai?subject=Application%3A%20Head%20of%20Human%20Resource" class="btn btn-primary btn-lg">Apply Now →</a>
+    <a href="mailto:hello@vouza.ai?subject=Application%3A%20Head%20of%20Human%20Resource" class="btn btn-primary btn-lg" data-i18n="careers.hr.apply">Apply Now →</a>
   </div>
 </section>
 
@@ -2014,10 +2024,10 @@
 
 <!-- ── CTA ───────────────────────────────────────────── -->
 <section class="cta-section">
-  <h2>Don't See<br><span class="grad-text">Your Role?</span></h2>
-  <p>We're always looking for great people to join Vouza. Send us your resume and tell us how you'd like to contribute — we'd love to hear from you.</p>
+  <h2 data-i18n="careers.cta.title">Don't See<br><span class="grad-text">Your Role?</span></h2>
+  <p data-i18n="careers.cta.desc">We're always looking for great people to join Vouza. Send us your resume and tell us how you'd like to contribute — we'd love to hear from you.</p>
   <div class="cta-actions">
-    <a href="mailto:hello@vouza.ai?subject=General%20Application" class="btn btn-primary btn-lg">Get In Touch</a>
+    <a href="mailto:hello@vouza.ai?subject=General%20Application" class="btn btn-primary btn-lg" data-i18n="careers.cta.btn">Get In Touch</a>
   </div>
 </section>
 
@@ -2031,56 +2041,56 @@
         <img src="vouza-logo.png" alt="Vouza" loading="lazy" decoding="async" onerror="this.style.display='none'" />
         <span>VOUZA</span>
       </a>
-      <p>AI-powered enterprise solutions for businesses across Singapore, Malaysia, and Southeast Asia. Smarter workflows, better decisions, stronger business.</p>
+      <p data-i18n="footer.brand.desc">AI-powered enterprise solutions for businesses across Singapore, Malaysia, and Southeast Asia. Smarter workflows, better decisions, stronger business.</p>
       <form class="newsletter-form" id="newsletterForm">
         <input type="hidden" name="access_key" value="b8ca7e0e-3a3c-472b-ac08-4e66542f2375" />
         <input type="hidden" name="subject" value="Newsletter Signup — vouza.ai" />
         <input type="hidden" name="from_name" value="Vouza Website Newsletter" />
         <input type="checkbox" name="botcheck" style="display:none;" tabindex="-1" autocomplete="off" aria-hidden="true" />
         <input id="newsletter-email" type="email" name="email" placeholder="you@company.com" required aria-label="Email address" />
-        <button type="submit" id="newsletterBtn" class="btn btn-primary">Subscribe</button>
+        <button type="submit" id="newsletterBtn" class="btn btn-primary" data-i18n="footer.newsletter.btn">Subscribe</button>
       </form>
       <p id="newsletter-msg" class="newsletter-msg" aria-live="polite"></p>
     </div>
     <div class="footer-col">
-      <h4>Solutions</h4>
+      <h4 data-i18n="footer.solutions.head">Solutions</h4>
       <ul>
-        <li><a href="index.html#assistants">AI Assistants</a></li>
-        <li><a href="index.html#services">Web & App Integration</a></li>
-        <li><a href="index.html#services">Robotics</a></li>
-        <li><a href="index.html#services">AI Camera Systems</a></li>
+        <li><a href="index.html#assistants" data-i18n="footer.solutions.assistants">AI Assistants</a></li>
+        <li><a href="index.html#services" data-i18n="footer.solutions.webapp">Web & App Integration</a></li>
+        <li><a href="index.html#services" data-i18n="footer.solutions.robotics">Robotics</a></li>
+        <li><a href="index.html#services" data-i18n="footer.solutions.camera">AI Camera Systems</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Company</h4>
+      <h4 data-i18n="footer.company.head">Company</h4>
       <ul>
-        <li><a href="index.html#home">About Vouza</a></li>
-        <li><a href="index.html#industries">Industries</a></li>
-        <li><a href="index.html#how-it-works">How It Works</a></li>
-        <li><a href="index.html#contact">Contact</a></li>
-        <li><a href="careers.html">Careers</a></li>
+        <li><a href="index.html#home" data-i18n="footer.company.about">About Vouza</a></li>
+        <li><a href="index.html#industries" data-i18n="footer.company.industries">Industries</a></li>
+        <li><a href="index.html#how-it-works" data-i18n="footer.company.howitworks">How It Works</a></li>
+        <li><a href="index.html#contact" data-i18n="footer.company.contact">Contact</a></li>
+        <li><a href="careers.html" data-i18n="footer.company.careers">Careers</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Markets</h4>
+      <h4 data-i18n="footer.markets.head">Markets</h4>
       <ul>
-        <li><a href="index.html#contact">Singapore</a></li>
-        <li><a href="index.html#contact">Malaysia</a></li>
-        <li><a href="index.html#contact">Thailand</a></li>
-        <li><a href="index.html#contact">Indonesia</a></li>
-        <li><a href="index.html#contact">Vietnam</a></li>
+        <li><a href="index.html#contact" data-i18n="footer.markets.sg">Singapore</a></li>
+        <li><a href="index.html#contact" data-i18n="footer.markets.my">Malaysia</a></li>
+        <li><a href="index.html#contact" data-i18n="footer.markets.th">Thailand</a></li>
+        <li><a href="index.html#contact" data-i18n="footer.markets.id">Indonesia</a></li>
+        <li><a href="index.html#contact" data-i18n="footer.markets.vn">Vietnam</a></li>
       </ul>
     </div>
   </div>
-  <div class="footer-tech">
+  <div class="footer-tech" data-i18n="footer.tech">
     <span>Technology &amp; Infrastructure</span> — Built on Twilio's Customer Engagement Platform · AWS Cloud · Hostinger Cloud
   </div>
   <div class="footer-bottom">
-    <span>© 2026 Vouza AI. All rights reserved. Registered in Singapore.</span>
+    <span data-i18n="footer.copyright">© 2026 Vouza AI. All rights reserved. Registered in Singapore.</span>
     <span style="display:flex;gap:20px;align-items:center;">
-      <a href="#" onclick="openPrivacy(event)" style="color:var(--muted);text-decoration:none;font-size:0.78rem;transition:color 0.2s;" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--muted)'">Privacy Policy</a>
+      <a href="#" onclick="openPrivacy(event)" style="color:var(--muted);text-decoration:none;font-size:0.78rem;transition:color 0.2s;" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--muted)'" data-i18n="footer.privacy">Privacy Policy</a>
       <span style="opacity:0.3;">·</span>
-      <a href="#" onclick="openTerms(event)" style="color:var(--muted);text-decoration:none;font-size:0.78rem;transition:color 0.2s;" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--muted)'">Terms of Service</a>
+      <a href="#" onclick="openTerms(event)" style="color:var(--muted);text-decoration:none;font-size:0.78rem;transition:color 0.2s;" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--muted)'" data-i18n="footer.terms">Terms of Service</a>
       <span style="opacity:0.3;">·</span>
       <span>hello@vouza.ai</span>
     </span>
@@ -2195,22 +2205,22 @@
 </div>
 
 <!-- ── VEE CHAT WIDGET ──────────────────────────────── -->
-<button class="vee-chat-launcher" id="veeChatLauncher" aria-label="Chat with Vee, Vouza's AI assistant">
+<button class="vee-chat-launcher" id="veeChatLauncher" aria-label="Chat with Vee, Vouza's AI assistant" data-i18n-attr="vee.launcher.aria">
   <span class="vee-chat-bubble-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19l1.3-3.9A8 8 0 1 1 8.7 18.6L4 19z"/></svg></span>
   <span class="vee-chat-close-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span>
 </button>
-<div class="vee-chat-panel" id="veeChatPanel" role="dialog" aria-label="Chat with Vee">
+<div class="vee-chat-panel" id="veeChatPanel" role="dialog" aria-label="Chat with Vee" data-i18n-attr="vee.panel.aria">
   <div class="vee-chat-header">
     <div class="vee-chat-avatar">V</div>
     <div class="vee-chat-header-text">
       <h4>Vee</h4>
-      <span>Vouza AI Assistant</span>
+      <span data-i18n="vee.header.subtitle">Vouza AI Assistant</span>
     </div>
   </div>
   <div class="vee-chat-messages" id="veeChatMessages"></div>
   <form class="vee-chat-form" id="veeChatForm">
-    <input type="text" id="veeChatInput" placeholder="Ask Vee anything…" autocomplete="off" maxlength="2000" />
-    <button type="submit" id="veeChatSend">Send</button>
+    <input type="text" id="veeChatInput" placeholder="Ask Vee anything…" autocomplete="off" maxlength="2000" data-i18n-attr="vee.input.placeholder" />
+    <button type="submit" id="veeChatSend" data-i18n="vee.send">Send</button>
   </form>
 </div>
 
@@ -2218,29 +2228,167 @@
 <nav class="mobile-app-bar" id="mobileAppBar" aria-label="Quick contact">
   <a href="tel:+6587747989" class="mab-item">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-    <span>Call</span>
+    <span data-i18n="mab.call">Call</span>
   </a>
   <a href="https://wa.me/6587747989?text=Hi%20Vouza%2C%20I%27d%20like%20to%20find%20out%20more" target="_blank" rel="noopener noreferrer" class="mab-item">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1.2-3.6A8 8 0 1 1 8.6 19.2L4 20z"/><path d="M8.5 10.5c0 3 2.5 5 5 5"/></svg>
-    <span>WhatsApp</span>
+    <span data-i18n="mab.whatsapp">WhatsApp</span>
   </a>
   <a href="careers.html" class="mab-item">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7.5" width="18" height="12.5" rx="2"/><path d="M8.5 7.5V6a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v1.5"/><path d="M3 13h18"/></svg>
-    <span>Careers</span>
+    <span data-i18n="mab.careers">Careers</span>
   </a>
   <a href="index.html#contact" class="mab-item" id="mabBookBtn">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="16" rx="2"/><path d="M3.5 9.5h17M8 3v3M16 3v3"/></svg>
-    <span>Book</span>
+    <span data-i18n="mab.book">Book</span>
   </a>
   <a href="products.html" class="mab-item">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7.5" height="7.5" rx="1.5"/><rect x="13" y="3.5" width="7.5" height="7.5" rx="1.5"/><rect x="3.5" y="13" width="7.5" height="7.5" rx="1.5"/><rect x="13" y="13" width="7.5" height="7.5" rx="1.5"/></svg>
-    <span>Products</span>
+    <span data-i18n="mab.products">Products</span>
   </a>
 </nav>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
+  /* ── LANGUAGE TOGGLE (EN / 简体中文) ──────────────── */
+  (function () {
+    var LANG_KEY = 'vouza_lang';
+    var ZH = {
+      'nav.services': '服务',
+      'nav.products': '产品',
+      'nav.demo': '演示',
+      'nav.assistants': 'AI 智能助手',
+      'nav.howitworks': '运作方式',
+      'nav.industries': '行业',
+      'nav.careers': '招聘',
+      'nav.contact': '联系我们',
+      'nav.talktous': '咨询我们',
+      'nav.getstarted': '立即开始',
+
+      'careers.header.label': '招聘',
+      'careers.header.title': '加入团队<br><span class="grad-text">共建 Vouza</span>',
+      'careers.header.desc': '我们正在招聘销售、财务、运营和人力资源人才——协助我们将 AI、机器人技术和智能门禁系统带给东南亚各地的企业。',
+
+      'careers.tse.label': '招聘中',
+      'careers.tse.title': '技术销售工程师',
+      'careers.tse.subtitle': '全职 · 新加坡 / 马来西亚',
+      'careers.tse.intro': '全面负责销售流程中的技术环节——从产品实机演示到定制化部署方案的范围界定——覆盖 Vouza 全线产品，包括 AI 智能助手、智能门禁硬件及机器人技术。',
+      'careers.tse.dohead': '工作内容',
+      'careers.tse.dolist': '<li>向潜在客户展示并演示 Vouza 的 AI 智能助手、WhatsApp AI、智能车牌识别（ANPR）、智能纪念系统、智能门禁与安防监控，以及机器人解决方案</li><li>理解客户需求，并将其转化为涵盖 AI 软件、物联网/硬件及机器人技术的定制化技术方案</li><li>执行产品演示和概念验证部署——包括现场 ANPR 摄像头安装、机器人演示及 WhatsApp AI 配置</li><li>与工程团队紧密协作，界定定制化 AI 实施项目的范围</li><li>支持从技术发现到成交及交接的整个销售流程</li><li>与物业管理方、企业客户及东南亚各地的渠道合作伙伴建立并维护关系</li>',
+      'careers.tse.reqhead': '任职要求',
+      'careers.tse.reqlist': '<li>证书、文凭或学位，工程、信息技术、计算机科学或相关专业</li><li>2 年以上技术销售、售前工程或解决方案咨询经验（具备 AI/物联网/机器人背景者优先）</li><li>能够自如地向非技术背景的利益相关方讲解技术概念</li><li>具备硬件演示的动手能力——摄像头、门禁设备、机器人</li><li>沟通能力强；具备多语言能力（英语加中文或马来语）者在东南亚市场更具优势</li>',
+      'careers.tse.apply': '立即申请 →',
+
+      'careers.finance.label': '招聘中',
+      'careers.finance.title': '财务主管',
+      'careers.finance.subtitle': '全职 · 新加坡',
+      'careers.finance.intro': '在 Vouza 拓展覆盖新加坡、马来西亚及东南亚的软件、硬件与项目制混合营收业务过程中，领导公司的财务职能。',
+      'careers.finance.dohead': '工作内容',
+      'careers.finance.dolist': '<li>负责财务规划、预算编制及现金流管理，支持 Vouza 的区域化扩张</li><li>管理订阅制（AI 智能助手、WhatsApp AI）、项目制（网站设计、定制化实施）以及含硬件（智能 ANPR、智能纪念系统、智能门禁与安防监控、机器人）等多种营收模式的账务处理与收入确认</li><li>监督新加坡与马来西亚两地的法定合规、税务申报及审计准备工作</li><li>为管理层构建财务模型并提供报告支持</li><li>管理硬件组件（摄像头、机器人、门禁终端）的供应商合同与采购，推动成本控制</li><li>按需支持与技术合作伙伴（如 Twilio、AWS）的商业协议</li>',
+      'careers.finance.reqhead': '任职要求',
+      'careers.finance.reqlist': '<li>证书、文凭或学位，会计、财务或相关专业（具备 ACCA/CPA 资格者优先，非必需）</li><li>5 年以上财务或会计经验，含领导或管理经验</li><li>具备 SaaS/订阅制营收及项目制账务经验者优势明显</li><li>熟悉新加坡与马来西亚的法定与税务要求</li><li>能够适应快速发展的初创企业环境——兼具执行力与战略思维</li>',
+      'careers.finance.apply': '立即申请 →',
+
+      'careers.pm.label': '招聘中',
+      'careers.pm.title': '项目经理',
+      'careers.pm.subtitle': '全职 · 新加坡 / 马来西亚',
+      'careers.pm.intro': '负责 Vouza 各产品线客户项目的交付管理——从 AI 软件上线到安防硬件及机器人的现场安装。',
+      'careers.pm.dohead': '工作内容',
+      'careers.pm.dolist': '<li>负责 Vouza 各产品线客户项目的端到端交付管理——包括 AI 智能助手部署、WhatsApp AI 上线、智能 ANPR / 智能纪念系统 / 智能门禁安装、机器人部署以及网站设计项目</li><li>协调销售、工程与客户三方，确保项目按时、按预算交付</li><li>为软硬件结合的实施项目制定项目计划、时间表及资源分配方案</li><li>管理实体产品（ANPR 摄像头、门禁终端、机器人）的现场安装排期</li><li>跟踪项目风险、问题及变更请求，并向利益相关方汇报进度</li><li>确保部署后的高质量交接及客户培训</li>',
+      'careers.pm.reqhead': '任职要求',
+      'careers.pm.reqlist': '<li>证书、文凭或学位，专业不限；具备 PMP 或 Prince2 认证者优先</li><li>3 年以上项目管理经验，理想情况下同时涉及软件及硬件/实体部署项目</li><li>较强的组织能力与利益相关方管理能力</li><li>能够协调在物业现场、纪念场所及企业办公室的现场安装工作</li><li>具备 Asana、Jira 或 Monday.com 等项目管理工具的使用经验</li>',
+      'careers.pm.apply': '立即申请 →',
+
+      'careers.hr.label': '招聘中',
+      'careers.hr.title': '人力资源主管',
+      'careers.hr.subtitle': '全职 · 新加坡 / 马来西亚',
+      'careers.hr.intro': '在 Vouza 拓展工程、销售及运营团队、覆盖东南亚各地的过程中，构建并领导公司的人力资源职能。',
+      'careers.hr.dohead': '工作内容',
+      'careers.hr.dolist': '<li>随着公司在工程、销售及运营团队的持续扩张，构建并领导 Vouza 的人力资源职能</li><li>负责完整的人才生命周期管理——招聘、入职、绩效管理及员工保留</li><li>为在新加坡、马来西亚及东南亚运营的快速成长型 AI/科技公司设计薪酬、福利及人力资源政策</li><li>确保符合新加坡与马来西亚的劳动法及工作准证相关法规</li><li>在分布式、跨职能团队中培养企业文化及员工敬业度</li><li>随着机器人及安防系统等新产品线的扩张，与管理层协作推进组织设计与人力规划</li>',
+      'careers.hr.reqhead': '任职要求',
+      'careers.hr.reqlist': '<li>证书、文凭或学位，人力资源、工商管理或相关专业</li><li>5 年以上人力资源经验，其中至少 2 年担任领导或管理职务</li><li>了解新加坡与马来西亚的劳动法及相关法规</li><li>具备为技术类（工程）及商业类（销售）岗位招聘的经验</li><li>较强的人际交往与组织设计能力；能够从零开始搭建人力资源流程</li>',
+      'careers.hr.apply': '立即申请 →',
+
+      'careers.cta.title': '没有找到<br><span class="grad-text">合适的职位？</span>',
+      'careers.cta.desc': 'Vouza 始终欢迎优秀人才加入。请将您的简历发送给我们，并告诉我们您希望如何贡献自己的力量——我们非常期待与您交流。',
+      'careers.cta.btn': '立即联系',
+
+      'footer.brand.desc': '为新加坡、马来西亚及东南亚各地企业提供 AI 驱动的企业解决方案。更智能的工作流程、更明智的决策、更强大的业务。',
+      'footer.newsletter.btn': '订阅',
+      'footer.solutions.head': '解决方案',
+      'footer.solutions.assistants': 'AI 智能助手',
+      'footer.solutions.webapp': '网站与应用集成',
+      'footer.solutions.robotics': '机器人技术',
+      'footer.solutions.camera': 'AI 摄像系统',
+      'footer.company.head': '公司',
+      'footer.company.about': '关于 Vouza',
+      'footer.company.industries': '行业',
+      'footer.company.howitworks': '运作方式',
+      'footer.company.contact': '联系我们',
+      'footer.company.careers': '招聘',
+      'footer.markets.head': '市场',
+      'footer.markets.sg': '新加坡',
+      'footer.markets.my': '马来西亚',
+      'footer.markets.th': '泰国',
+      'footer.markets.id': '印度尼西亚',
+      'footer.markets.vn': '越南',
+      'footer.tech': '<span>技术与基础设施</span> — 基于 Twilio 客户互动平台构建 · AWS 云 · Hostinger 云',
+      'footer.copyright': '© 2026 Vouza AI。保留所有权利。于新加坡注册。',
+      'footer.privacy': '隐私政策',
+      'footer.terms': '服务条款',
+
+      'vee.header.subtitle': 'Vouza AI 助手',
+      'vee.send': '发送',
+    };
+    var ZH_ATTR = {
+      'vee.launcher.aria': { attr: 'aria-label', zh: '与 Vee（Vouza 的 AI 助手）聊天' },
+      'vee.panel.aria': { attr: 'aria-label', zh: '与 Vee 聊天' },
+      'vee.input.placeholder': { attr: 'placeholder', zh: '问问 Vee 任何问题…' },
+    };
+
+    ZH['mab.call'] = '致电';
+    ZH['mab.whatsapp'] = 'WhatsApp';
+    ZH['mab.careers'] = '招聘';
+    ZH['mab.book'] = '预约';
+    ZH['mab.products'] = '产品';
+
+    function applyLang(lang) {
+      document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+      document.querySelectorAll('[data-i18n]').forEach(function (el) {
+        var key = el.getAttribute('data-i18n');
+        if (el.dataset.enCache === undefined) el.dataset.enCache = el.innerHTML;
+        if (lang === 'zh' && ZH[key] !== undefined) {
+          el.innerHTML = ZH[key];
+        } else {
+          el.innerHTML = el.dataset.enCache;
+        }
+      });
+      document.querySelectorAll('[data-i18n-attr]').forEach(function (el) {
+        var key = el.getAttribute('data-i18n-attr');
+        var spec = ZH_ATTR[key];
+        if (!spec) return;
+        var cacheProp = 'enCache' + spec.attr.replace(/-([a-z])/g, function (_, c) { return c.toUpperCase(); });
+        if (el.dataset[cacheProp] === undefined) el.dataset[cacheProp] = el.getAttribute(spec.attr) || '';
+        el.setAttribute(spec.attr, lang === 'zh' ? spec.zh : el.dataset[cacheProp]);
+      });
+      document.querySelectorAll('.lang-btn').forEach(function (btn) {
+        btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+      });
+      window.__vouzaLang = lang;
+      try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+    }
+    window.__vouzaApplyLang = applyLang;
+
+    document.querySelectorAll('.lang-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () { applyLang(btn.getAttribute('data-lang')); });
+    });
+
+    var saved = 'en';
+    try { saved = localStorage.getItem(LANG_KEY) || 'en'; } catch (e) {}
+    applyLang(saved);
+  })();
+
   /* ── STARFIELD ───────────────────────────────────── */
   const canvas = document.getElementById('starfield');
   const ctx = canvas.getContext('2d');
@@ -2589,6 +2737,36 @@
     const VEE_API_URL = 'https://vee-chat-proxy.vouza.workers.dev';
     const MAX_HISTORY = 20;
 
+    const VEE_STRINGS = {
+      en: {
+        welcome: "Hi, I'm Vee 👋 Ask me about Vouza's AI assistants, robotics, or how to get started — or try Admin AI free on GitHub.",
+        leadChip: '📩 Leave your email — get a callback',
+        leadPrompt: "Great — drop your email below and our team will reach out within 1 business day.",
+        leadInvalidEmail: "Hmm, that doesn't look like an email address — mind trying again?",
+        leadSuccess: "Got it — thanks! Our team will be in touch within 1 business day. Anything else I can help with meanwhile?",
+        leadFail: "Sorry, that didn't go through — please email us directly at hello@vouza.ai.",
+        inputPlaceholderDefault: 'Ask Vee anything…',
+        inputPlaceholderLead: 'you@company.com',
+        typing: 'Typing…',
+        rateLimited: "You're sending messages a little too quickly — give me a moment, then try again. 😊",
+        connectionError: "Sorry, I'm having trouble connecting right now — please try again, or reach us at hello@vouza.ai.",
+      },
+      zh: {
+        welcome: '你好，我是 Vee 👋 欢迎咨询 Vouza 的 AI 智能助手、机器人技术，或了解如何开始使用——也可以在 GitHub 上免费试用 Admin AI。',
+        leadChip: '📩 留下您的邮箱——获取回电',
+        leadPrompt: '好的——请在下方留下您的邮箱，我们的团队将在 1 个工作日内与您联系。',
+        leadInvalidEmail: '这看起来不太像有效的邮箱地址——请再试一次好吗？',
+        leadSuccess: '收到，谢谢！我们的团队将在 1 个工作日内与您联系。还有其他可以帮您的吗？',
+        leadFail: '抱歉，提交未成功——请直接发送邮件至 hello@vouza.ai。',
+        inputPlaceholderDefault: '问问 Vee 任何问题…',
+        inputPlaceholderLead: 'you@company.com',
+        typing: '正在输入…',
+        rateLimited: '您发送消息的速度有点快——请稍等片刻后再试。😊',
+        connectionError: '抱歉，目前连接出现问题——请重试，或通过 hello@vouza.ai 联系我们。',
+      },
+    };
+    function veeT() { return VEE_STRINGS[window.__vouzaLang || 'en']; }
+
     const launcher = document.getElementById('veeChatLauncher');
     const panel    = document.getElementById('veeChatPanel');
     const messages = document.getElementById('veeChatMessages');
@@ -2613,12 +2791,12 @@
       const chip = document.createElement('button');
       chip.type = 'button';
       chip.className = 'vee-chip';
-      chip.textContent = '📩 Leave your email — get a callback';
+      chip.textContent = veeT().leadChip;
       chip.addEventListener('click', function () {
         chip.remove();
         leadMode = true;
-        addBubble('vee', "Great — drop your email below and our team will reach out within 1 business day.");
-        input.placeholder = 'you@company.com';
+        addBubble('vee', veeT().leadPrompt);
+        input.placeholder = veeT().inputPlaceholderLead;
         input.focus();
       });
       messages.appendChild(chip);
@@ -2630,7 +2808,7 @@
       launcher.classList.toggle('open', opened);
       panel.classList.toggle('open', opened);
       if (opened && messages.children.length === 0) {
-        addBubble('vee', "Hi, I'm Vee 👋 Ask me about Vouza's AI assistants, robotics, or how to get started — or try Admin AI free on GitHub.");
+        addBubble('vee', veeT().welcome);
         addLeadChip();
         input.focus();
       }
@@ -2662,7 +2840,7 @@
 
       if (leadMode) {
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(text)) {
-          addBubble('vee', "Hmm, that doesn't look like an email address — mind trying again?");
+          addBubble('vee', veeT().leadInvalidEmail);
           return;
         }
         addBubble('user', text);
@@ -2671,11 +2849,11 @@
         sendBtn.disabled = true;
         try {
           await submitLead(text);
-          addBubble('vee', "Got it — thanks! Our team will be in touch within 1 business day. Anything else I can help with meanwhile?");
+          addBubble('vee', veeT().leadSuccess);
           leadMode = false;
-          input.placeholder = 'Ask Vee anything…';
+          input.placeholder = veeT().inputPlaceholderDefault;
         } catch (err) {
-          addBubble('vee', "Sorry, that didn't go through — please email us directly at hello@vouza.ai.");
+          addBubble('vee', veeT().leadFail);
         } finally {
           input.disabled = false;
           sendBtn.disabled = false;
@@ -2691,18 +2869,18 @@
       input.value = '';
       input.disabled = true;
       sendBtn.disabled = true;
-      const typing = addBubble('vee', 'Typing…');
+      const typing = addBubble('vee', veeT().typing);
       typing.classList.add('typing');
 
       try {
         const res = await fetch(VEE_API_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ stream: true, messages: history }),
+          body: JSON.stringify({ stream: true, messages: history, lang: window.__vouzaLang || 'en' }),
         });
         if (res.status === 429) {
           typing.remove();
-          addBubble('vee', "You're sending messages a little too quickly — give me a moment, then try again. 😊");
+          addBubble('vee', veeT().rateLimited);
           history.pop();
           return;
         }
@@ -2756,7 +2934,7 @@
         if (history.length > MAX_HISTORY) history = history.slice(-MAX_HISTORY);
       } catch (err) {
         if (typing.parentNode) typing.remove();
-        addBubble('vee', "Sorry, I'm having trouble connecting right now — please try again, or reach us at hello@vouza.ai.");
+        addBubble('vee', veeT().connectionError);
       } finally {
         input.disabled = false;
         sendBtn.disabled = false;
