@@ -5,3 +5,6 @@ Thumbs.db
 .env.local
 node_modules/
 .tmp/
+pb_data/
+# PocketBase server executable (32 MB) — download from pocketbase.io releases, don't commit
+**/apps/pocketbase/pocketbase

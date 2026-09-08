@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  overflow-x: clip;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    
+    /* Vouza Deep Blue: #003DA5 -> HSL: 218 100% 32% */
+    --primary: 218 100% 32%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    
+    --accent: 218 100% 32%;
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 218 100% 32%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 15%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 15%;
+    --popover-foreground: 210 40% 98%;
+    
+    /* Lighter blue for dark mode visibility */
+    --primary: 218 100% 60%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+    
+    --accent: 218 100% 60%;
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 218 100% 60%;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .gradient-primary {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+  }
+}
