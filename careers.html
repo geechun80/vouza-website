@@ -2735,6 +2735,7 @@
   /* ── VEE CHAT WIDGET ──────────────────────────────── */
   (function () {
     const VEE_API_URL = 'https://vee-chat-proxy.vouza.workers.dev';
+    const VEE_API_KEY = 'fa4ad6c88d8f2ffaa70a818092d53d525490783fa550cfb06927e68ff3412c6d';
     const MAX_HISTORY = 20;
 
     const VEE_STRINGS = {
@@ -2875,7 +2876,7 @@
       try {
         const res = await fetch(VEE_API_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'X-Vee-Key': VEE_API_KEY },
           body: JSON.stringify({ stream: true, messages: history, lang: window.__vouzaLang || 'en' }),
         });
         if (res.status === 429) {

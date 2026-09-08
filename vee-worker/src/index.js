@@ -64,6 +64,14 @@ export default {
       });
     }
 
+    const clientKey = request.headers.get('X-Vee-Key') || '';
+    if (!env.APP_SHARED_SECRET || clientKey !== env.APP_SHARED_SECRET) {
+      return new Response(JSON.stringify({ error: 'Forbidden' }), {
+        status: 403,
+        headers: { ...headers, 'Content-Type': 'application/json' },
+      });
+    }
+
     const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
     try {
       const stub = env.RATE_LIMITER_DO.get(env.RATE_LIMITER_DO.idFromName(ip));

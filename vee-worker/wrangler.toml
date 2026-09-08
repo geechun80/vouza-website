@@ -14,5 +14,6 @@ class_name = "RateLimiter"
 tag = "v1"
 new_sqlite_classes = ["RateLimiter"]
 
-# Secret (set via `wrangler secret put OPENROUTER_API_KEY`, never stored here):
+# Secrets (set via `wrangler secret put <NAME>`, never stored here):
 #   OPENROUTER_API_KEY
+#   APP_SHARED_SECRET  — must match the key sent by the frontend as the X-Vee-Key header
