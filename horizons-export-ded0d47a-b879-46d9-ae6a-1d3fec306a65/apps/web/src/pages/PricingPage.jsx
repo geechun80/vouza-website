@@ -7,15 +7,16 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from '@/components/ui/badge';
 import Header from '@/components/Header.jsx';
 import Footer from '@/components/Footer.jsx';
-import { Check } from 'lucide-react';
+import PlanFeatures from '@/components/PlanFeatures.jsx';
 import { cn } from '@/lib/utils';
-import { MARKETS, PLANS, SETUP_FEE } from '@/lib/plans.js';
+import { MARKETS, PLANS, SETUP_FEE, TOPUPS } from '@/lib/plans.js';
 
 const PricingPage = () => {
   const { isAuthenticated } = useAuth();
   const [market, setMarket] = useState('sg');
   const [billingInterval, setBillingInterval] = useState('monthly');
   const activeMarket = MARKETS.find((m) => m.id === market);
+  const isAnnual = billingInterval === 'annual';
 
   return (
     <>
@@ -40,16 +41,25 @@ const PricingPage = () => {
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               WhatsApp AI Agents, priced per Agent per month. Each subscription covers one WhatsApp number — add as many Agents as your business needs.
             </p>
+            <p className="mt-5 text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Not sure which plan fits your workflow?{' '}
+              <a href="mailto:hello@vouza.ai" className="text-primary underline underline-offset-4 hover:text-primary/80">Talk to us before subscribing</a>{' '}
+              and we'll recommend the right Agent package for you.
+            </p>
           </div>
 
+          {/* aria-pressed on each option: which market/interval is selected is
+              otherwise conveyed only by the gradient fill, which a screen
+              reader can't see. */}
           <div className="flex flex-wrap justify-center gap-3 mb-14">
-            <div className="inline-flex rounded-full border border-border bg-card/60 backdrop-blur-sm p-1">
+            <div className="inline-flex rounded-full border border-border bg-card/60 backdrop-blur-sm p-1" role="group" aria-label="Billing region">
               {MARKETS.map((m) => (
                 <Button
                   key={m.id}
                   type="button"
                   variant={market === m.id ? 'default' : 'ghost'}
                   size="sm"
+                  aria-pressed={market === m.id}
                   className={market === m.id ? 'text-[#01181c]' : ''}
                   onClick={() => setMarket(m.id)}
                 >
@@ -57,21 +67,23 @@ const PricingPage = () => {
                 </Button>
               ))}
             </div>
-            <div className="inline-flex rounded-full border border-border bg-card/60 backdrop-blur-sm p-1">
+            <div className="inline-flex rounded-full border border-border bg-card/60 backdrop-blur-sm p-1" role="group" aria-label="Billing interval">
               <Button
                 type="button"
-                variant={billingInterval === 'monthly' ? 'default' : 'ghost'}
+                variant={!isAnnual ? 'default' : 'ghost'}
                 size="sm"
-                className={billingInterval === 'monthly' ? 'text-[#01181c]' : ''}
+                aria-pressed={!isAnnual}
+                className={!isAnnual ? 'text-[#01181c]' : ''}
                 onClick={() => setBillingInterval('monthly')}
               >
                 Monthly
               </Button>
               <Button
                 type="button"
-                variant={billingInterval === 'annual' ? 'default' : 'ghost'}
+                variant={isAnnual ? 'default' : 'ghost'}
                 size="sm"
-                className={billingInterval === 'annual' ? 'text-[#01181c]' : ''}
+                aria-pressed={isAnnual}
+                className={isAnnual ? 'text-[#01181c]' : ''}
                 onClick={() => setBillingInterval('annual')}
               >
                 Annual <span className="ml-1 text-xs opacity-80">(Save 10%)</span>
@@ -98,26 +110,19 @@ const PricingPage = () => {
                 </CardHeader>
                 <CardContent className="flex-1">
                   <div className="mb-8 pb-8 border-b border-border">
-                    <div className="flex items-baseline gap-1">
+                    <div className="flex items-baseline gap-1 flex-wrap">
                       <span className="text-4xl font-extrabold tracking-tight">
-                        {activeMarket?.currency} {(billingInterval === 'annual' ? plan.annualPrice[market] : plan.price[market]).toFixed(2)}
+                        {activeMarket?.currency} {(isAnnual ? plan.annualPrice[market] : plan.price[market]).toFixed(2)}
                       </span>
                       <span className="text-muted-foreground">
-                        {billingInterval === 'annual' ? '/Agent/year' : '/Agent/month'}
+                        {isAnnual ? '/WhatsApp Agent/year' : '/WhatsApp Agent/month'}
                       </span>
                     </div>
                     <p className="text-xs text-muted-foreground mt-2">
-                      + {activeMarket?.currency} {SETUP_FEE[market].toFixed(2)} one-time setup fee on your first Agent
+                      + {activeMarket?.currency} {SETUP_FEE[market].toFixed(2)} one-time implementation fee on your first Agent
                     </p>
                   </div>
-                  <ul className="space-y-3">
-                    {plan.features.map((feature) => (
-                      <li key={feature} className="flex items-start gap-3 text-sm">
-                        <Check className="w-5 h-5 text-primary flex-shrink-0" />
-                        <span className="text-foreground/80 leading-relaxed">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <PlanFeatures features={plan.features} />
                 </CardContent>
                 <CardFooter className="mt-auto pt-6">
                   {isAuthenticated ? (
@@ -134,11 +139,57 @@ const PricingPage = () => {
             ))}
           </div>
 
-          <p className="text-center text-sm text-muted-foreground mt-12">
-            Not sure which plan fits your workflow?{' '}
-            <a href="mailto:hello@vouza.ai" className="text-primary underline underline-offset-4 hover:text-primary/80">Talk to us before subscribing</a>{' '}
-            and we'll recommend the right Agent package for you.
-          </p>
+          <section className="mt-20 max-w-4xl mx-auto">
+            <h2 className="text-2xl md:text-3xl font-extrabold text-center mb-3" style={{ letterSpacing: '-0.02em' }}>
+              Recommended top-up structure
+            </h2>
+            <p className="text-sm text-muted-foreground text-center mb-8 max-w-2xl mx-auto leading-relaxed">
+              Need more than your monthly allowance? Top-ups add usage to your current plan — they don't change the plan itself. If you find yourself topping up often, we'll suggest moving you to a higher package instead, since it usually works out cheaper.
+            </p>
+
+            <div className="glass-effect rounded-2xl overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-border/60 text-left">
+                      <th scope="col" className="px-5 py-4 font-semibold">Plan</th>
+                      <th scope="col" className="px-5 py-4 font-semibold">Included</th>
+                      <th scope="col" className="px-5 py-4 font-semibold">Recommended top-up</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {TOPUPS.map((row) => (
+                      <tr key={row.plan} className="border-b border-border/40 last:border-0 align-top">
+                        <th scope="row" className="px-5 py-4 font-semibold text-foreground text-left whitespace-nowrap">{row.plan}</th>
+                        <td className="px-5 py-4 text-muted-foreground">{row.included}</td>
+                        <td className="px-5 py-4">
+                          {row.options ? (
+                            <ul className="space-y-1">
+                              {row.options.map((option) => (
+                                <li key={option.label}>
+                                  <span className="text-muted-foreground">{option.label}</span>
+                                  <span className="mx-2 text-muted-foreground/50">·</span>
+                                  <span className="font-medium text-foreground whitespace-nowrap">
+                                    {activeMarket?.currency} {option.price[market].toFixed(2)}
+                                  </span>
+                                </li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <span className="text-muted-foreground">Custom — agreed with your account team</span>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <p className="text-xs text-muted-foreground text-center mt-4">
+              All prices exclude GST (Singapore) and SST (Malaysia), which are added at checkout where applicable.
+            </p>
+          </section>
         </div>
       </main>
       <Footer />

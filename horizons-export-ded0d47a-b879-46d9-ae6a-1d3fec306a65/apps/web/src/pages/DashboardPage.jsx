@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import Header from '@/components/Header.jsx';
 import Footer from '@/components/Footer.jsx';
 import SubscriptionManagement from '@/components/SubscriptionManagement.jsx';
+import PlanFeatures from '@/components/PlanFeatures.jsx';
 import pb from '@/lib/pocketbaseClient.js';
 import apiServerClient from '@/lib/apiServerClient.js';
 import { TrendingUp, Bot } from 'lucide-react';
@@ -181,13 +182,14 @@ const DashboardPage = () => {
               </div>
               <div className="flex flex-wrap items-center gap-2">
                 <span className="text-sm text-muted-foreground">Billing region</span>
-                <div className="inline-flex rounded-full border border-border bg-card/60 backdrop-blur-sm p-1">
+                <div className="inline-flex rounded-full border border-border bg-card/60 backdrop-blur-sm p-1" role="group" aria-label="Billing region">
                   {MARKETS.map((m) => (
                     <Button
                       key={m.id}
                       type="button"
                       variant={market === m.id ? 'default' : 'ghost'}
                       size="sm"
+                      aria-pressed={market === m.id}
                       className={market === m.id ? 'text-[#01181c]' : ''}
                       onClick={() => setMarket(m.id)}
                     >
@@ -195,11 +197,12 @@ const DashboardPage = () => {
                     </Button>
                   ))}
                 </div>
-                <div className="inline-flex rounded-full border border-border bg-card/60 backdrop-blur-sm p-1">
+                <div className="inline-flex rounded-full border border-border bg-card/60 backdrop-blur-sm p-1" role="group" aria-label="Billing interval">
                   <Button
                     type="button"
                     variant={billingInterval === 'monthly' ? 'default' : 'ghost'}
                     size="sm"
+                    aria-pressed={billingInterval === 'monthly'}
                     className={billingInterval === 'monthly' ? 'text-[#01181c]' : ''}
                     onClick={() => setBillingInterval('monthly')}
                   >
@@ -209,6 +212,7 @@ const DashboardPage = () => {
                     type="button"
                     variant={billingInterval === 'annual' ? 'default' : 'ghost'}
                     size="sm"
+                    aria-pressed={billingInterval === 'annual'}
                     className={billingInterval === 'annual' ? 'text-[#01181c]' : ''}
                     onClick={() => setBillingInterval('annual')}
                   >
@@ -238,16 +242,12 @@ const DashboardPage = () => {
                         {activeMarket?.currency} {(billingInterval === 'annual' ? plan.annualPrice[market] : plan.price[market]).toFixed(2)}
                       </span>
                       <span className="text-muted-foreground text-sm">
-                        {billingInterval === 'annual' ? '/Agent/year' : '/Agent/month'}
+                        {billingInterval === 'annual' ? '/WhatsApp Agent/year' : '/WhatsApp Agent/month'}
                       </span>
                     </div>
                   </CardHeader>
                   <CardContent className="flex-1">
-                    <ul className="text-sm text-muted-foreground space-y-2 leading-relaxed">
-                      {plan.features.map((feature) => (
-                        <li key={feature}>• {feature}</li>
-                      ))}
-                    </ul>
+                    <PlanFeatures features={plan.features} />
                   </CardContent>
                   <CardFooter className="mt-auto pt-6 border-t border-border flex-col items-stretch gap-2">
                     <Button
@@ -258,7 +258,7 @@ const DashboardPage = () => {
                       {subscribing === plan.id ? 'Redirecting…' : `Subscribe (${activeMarket?.currency})`}
                     </Button>
                     <p className="text-xs text-muted-foreground text-center">
-                      + {activeMarket?.currency} {SETUP_FEE[market].toFixed(2)} one-time setup fee on your first Agent
+                      + {activeMarket?.currency} {SETUP_FEE[market].toFixed(2)} one-time implementation fee on your first Agent
                     </p>
                   </CardFooter>
                 </Card>
