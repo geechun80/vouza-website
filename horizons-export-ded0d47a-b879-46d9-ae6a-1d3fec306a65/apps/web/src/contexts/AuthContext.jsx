@@ -61,6 +61,25 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Second half of the reset flow: the token comes from the emailed link.
+  // PocketBase invalidates the token once used and rejects expired ones, so a
+  // failure here is usually "link already used or too old" rather than a bug.
+  // The raw SDK message for that case is "An error occurred while validating
+  // the submitted data", which tells a customer nothing — so the per-field
+  // errors are passed back for the page to turn into something readable.
+  const confirmPasswordReset = async (token, password, passwordConfirm) => {
+    try {
+      await pb.collection('users').confirmPasswordReset(token, password, passwordConfirm, { $autoCancel: false });
+      return { success: true };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        fieldErrors: error?.response?.data || {},
+      };
+    }
+  };
+
   const value = {
     currentUser,
     isAuthenticated: !!currentUser,
@@ -68,6 +87,7 @@ export const AuthProvider = ({ children }) => {
     signup,
     logout,
     requestPasswordReset,
+    confirmPasswordReset,
     initialLoading
   };
 

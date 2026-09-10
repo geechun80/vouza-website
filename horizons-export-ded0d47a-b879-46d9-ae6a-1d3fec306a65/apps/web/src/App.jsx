@@ -7,6 +7,7 @@ import ProtectedRoute from './components/ProtectedRoute.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import SignupPage from './pages/SignupPage.jsx';
 import PasswordResetPage from './pages/PasswordResetPage.jsx';
+import PasswordResetConfirmPage from './pages/PasswordResetConfirmPage.jsx';
 import PricingPage from './pages/PricingPage.jsx';
 import DashboardPage from './pages/DashboardPage.jsx';
 import BillingHistoryPage from './pages/BillingHistoryPage.jsx';
@@ -23,6 +24,10 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/reset-password" element={<PasswordResetPage />} />
+          {/* Target of the link in the reset email — see the users collection's
+              resetPasswordTemplate in PocketBase, which points here rather than
+              at PocketBase's own admin UI. */}
+          <Route path="/reset-password/confirm/:token" element={<PasswordResetConfirmPage />} />
           <Route path="/pricing" element={<PricingPage />} />
           <Route
             path="/dashboard"
