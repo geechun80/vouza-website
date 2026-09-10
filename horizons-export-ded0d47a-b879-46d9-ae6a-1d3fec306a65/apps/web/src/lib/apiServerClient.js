@@ -1,6 +1,8 @@
 import pb from './pocketbaseClient.js';
 
-const API_SERVER_URL = "/hcgi/api";
+// Was the relative path "/hcgi/api" under Hostinger Horizons. Self-hosted on
+// a real subdomain, the Express API has its own origin.
+const API_SERVER_URL = import.meta.env.VITE_API_URL;
 
 const apiServerClient = {
     fetch: async (url, options = {}) => {

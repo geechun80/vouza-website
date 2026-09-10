@@ -2,9 +2,13 @@
 migrate((app) => {
     let settings = app.settings()
 
-    settings.meta.appName = "ded0d47a-b879-46d9-ae6a-1d3fec306a65.app-preview.com"
-    settings.meta.appURL = "https://ded0d47a-b879-46d9-ae6a-1d3fec306a65.app-preview.com/hcgi/platform"
-    settings.meta.hideControls = true
+    settings.meta.appName = "Vouza AI"
+    settings.meta.appURL = "https://pb.vouza.ai"
+    // Was true under Horizons, which supplied its own hosted admin dashboard
+    // (see the now-removed external-dashboard.pb.js hook). Self-hosted,
+    // PocketBase's own built-in admin UI at /_/ is the only management UI
+    // there is, so it needs to stay reachable.
+    settings.meta.hideControls = false
 
     settings.logs.maxDays = 7
     settings.logs.minLevel = 8

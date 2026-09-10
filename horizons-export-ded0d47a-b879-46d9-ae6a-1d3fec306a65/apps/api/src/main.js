@@ -53,9 +53,9 @@ app.use(globalRateLimit);
 // the stream and hand it an already-parsed object, so constructEvent would
 // throw on every call. Routes are mounted at '/' (see routes/index.js:
 // router.use('/stripe', stripeRouter)), so the path Express sees here is
-// '/stripe/webhook' even though the platform proxy exposes it under
-// '/hcgi/api/stripe/webhook' externally. Skip the global parsers for that
-// one path and let the route's own express.raw() (in stripe.js) handle it.
+// '/stripe/webhook' regardless of the external URL (api.vouza.ai/stripe/webhook
+// in production). Skip the global parsers for that one path and let the
+// route's own express.raw() (in stripe.js) handle it.
 const jsonParser = express.json({
 	limit: BodyLimit,
 });
@@ -76,7 +76,10 @@ app.use((req, res) => {
 
 const port = process.env.PORT || 3001;
 
-app.listen(port, () => {
+// Bound to loopback only: Traefik is the sole public entrypoint (see the
+// per-subdomain files in /etc/traefik/dynamic on the deploy host), so this
+// process has no business being reachable on the VPS's public interface.
+app.listen(port, '127.0.0.1', () => {
 	logger.info(`🚀 API Server running on http://localhost:${port}`);
 });
 

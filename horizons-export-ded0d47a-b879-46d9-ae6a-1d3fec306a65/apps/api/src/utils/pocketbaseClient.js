@@ -3,7 +3,10 @@ dotenv.config();
 import Pocketbase from 'pocketbase';
 import logger from './logger.js';
 
-const POCKETBASE_HOST = `https://${process.env.WEBSITE_DOMAIN}/hcgi/platform`;
+// Was `https://${WEBSITE_DOMAIN}/hcgi/platform` under Hostinger Horizons,
+// which proxied and injected WEBSITE_DOMAIN automatically. Self-hosted on a
+// real subdomain, there's no such proxy — PocketBase is reached directly.
+const POCKETBASE_HOST = process.env.POCKETBASE_URL;
 
 async function waitForHealth({ retries = 10, delayMs = 1000 } = {}) {
     for (let i = 1; i <= retries; i++) {
