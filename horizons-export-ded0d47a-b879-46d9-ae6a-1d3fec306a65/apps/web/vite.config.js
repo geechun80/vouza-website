@@ -218,6 +218,15 @@ if (window.navigation && window.self !== window.top) {
 const addTransformIndexHtml = {
 	name: 'add-transform-index-html',
 	transformIndexHtml(html) {
+		// These handlers exist for Hostinger Horizons' iframe preview: they
+		// postMessage errors (including fetch-error response bodies) to
+		// window.parent with a '*' origin. Self-hosted there is no parent frame
+		// to receive them, and shipping them means any page that embeds this app
+		// could harvest that content — so they're dev-only now.
+		if (!isDev) {
+			return { html, tags: [] };
+		}
+
 		const tags = [
 			{
 				tag: 'script',
