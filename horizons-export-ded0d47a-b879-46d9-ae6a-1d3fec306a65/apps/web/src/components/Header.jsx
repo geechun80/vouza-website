@@ -11,31 +11,33 @@ const Header = () => {
 
   const isActive = (path) => location.pathname === path;
 
+  // No "Home" entry: "/" only redirects back to "/pricing" (see App.jsx —
+  // vouza.ai itself is the marketing home page, this app has none), so a
+  // "Home" link here would just be a confusing loop back to this page.
   const navLinks = [
-    { path: '/', label: 'Home' },
     { path: '/pricing', label: 'Pricing' },
     ...(isAuthenticated ? [{ path: '/dashboard', label: 'Dashboard' }] : [])
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <img 
-              src="https://horizons-cdn.hostinger.com/ded0d47a-b879-46d9-ae6a-1d3fec306a65/db328f14825b42004d6763db94b92ea4.jpg" 
-              alt="Vouza Logo" 
-              className="h-10 w-auto object-contain rounded-md"
+        <div className="flex h-[68px] items-center justify-between">
+          <Link to="/pricing" className="flex items-center gap-2">
+            <img
+              src="/vouza-logo.png"
+              alt="Vouza"
+              className="h-11 w-auto object-contain"
             />
           </Link>
 
-          <nav className="hidden md:flex items-center gap-6">
+          <nav className="hidden md:flex items-center gap-9">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
                 className={`text-sm font-medium transition-colors hover:text-primary ${
-                  isActive(link.path) ? 'text-primary' : 'text-foreground/80'
+                  isActive(link.path) ? 'text-primary' : 'text-muted-foreground'
                 }`}
               >
                 {link.label}
@@ -66,7 +68,7 @@ const Header = () => {
           </div>
 
           <button
-            className="md:hidden"
+            className="md:hidden text-foreground"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -83,7 +85,7 @@ const Header = () => {
                   to={link.path}
                   onClick={() => setMobileMenuOpen(false)}
                   className={`text-sm font-medium transition-colors hover:text-primary ${
-                    isActive(link.path) ? 'text-primary' : 'text-foreground/80'
+                    isActive(link.path) ? 'text-primary' : 'text-muted-foreground'
                   }`}
                 >
                   {link.label}

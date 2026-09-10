@@ -12,6 +12,7 @@ import SubscriptionManagement from '@/components/SubscriptionManagement.jsx';
 import pb from '@/lib/pocketbaseClient.js';
 import apiServerClient from '@/lib/apiServerClient.js';
 import { TrendingUp, Bot } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { MARKETS, PLANS, SETUP_FEE } from '@/lib/plans.js';
 
 const DashboardPage = () => {
@@ -104,14 +105,14 @@ const DashboardPage = () => {
         <meta name="description" content="Manage your Vouza WhatsApp AI Agent subscriptions and view your billing information." />
       </Helmet>
       <Header />
-      <main className="min-h-screen bg-secondary/20">
+      <main className="min-h-screen">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="mb-12">
             <h1 className="text-3xl md:text-4xl font-bold mb-2 text-balance" style={{letterSpacing: '-0.02em'}}>
               Welcome to your Vouza Dashboard
             </h1>
             <p className="text-muted-foreground mb-4">Signed in as {currentUser?.email}</p>
-            <div className="inline-flex flex-wrap items-center gap-2 bg-card border border-border px-4 py-2 rounded-lg shadow-sm">
+            <div className="inline-flex flex-wrap items-center gap-2 bg-card/60 backdrop-blur-sm border border-border px-4 py-2 rounded-full shadow-sm">
               <TrendingUp className="w-5 h-5 text-primary" />
               <span className="text-sm font-medium">
                 Total monthly cost:{' '}
@@ -158,10 +159,10 @@ const DashboardPage = () => {
                   ))}
               </div>
             ) : (
-              <Card className="bg-card border-dashed">
+              <Card className="border-dashed bg-card/30">
                 <CardContent className="py-16 text-center">
-                  <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Bot className="w-8 h-8 text-muted-foreground" />
+                  <div className="w-16 h-16 bg-primary/10 border border-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Bot className="w-8 h-8 text-primary" />
                   </div>
                   <p className="text-foreground font-medium mb-2">No active assistants yet</p>
                   <p className="text-sm text-muted-foreground max-w-sm mx-auto">Choose a WhatsApp AI plan below to set up your first Agent.</p>
@@ -180,24 +181,26 @@ const DashboardPage = () => {
               </div>
               <div className="flex flex-wrap items-center gap-2">
                 <span className="text-sm text-muted-foreground">Billing region</span>
-                <div className="inline-flex rounded-lg border border-border bg-card p-1">
+                <div className="inline-flex rounded-full border border-border bg-card/60 backdrop-blur-sm p-1">
                   {MARKETS.map((m) => (
                     <Button
                       key={m.id}
                       type="button"
                       variant={market === m.id ? 'default' : 'ghost'}
                       size="sm"
+                      className={market === m.id ? 'text-[#01181c]' : ''}
                       onClick={() => setMarket(m.id)}
                     >
                       {m.label} ({m.currency})
                     </Button>
                   ))}
                 </div>
-                <div className="inline-flex rounded-lg border border-border bg-card p-1">
+                <div className="inline-flex rounded-full border border-border bg-card/60 backdrop-blur-sm p-1">
                   <Button
                     type="button"
                     variant={billingInterval === 'monthly' ? 'default' : 'ghost'}
                     size="sm"
+                    className={billingInterval === 'monthly' ? 'text-[#01181c]' : ''}
                     onClick={() => setBillingInterval('monthly')}
                   >
                     Monthly
@@ -206,6 +209,7 @@ const DashboardPage = () => {
                     type="button"
                     variant={billingInterval === 'annual' ? 'default' : 'ghost'}
                     size="sm"
+                    className={billingInterval === 'annual' ? 'text-[#01181c]' : ''}
                     onClick={() => setBillingInterval('annual')}
                   >
                     Annual <span className="ml-1 text-xs opacity-80">(Save 10%)</span>
@@ -216,7 +220,13 @@ const DashboardPage = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {PLANS.map((plan) => (
-                <Card key={plan.id} className="flex flex-col h-full hover:shadow-md transition-shadow">
+                <Card
+                  key={plan.id}
+                  className={cn(
+                    'flex flex-col h-full',
+                    plan.recommended && 'border-primary/40 hover:border-primary/50'
+                  )}
+                >
                   <CardHeader>
                     <div className="flex items-start justify-between gap-2">
                       <CardTitle>{plan.name}</CardTitle>
@@ -239,7 +249,7 @@ const DashboardPage = () => {
                       ))}
                     </ul>
                   </CardContent>
-                  <CardFooter className="mt-auto pt-6 border-t border-border/50 flex-col items-stretch gap-2">
+                  <CardFooter className="mt-auto pt-6 border-t border-border flex-col items-stretch gap-2">
                     <Button
                       className="w-full"
                       onClick={() => handleSubscribe(plan.id)}

@@ -1,14 +1,15 @@
-import { useTheme } from "next-themes"
 import { Toaster as Sonner } from "sonner"
 
+// This app has no light/dark toggle and no next-themes provider mounted
+// (system theme would otherwise leave the toast following the OS setting,
+// which could render a light toast on our dark surface) — it renders as one
+// dark-themed product, matching vouza.ai, so the toast is pinned to dark.
 const Toaster = ({
   ...props
 }) => {
-  const { theme = "system" } = useTheme()
-
   return (
     <Sonner
-      theme={theme}
+      theme="dark"
       className="toaster group"
       toastOptions={{
         classNames: {

@@ -1,10 +1,9 @@
 import React from 'react';
-import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
+import { Route, Routes, Navigate, BrowserRouter as Router } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext.jsx';
 import { Toaster } from '@/components/ui/sonner';
 import ScrollToTop from './components/ScrollToTop.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
-import HomePage from './pages/HomePage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import SignupPage from './pages/SignupPage.jsx';
 import PasswordResetPage from './pages/PasswordResetPage.jsx';
@@ -18,7 +17,9 @@ function App() {
       <AuthProvider>
         <ScrollToTop />
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          {/* No standalone home page — vouza.ai itself is the marketing
+              site; this app's entry point is straight into the funnel. */}
+          <Route path="/" element={<Navigate to="/pricing" replace />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/reset-password" element={<PasswordResetPage />} />

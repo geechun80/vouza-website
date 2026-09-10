@@ -56,7 +56,7 @@ const BillingHistoryPage = () => {
         <meta name="description" content="View your Vouza billing history and download invoices." />
       </Helmet>
       <Header />
-      <main className="min-h-screen bg-secondary/20">
+      <main className="min-h-screen">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="mb-8">
             <h1 className="text-3xl md:text-4xl font-bold mb-2 text-balance" style={{letterSpacing: '-0.02em'}}>
@@ -65,7 +65,7 @@ const BillingHistoryPage = () => {
             <p className="text-muted-foreground">View and download your Vouza invoices</p>
           </div>
 
-          <Card className="border-border/50 shadow-sm">
+          <Card>
             <CardHeader>
               <CardTitle>Invoices</CardTitle>
               <CardDescription>All your billing transactions and invoices for Vouza services</CardDescription>
@@ -119,8 +119,8 @@ const BillingHistoryPage = () => {
                 </div>
               ) : (
                 <div className="text-center py-16">
-                  <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mx-auto mb-4">
-                    <FileText className="w-8 h-8 text-muted-foreground" />
+                  <div className="w-16 h-16 bg-primary/10 border border-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <FileText className="w-8 h-8 text-primary" />
                   </div>
                   <p className="text-foreground font-medium mb-2">No invoices yet</p>
                   <p className="text-sm text-muted-foreground max-w-sm mx-auto">Your billing history will appear here once you have active Vouza subscriptions.</p>

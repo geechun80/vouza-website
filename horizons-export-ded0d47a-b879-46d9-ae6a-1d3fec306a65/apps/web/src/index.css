@@ -1,72 +1,120 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
 body {
-  font-family: "Plus Jakarta Sans", sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   overflow-x: clip;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
+/*
+ * This app shares its visual identity with vouza.ai (the marketing site,
+ * plain HTML at the repo root) — a dark, near-black background with
+ * cyan/blue glow accents and glassmorphic cards. There is no light/dark
+ * toggle here, so the palette below is written directly on :root as the
+ * only theme; the .dark block mirrors it so the app still renders
+ * correctly if a `dark` class is ever introduced upstream (e.g. by a
+ * shared layout) without anyone touching this file again.
+ */
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    
-    /* Vouza Deep Blue: #003DA5 -> HSL: 218 100% 32% */
-    --primary: 218 100% 32%;
-    --primary-foreground: 0 0% 100%;
-    
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
-    
-    --accent: 218 100% 32%;
+    --background: 190 75% 4%;
+    --foreground: 0 0% 100%;
+
+    --card: 195 55% 8%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 195 55% 7%;
+    --popover-foreground: 0 0% 100%;
+
+    /* Vouza cyan — #00d4d4 */
+    --primary: 180 100% 42%;
+    --primary-foreground: 190 80% 5%;
+
+    --secondary: 195 40% 14%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 195 30% 14%;
+    --muted-foreground: 200 22% 57%;
+
+    /* Vouza blue — #0066ff — used for hover/accent states */
+    --accent: 216 100% 50%;
     --accent-foreground: 0 0% 100%;
-    
-    --destructive: 0 84% 60%;
+
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 218 100% 32%;
-    --radius: 0.75rem;
+
+    --border: 184 89% 7%;
+    --input: 184 70% 10%;
+    --ring: 180 100% 42%;
+    --radius: 1rem;
+
+    /* Raw brand hues, not part of the shadcn semantic set — used where a
+       component needs the actual cyan-to-blue gradient (e.g. primary
+       buttons) rather than a single flat token color. Mirrors --cyan/
+       --blue/--violet in the marketing site's index.html. */
+    --brand-cyan: 180 100% 42%;
+    --brand-cyan-2: 180 100% 47%;
+    --brand-blue: 216 100% 50%;
+    --brand-violet: 252 100% 68%;
+    --brand-glow: 180 100% 42%;
   }
 
   .dark {
-    --background: 222 47% 11%;
-    --foreground: 210 40% 98%;
-    --card: 222 47% 15%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222 47% 15%;
-    --popover-foreground: 210 40% 98%;
-    
-    /* Lighter blue for dark mode visibility */
-    --primary: 218 100% 60%;
-    --primary-foreground: 0 0% 100%;
-    
-    --secondary: 217 33% 17%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 65%;
-    
-    --accent: 218 100% 60%;
+    --background: 190 75% 4%;
+    --foreground: 0 0% 100%;
+
+    --card: 195 55% 8%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 195 55% 7%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 180 100% 42%;
+    --primary-foreground: 190 80% 5%;
+
+    --secondary: 195 40% 14%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 195 30% 14%;
+    --muted-foreground: 200 22% 57%;
+
+    --accent: 216 100% 50%;
     --accent-foreground: 0 0% 100%;
-    
-    --destructive: 0 63% 31%;
+
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
-    --border: 217 33% 17%;
-    --input: 217 33% 17%;
-    --ring: 218 100% 60%;
+
+    --border: 184 89% 7%;
+    --input: 184 70% 10%;
+    --ring: 180 100% 42%;
+
+    --brand-cyan: 180 100% 42%;
+    --brand-cyan-2: 180 100% 47%;
+    --brand-blue: 216 100% 50%;
+    --brand-violet: 252 100% 68%;
+    --brand-glow: 180 100% 42%;
+  }
+
+  /* Upstream shadcn templates apply `border-border` / `bg-background` at the
+     base layer; this file never had that rule, which meant every bare
+     `border` utility in the app was silently falling back to Tailwind's
+     default gray instead of our token. Restoring it here is what makes the
+     rest of this redesign actually take effect. */
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    background-image: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0, 102, 255, 0.12) 0%, transparent 60%);
+    background-attachment: fixed;
   }
 }
 
@@ -74,14 +122,32 @@ html {
   .text-balance {
     text-wrap: balance;
   }
-  
+
+  /* Glassmorphic surface matching the marketing site's --card-bg /
+     --card-border treatment (rgba(0,60,70,0.25) over near-black). */
   .glass-effect {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 40, 50, 0.35);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 200, 200, 0.12);
   }
-  
+
   .gradient-primary {
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+    background: linear-gradient(135deg, hsl(var(--brand-cyan)) 0%, hsl(var(--brand-blue)) 100%);
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, hsl(var(--brand-cyan)) 0%, hsl(var(--brand-blue)) 45%, hsl(var(--brand-violet)) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  .glow-cyan {
+    box-shadow: 0 0 20px rgba(0, 212, 212, 0.3);
+  }
+  .glow-cyan-lg {
+    box-shadow: 0 0 30px rgba(0, 212, 212, 0.5);
   }
 }

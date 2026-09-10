@@ -64,14 +64,14 @@ const SignupPage = () => {
         <meta name="description" content="Create your Vouza account and start managing AI assistants for your business." />
       </Helmet>
       <Header />
-      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-secondary/30 py-12 px-4">
-        <Card className="w-full max-w-md shadow-lg border-border/50">
+      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4">
+        <Card className="w-full max-w-md">
           <CardHeader className="text-center">
             <div className="flex justify-center mb-6">
-              <img 
-                src="https://horizons-cdn.hostinger.com/ded0d47a-b879-46d9-ae6a-1d3fec306a65/db328f14825b42004d6763db94b92ea4.jpg" 
-                alt="Vouza Logo" 
-                className="h-12 w-auto object-contain rounded-lg"
+              <img
+                src="/vouza-logo.png"
+                alt="Vouza"
+                className="h-14 w-auto object-contain rounded-xl"
               />
             </div>
             <CardTitle className="text-2xl">Create your Vouza account</CardTitle>
@@ -126,7 +126,7 @@ const SignupPage = () => {
               </Button>
             </form>
           </CardContent>
-          <CardFooter className="flex justify-center border-t border-border/50 pt-6">
+          <CardFooter className="flex justify-center border-t border-border pt-6">
             <p className="text-sm text-muted-foreground">
               Already have a Vouza account?{' '}
               <Link to="/login" className="text-primary hover:underline font-medium">
