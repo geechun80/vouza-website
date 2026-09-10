@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet';
 import { useAuth } from '@/contexts/AuthContext.jsx';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
 import Header from '@/components/Header.jsx';
@@ -11,25 +12,23 @@ import SubscriptionManagement from '@/components/SubscriptionManagement.jsx';
 import pb from '@/lib/pocketbaseClient.js';
 import apiServerClient from '@/lib/apiServerClient.js';
 import { TrendingUp, Bot } from 'lucide-react';
+import { MARKETS, PLANS, SETUP_FEE } from '@/lib/plans.js';
 
 const DashboardPage = () => {
   const { currentUser } = useAuth();
-  const [characters, setCharacters] = useState([]);
   const [subscriptions, setSubscriptions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [subscribing, setSubscribing] = useState(null);
+  const [market, setMarket] = useState('sg');
+  const [billingInterval, setBillingInterval] = useState('monthly');
 
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [charactersData, subscriptionsData] = await Promise.all([
-        pb.collection('ai_characters').getFullList({ $autoCancel: false }),
-        pb.collection('subscriptions').getFullList({
-          filter: `user_id = "${currentUser.id}"`,
-          $autoCancel: false
-        })
-      ]);
-      setCharacters(charactersData);
+      const subscriptionsData = await pb.collection('subscriptions').getFullList({
+        filter: `user_id = "${currentUser.id}"`,
+        $autoCancel: false
+      });
       setSubscriptions(subscriptionsData);
     } catch (error) {
       console.error('Failed to fetch data:', error);
@@ -43,50 +42,66 @@ const DashboardPage = () => {
     fetchData();
   }, [currentUser]);
 
-  const isSubscribed = (characterId) => {
-    return subscriptions.some(
-      sub => sub.character_id === characterId && sub.status !== 'cancelled'
-    );
-  };
+  // Stripe redirects back here after hosted Checkout. The subscription record
+  // is written by the webhook, not by this redirect, so it may not exist yet on
+  // the fetch that follows.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const checkout = params.get('checkout');
 
-  const handleSubscribe = async (character) => {
-    setSubscribing(character.id);
+    if (checkout === 'success') {
+      toast('Payment received — your Agent will appear here shortly');
+    } else if (checkout === 'cancelled') {
+      toast('Checkout cancelled');
+    }
+
+    if (checkout) {
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  }, []);
+
+  const handleSubscribe = async (planId) => {
+    setSubscribing(planId);
     try {
-      const response = await apiServerClient.fetch('/stripe/create-subscription', {
+      const response = await apiServerClient.fetch('/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          characterId: character.id
-        })
+        body: JSON.stringify({ plan: planId, market, interval: billingInterval })
       });
 
       if (!response.ok) {
-        throw new Error('Failed to create subscription');
+        throw new Error('Failed to start checkout');
       }
 
       const data = await response.json();
-      
-      toast('Subscription created successfully');
-      await fetchData();
+
+      // Full-page redirect to Stripe-hosted Checkout; nothing after this runs.
+      window.location.href = data.url;
     } catch (error) {
-      console.error('Subscription error:', error);
-      toast('Failed to create subscription');
-    } finally {
+      console.error('Checkout error:', error);
+      toast('Failed to start checkout');
       setSubscribing(null);
     }
   };
 
-  const totalMonthlyCost = subscriptions
+  // Grouped by currency rather than summed flat: a customer could in principle
+  // pick a different billing region for a second Agent, and SGD + MYR totals
+  // are not addable into one meaningful number.
+  const totalsByCurrency = subscriptions
     .filter(sub => sub.status === 'active')
-    .reduce((sum, sub) => sum + sub.monthly_cost, 0);
+    .reduce((totals, sub) => {
+      const key = sub.currency || 'unknown';
+      totals[key] = (totals[key] || 0) + sub.monthly_cost;
+      return totals;
+    }, {});
 
-  const getCharacterById = (id) => characters.find(c => c.id === id);
+  const activeMarket = MARKETS.find(m => m.id === market);
 
   return (
     <>
       <Helmet>
         <title>Dashboard - Vouza</title>
-        <meta name="description" content="Manage your Vouza AI assistant subscriptions and view your billing information." />
+        <meta name="description" content="Manage your Vouza WhatsApp AI Agent subscriptions and view your billing information." />
       </Helmet>
       <Header />
       <main className="min-h-screen bg-secondary/20">
@@ -96,9 +111,21 @@ const DashboardPage = () => {
               Welcome to your Vouza Dashboard
             </h1>
             <p className="text-muted-foreground mb-4">Signed in as {currentUser?.email}</p>
-            <div className="inline-flex items-center gap-2 bg-card border border-border px-4 py-2 rounded-lg shadow-sm">
+            <div className="inline-flex flex-wrap items-center gap-2 bg-card border border-border px-4 py-2 rounded-lg shadow-sm">
               <TrendingUp className="w-5 h-5 text-primary" />
-              <span className="text-sm font-medium">Total monthly cost: <strong className="text-foreground text-base ml-1">${totalMonthlyCost.toFixed(2)}</strong></span>
+              <span className="text-sm font-medium">
+                Total monthly cost:{' '}
+                {Object.keys(totalsByCurrency).length === 0 ? (
+                  <strong className="text-foreground text-base ml-1">0.00</strong>
+                ) : (
+                  Object.entries(totalsByCurrency).map(([currency, amount], i) => (
+                    <strong key={currency} className="text-foreground text-base ml-1">
+                      {i > 0 && <span className="text-muted-foreground font-normal"> + </span>}
+                      {currency.toUpperCase()} {amount.toFixed(2)}
+                    </strong>
+                  ))
+                )}
+              </span>
             </div>
           </div>
 
@@ -126,7 +153,6 @@ const DashboardPage = () => {
                     <SubscriptionManagement
                       key={subscription.id}
                       subscription={subscription}
-                      character={getCharacterById(subscription.character_id)}
                       onUpdate={fetchData}
                     />
                   ))}
@@ -138,57 +164,96 @@ const DashboardPage = () => {
                     <Bot className="w-8 h-8 text-muted-foreground" />
                   </div>
                   <p className="text-foreground font-medium mb-2">No active assistants yet</p>
-                  <p className="text-sm text-muted-foreground max-w-sm mx-auto">Browse available Vouza AI assistants below to start automating your workflows.</p>
+                  <p className="text-sm text-muted-foreground max-w-sm mx-auto">Choose a WhatsApp AI plan below to set up your first Agent.</p>
                 </CardContent>
               </Card>
             )}
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold mb-6">Browse Vouza AI assistants</h2>
-            {loading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <Card key={i}>
-                    <CardHeader>
-                      <Skeleton className="h-6 w-3/4 mb-2" />
-                      <Skeleton className="h-4 w-full" />
-                    </CardHeader>
-                    <CardContent>
-                      <Skeleton className="h-12 w-32" />
-                    </CardContent>
-                  </Card>
-                ))}
+            <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+              <div>
+                <h2 className="text-2xl font-semibold">Add a WhatsApp AI Agent</h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Each Agent covers one WhatsApp number. You can add as many as you need.
+                </p>
               </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {characters.map((character) => (
-                  <Card key={character.id} className="flex flex-col h-full hover:shadow-md transition-shadow">
-                    <CardHeader>
-                      <CardTitle>{character.name}</CardTitle>
-                      <CardDescription>{character.role_type}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex-1">
-                      <p className="text-sm text-muted-foreground mb-6 leading-relaxed">{character.description}</p>
-                      <div className="text-3xl font-bold">${character.monthly_price.toFixed(2)}<span className="text-sm font-normal text-muted-foreground">/month</span></div>
-                    </CardContent>
-                    <CardFooter className="mt-auto pt-6 border-t border-border/50">
-                      <Button
-                        className="w-full"
-                        onClick={() => handleSubscribe(character)}
-                        disabled={isSubscribed(character.id) || subscribing === character.id}
-                      >
-                        {subscribing === character.id
-                          ? 'Subscribing...'
-                          : isSubscribed(character.id)
-                          ? 'Already subscribed'
-                          : 'Subscribe to Vouza'}
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                ))}
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-sm text-muted-foreground">Billing region</span>
+                <div className="inline-flex rounded-lg border border-border bg-card p-1">
+                  {MARKETS.map((m) => (
+                    <Button
+                      key={m.id}
+                      type="button"
+                      variant={market === m.id ? 'default' : 'ghost'}
+                      size="sm"
+                      onClick={() => setMarket(m.id)}
+                    >
+                      {m.label} ({m.currency})
+                    </Button>
+                  ))}
+                </div>
+                <div className="inline-flex rounded-lg border border-border bg-card p-1">
+                  <Button
+                    type="button"
+                    variant={billingInterval === 'monthly' ? 'default' : 'ghost'}
+                    size="sm"
+                    onClick={() => setBillingInterval('monthly')}
+                  >
+                    Monthly
+                  </Button>
+                  <Button
+                    type="button"
+                    variant={billingInterval === 'annual' ? 'default' : 'ghost'}
+                    size="sm"
+                    onClick={() => setBillingInterval('annual')}
+                  >
+                    Annual <span className="ml-1 text-xs opacity-80">(Save 10%)</span>
+                  </Button>
+                </div>
               </div>
-            )}
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {PLANS.map((plan) => (
+                <Card key={plan.id} className="flex flex-col h-full hover:shadow-md transition-shadow">
+                  <CardHeader>
+                    <div className="flex items-start justify-between gap-2">
+                      <CardTitle>{plan.name}</CardTitle>
+                      {plan.recommended && <Badge>Recommended</Badge>}
+                    </div>
+                    <CardDescription>{plan.description}</CardDescription>
+                    <div className="flex items-baseline gap-1 pt-2">
+                      <span className="text-3xl font-bold">
+                        {activeMarket?.currency} {(billingInterval === 'annual' ? plan.annualPrice[market] : plan.price[market]).toFixed(2)}
+                      </span>
+                      <span className="text-muted-foreground text-sm">
+                        {billingInterval === 'annual' ? '/Agent/year' : '/Agent/month'}
+                      </span>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="flex-1">
+                    <ul className="text-sm text-muted-foreground space-y-2 leading-relaxed">
+                      {plan.features.map((feature) => (
+                        <li key={feature}>• {feature}</li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                  <CardFooter className="mt-auto pt-6 border-t border-border/50 flex-col items-stretch gap-2">
+                    <Button
+                      className="w-full"
+                      onClick={() => handleSubscribe(plan.id)}
+                      disabled={subscribing !== null}
+                    >
+                      {subscribing === plan.id ? 'Redirecting…' : `Subscribe (${activeMarket?.currency})`}
+                    </Button>
+                    <p className="text-xs text-muted-foreground text-center">
+                      + {activeMarket?.currency} {SETUP_FEE[market].toFixed(2)} one-time setup fee on your first Agent
+                    </p>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
           </section>
         </div>
       </main>

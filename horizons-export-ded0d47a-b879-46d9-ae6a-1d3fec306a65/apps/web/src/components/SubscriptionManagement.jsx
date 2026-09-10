@@ -7,7 +7,13 @@ import { toast } from 'sonner';
 import apiServerClient from '@/lib/apiServerClient.js';
 import { Pause, Play, Trash2 } from 'lucide-react';
 
-const SubscriptionManagement = ({ subscription, character, onUpdate }) => {
+const PLAN_LABELS = {
+  basic: 'Basic',
+  advanced: 'Advanced',
+  premium: 'Premium'
+};
+
+const SubscriptionManagement = ({ subscription, onUpdate }) => {
   const [loading, setLoading] = useState(false);
 
   const handleCancel = async () => {
@@ -25,10 +31,11 @@ const SubscriptionManagement = ({ subscription, character, onUpdate }) => {
         throw new Error('Failed to cancel subscription');
       }
 
-      // The API already updates the PocketBase record's status; a direct
-      // write here would also now be rejected (subscriptions.updateRule is
-      // superuser-only as of the billing-collection lockdown migration).
-      toast('Subscription cancelled successfully');
+      // The record stays active until Stripe finalizes the cancellation at
+      // period end and the webhook flips it; a direct write here would also be
+      // rejected (subscriptions.updateRule is superuser-only as of the
+      // billing-collection lockdown migration).
+      toast('Subscription will end at the close of your current billing period');
       onUpdate();
     } catch (error) {
       toast('Failed to cancel subscription');
@@ -70,11 +77,15 @@ const SubscriptionManagement = ({ subscription, character, onUpdate }) => {
     const variants = {
       active: 'default',
       paused: 'secondary',
+      past_due: 'destructive',
       cancelled: 'destructive'
     };
+    const label = subscription.status === 'past_due'
+      ? 'Past due'
+      : subscription.status.charAt(0).toUpperCase() + subscription.status.slice(1);
     return (
       <Badge variant={variants[subscription.status] || 'default'}>
-        {subscription.status.charAt(0).toUpperCase() + subscription.status.slice(1)}
+        {label}
       </Badge>
     );
   };
@@ -84,8 +95,10 @@ const SubscriptionManagement = ({ subscription, character, onUpdate }) => {
       <CardHeader>
         <div className="flex items-start justify-between">
           <div>
-            <CardTitle>{character?.name || 'AI Assistant'}</CardTitle>
-            <CardDescription>{character?.role_type}</CardDescription>
+            <CardTitle>WhatsApp AI — {PLAN_LABELS[subscription.plan] || 'Agent'}</CardTitle>
+            <CardDescription>
+              {subscription.whatsapp_connected ? 'WhatsApp number connected' : 'WhatsApp number not connected yet'}
+            </CardDescription>
           </div>
           {getStatusBadge()}
         </div>
@@ -93,8 +106,17 @@ const SubscriptionManagement = ({ subscription, character, onUpdate }) => {
       <CardContent>
         <div className="space-y-2 text-sm">
           <div className="flex justify-between">
-            <span className="text-muted-foreground">Monthly cost</span>
-            <span className="font-semibold">${subscription.monthly_cost.toFixed(2)}</span>
+            {/* Label says "Cost", not "Monthly cost": monthly_cost holds the
+                actual per-session charge, which is an annual amount for
+                annual subscriptions — the /month or /year suffix below is
+                what disambiguates it for the customer. */}
+            <span className="text-muted-foreground">Cost</span>
+            <span className="font-semibold">
+              {subscription.currency?.toUpperCase()} {subscription.monthly_cost.toFixed(2)}
+              <span className="text-muted-foreground font-normal">
+                {subscription.billing_interval === 'annual' ? '/year' : '/month'}
+              </span>
+            </span>
           </div>
           <div className="flex justify-between">
             <span className="text-muted-foreground">Next billing</span>
@@ -135,7 +157,7 @@ const SubscriptionManagement = ({ subscription, character, onUpdate }) => {
                 <AlertDialogHeader>
                   <AlertDialogTitle>Cancel subscription</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Are you sure you want to cancel this subscription? This action cannot be undone.
+                    Your Agent stays active until the end of the current billing period, then stops. No partial refund is issued for the remainder of the period.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>

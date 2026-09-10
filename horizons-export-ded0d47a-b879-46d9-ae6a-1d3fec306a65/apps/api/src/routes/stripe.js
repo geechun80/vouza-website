@@ -4,7 +4,7 @@ import Stripe from 'stripe';
 import pb from '../utils/pocketbaseClient.js';
 import logger from '../utils/logger.js';
 import authenticate from '../middleware/auth.js';
-import { CHARACTER_PRICES } from '../constants/pricing.js';
+import { PLANS, SETUP_FEE_PRICE_ID, TOPUPS, MARKET_CURRENCIES } from '../constants/plans.js';
 import { billingRateLimit } from '../middleware/global-rate-limit.js';
 
 const router = express.Router();
@@ -12,131 +12,192 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const STRIPE_SUBSCRIPTION_ID_PATTERN = /^sub_[A-Za-z0-9]+$/;
 const STRIPE_INVOICE_ID_PATTERN = /^in_[A-Za-z0-9]+$/;
-// PocketBase record ids: 15-char lowercase base36, per the autogeneratePattern
-// on every collection's id field (see pb_migrations) — validated before this
-// value is interpolated into a PocketBase filter string.
-const POCKETBASE_ID_PATTERN = /^[a-z0-9]{15}$/;
 const isValidStripeSubscriptionId = (id) => typeof id === 'string' && STRIPE_SUBSCRIPTION_ID_PATTERN.test(id);
 const isValidStripeInvoiceId = (id) => typeof id === 'string' && STRIPE_INVOICE_ID_PATTERN.test(id);
-const isValidPocketBaseId = (id) => typeof id === 'string' && POCKETBASE_ID_PATTERN.test(id);
 
-// POST /stripe/create-subscription
-// Create a Stripe subscription for the authenticated user
-router.post('/create-subscription', authenticate, billingRateLimit, async (req, res) => {
+const APP_URL = process.env.APP_URL || 'https://vouza.ai';
+
+// Stripe moved current_period_end from the Subscription onto its items in the
+// 2025-03-31 API version. Read whichever one this account's pinned version
+// returns so next_billing_date doesn't silently become an Invalid Date.
+const getPeriodEnd = (subscription) => {
+  if (!subscription) {
+    return null;
+  }
+
+  const seconds = subscription.current_period_end
+    ?? subscription.items?.data?.[0]?.current_period_end;
+
+  return seconds ? new Date(seconds * 1000) : null;
+};
+
+// Reused by /checkout and /topup: the Stripe customer is per-account, not
+// per-subscription, so an account's second Agent bills to the same customer.
+const getOrCreateStripeCustomer = async (userId) => {
+  const userRecord = await pb.collection('users').getOne(userId);
+
+  if (userRecord.stripe_customer_id) {
+    return userRecord.stripe_customer_id;
+  }
+
+  const customer = await stripe.customers.create({
+    email: userRecord.email,
+    metadata: { userId },
+  });
+
+  await pb.collection('users').update(userId, {
+    stripe_customer_id: customer.id,
+  });
+
+  return customer.id;
+};
+
+const resolveMarket = (market) => {
+  if (typeof market !== 'string' || !Object.hasOwn(MARKET_CURRENCIES, market)) {
+    return null;
+  }
+
+  return MARKET_CURRENCIES[market];
+};
+
+// POST /stripe/checkout
+// Start a hosted Stripe Checkout session for a new WhatsApp AI Agent
+// subscription. An account may hold several independent Agent subscriptions
+// (one per WhatsApp number), so there is deliberately no duplicate-plan guard.
+router.post('/checkout', authenticate, billingRateLimit, async (req, res) => {
   const userId = req.userId;
-  const { characterId } = req.body;
+  const { plan, market } = req.body;
+  // Optional and defaulted rather than required: existing callers that don't
+  // send it yet (or send it later during a retry) should still get monthly,
+  // not a 400.
+  const interval = req.body.interval ?? 'monthly';
 
-  if (!characterId) {
-    return res.status(400).json({
-      error: 'Missing required field: characterId',
-    });
+  if (!plan || !market) {
+    return res.status(400).json({ error: 'Missing required fields: plan, market' });
   }
 
-  if (!isValidPocketBaseId(characterId)) {
-    return res.status(400).json({ error: 'Invalid characterId format' });
+  if (typeof plan !== 'string' || !Object.hasOwn(PLANS, plan)) {
+    return res.status(400).json({ error: 'Unknown plan' });
   }
 
-  const monthlyPrice = CHARACTER_PRICES[characterId];
-
-  if (monthlyPrice === undefined) {
-    return res.status(400).json({ error: 'Unknown characterId' });
+  if (interval !== 'monthly' && interval !== 'annual') {
+    return res.status(400).json({ error: 'Unknown interval' });
   }
 
-  // Idempotency / duplicate-subscription guard: a retried click or a second
-  // tab could otherwise create two Stripe subscriptions (and two PocketBase
-  // records) for the same user+character. characterId is already validated
-  // above, and userId comes from the authenticated session, not the body.
-  try {
-    await pb
-      .collection('subscriptions')
-      .getFirstListItem(`user_id = "${userId}" && character_id = "${characterId}" && status != "cancelled"`);
-    return res.status(409).json({ error: 'Already subscribed to this character' });
-  } catch (error) {
-    // getFirstListItem throws (404) when no match is found — that's the
-    // expected/normal path here, so fall through and create the subscription.
+  const currency = resolveMarket(market);
+  if (!currency) {
+    return res.status(400).json({ error: 'Unknown market' });
   }
 
-  // Get or create Stripe customer for this user
   let stripeCustomerId;
   try {
-    const userRecord = await pb.collection('users').getOne(userId);
-    stripeCustomerId = userRecord.stripe_customer_id;
-
-    if (!stripeCustomerId) {
-      const customer = await stripe.customers.create({
-        metadata: { userId, characterId },
-      });
-      stripeCustomerId = customer.id;
-
-      // Update user record with Stripe customer ID
-      await pb.collection('users').update(userId, {
-        stripe_customer_id: stripeCustomerId,
-      });
-    }
+    stripeCustomerId = await getOrCreateStripeCustomer(userId);
   } catch (error) {
     throw new Error(`Failed to get or create Stripe customer: ${error.message}`);
   }
 
-  // Create subscription
-  // The idempotency key ties this Stripe call to this user+character pair, so
-  // a client retry (e.g. a double-click before the first response lands)
-  // reuses the original subscription instead of creating a second one.
-  let subscription;
+  // The implementation & setup fee is charged once per account, on the first
+  // Agent only — so this counts every subscription the account has ever had,
+  // regardless of plan or current status.
+  let needsSetupFee;
   try {
-    subscription = await stripe.subscriptions.create(
+    const existing = await pb.collection('subscriptions').getList(1, 1, {
+      filter: `user_id = "${userId}"`,
+    });
+    needsSetupFee = existing.totalItems === 0;
+  } catch (error) {
+    throw new Error(`Failed to check existing subscriptions: ${error.message}`);
+  }
+
+  const lineItems = [{ price: PLANS[plan].priceId[interval], quantity: 1 }];
+  if (needsSetupFee) {
+    lineItems.push({ price: SETUP_FEE_PRICE_ID, quantity: 1 });
+  }
+
+  let session;
+  try {
+    session = await stripe.checkout.sessions.create(
       {
+        mode: 'subscription',
         customer: stripeCustomerId,
-        items: [
-          {
-            price_data: {
-              currency: 'usd',
-              product_data: {
-                name: `Character Subscription - ${characterId}`,
-                metadata: { characterId },
-              },
-              unit_amount: Math.round(monthlyPrice * 100), // Convert to cents
-              recurring: {
-                interval: 'month',
-              },
-            },
-            quantity: 1,
-          },
-        ],
-        metadata: { userId, characterId },
+        // An explicit currency overrides Stripe's automatic IP-based
+        // localization, so the market the customer picked wins and each
+        // Price resolves to its matching currency_options entry.
+        currency,
+        line_items: lineItems,
+        success_url: `${APP_URL}/dashboard?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${APP_URL}/dashboard?checkout=cancelled`,
+        metadata: { userId, plan, market, interval },
+        // Duplicated onto the Subscription because renewal and
+        // cancellation events carry no Session context.
+        subscription_data: {
+          metadata: { userId, plan, market, interval },
+        },
       },
-      { idempotencyKey: `sub-${userId}-${characterId}` }
+      // Scoped to a coarse time bucket rather than to user+plan: unlike the
+      // old direct subscription create, repeat Checkout Sessions are a
+      // legitimate flow (a second Agent, or retrying after abandoning one),
+      // so this only collapses a fast double-click. interval is folded in so
+      // a monthly and annual attempt in the same minute don't collide.
+      { idempotencyKey: `checkout-${userId}-${plan}-${market}-${interval}-${Math.floor(Date.now() / 60000)}` }
     );
   } catch (error) {
-    throw new Error(`Failed to create Stripe subscription: ${error.message}`);
+    throw new Error(`Failed to create Stripe Checkout session: ${error.message}`);
   }
 
-  // Store subscription in PocketBase
+  res.json({ url: session.url });
+});
+
+// POST /stripe/topup
+// One-off message top-up purchase for an existing plan.
+router.post('/topup', authenticate, billingRateLimit, async (req, res) => {
+  const userId = req.userId;
+  const { topup, market } = req.body;
+
+  if (!topup || !market) {
+    return res.status(400).json({ error: 'Missing required fields: topup, market' });
+  }
+
+  if (typeof topup !== 'string' || !Object.hasOwn(TOPUPS, topup)) {
+    return res.status(400).json({ error: 'Unknown topup' });
+  }
+
+  const currency = resolveMarket(market);
+  if (!currency) {
+    return res.status(400).json({ error: 'Unknown market' });
+  }
+
+  let stripeCustomerId;
   try {
-    await pb.collection('subscriptions').create({
-      user_id: userId,
-      character_id: characterId,
-      stripe_subscription_id: subscription.id,
-      stripe_customer_id: stripeCustomerId,
-      status: subscription.status,
-      monthly_price: monthlyPrice,
-      current_period_start: new Date(subscription.current_period_start * 1000),
-      current_period_end: new Date(subscription.current_period_end * 1000),
-    });
+    stripeCustomerId = await getOrCreateStripeCustomer(userId);
   } catch (error) {
-    logger.warn(`Failed to store subscription in PocketBase: ${error.message}`);
+    throw new Error(`Failed to get or create Stripe customer: ${error.message}`);
   }
 
-  const nextBillingDate = new Date(subscription.current_period_end * 1000);
+  let session;
+  try {
+    session = await stripe.checkout.sessions.create(
+      {
+        mode: 'payment',
+        customer: stripeCustomerId,
+        currency,
+        line_items: [{ price: TOPUPS[topup].priceId, quantity: 1 }],
+        success_url: `${APP_URL}/dashboard?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${APP_URL}/dashboard?checkout=cancelled`,
+        metadata: { userId, topup, market },
+      },
+      { idempotencyKey: `topup-${userId}-${topup}-${market}-${Math.floor(Date.now() / 60000)}` }
+    );
+  } catch (error) {
+    throw new Error(`Failed to create Stripe Checkout session: ${error.message}`);
+  }
 
-  res.json({
-    subscriptionId: subscription.id,
-    status: subscription.status,
-    nextBillingDate: nextBillingDate.toISOString(),
-  });
+  res.json({ url: session.url });
 });
 
 // POST /stripe/cancel-subscription
-// Cancel a Stripe subscription belonging to the authenticated user
+// Schedule cancellation at the end of the current paid period, per the agreed
+// customer policy: no partial refund, and the Agent stays active until then.
 router.post('/cancel-subscription', authenticate, billingRateLimit, async (req, res) => {
   const { subscriptionId } = req.body;
 
@@ -164,23 +225,25 @@ router.post('/cancel-subscription', authenticate, billingRateLimit, async (req, 
     return res.status(404).json({ error: 'Subscription not found' });
   }
 
-  // Cancel subscription in Stripe
+  let subscription;
   try {
-    await stripe.subscriptions.del(subscriptionId);
+    subscription = await stripe.subscriptions.update(subscriptionId, {
+      cancel_at_period_end: true,
+    });
   } catch (error) {
     throw new Error(`Failed to cancel Stripe subscription: ${error.message}`);
   }
 
-  // Update subscription status in PocketBase
-  try {
-    await pb.collection('subscriptions').update(subscriptionRecord.id, {
-      status: 'cancelled',
-    });
-  } catch (error) {
-    logger.warn(`Failed to update subscription status in PocketBase: ${error.message}`);
-  }
+  // The PocketBase record stays 'active' on purpose — it still is, until the
+  // period ends. customer.subscription.deleted flips it to 'cancelled' when
+  // Stripe actually finalizes the cancellation.
+  const periodEnd = getPeriodEnd(subscription);
 
-  res.json({ status: 'cancelled' });
+  res.json({
+    status: subscriptionRecord.status,
+    cancelAtPeriodEnd: true,
+    cancelsOn: periodEnd ? periodEnd.toISOString() : null,
+  });
 });
 
 // POST /stripe/pause-subscription
@@ -236,7 +299,7 @@ router.post('/pause-subscription', authenticate, billingRateLimit, async (req, r
     logger.warn(`Failed to update subscription status in PocketBase: ${error.message}`);
   }
 
-  res.json({ status: newStatus });
+  res.json({ status: newStatus, plan: subscriptionRecord.plan });
 });
 
 // GET /stripe/invoices/:userId
@@ -281,13 +344,105 @@ router.get('/invoices/:userId', authenticate, async (req, res) => {
   const formattedInvoices = invoices.map((invoice) => ({
     id: invoice.id,
     date: new Date(invoice.created * 1000).toISOString(),
-    amount: invoice.amount_paid / 100, // Convert from cents to dollars
+    amount: invoice.amount_paid / 100, // Convert from cents to major units
+    currency: invoice.currency,
     status: invoice.status,
     pdfUrl: invoice.invoice_pdf,
   }));
 
   res.json(formattedInvoices);
 });
+
+// Resolve the stripe_subscription_id an invoice belongs to. Stripe returns it
+// at different depths depending on API version (top-level on older versions,
+// under parent.subscription_details on 2025-04-30+).
+const getInvoiceSubscriptionId = (invoice) =>
+  (typeof invoice.subscription === 'string' ? invoice.subscription : invoice.subscription?.id)
+  ?? invoice.parent?.subscription_details?.subscription
+  ?? null;
+
+const findSubscriptionRecord = async (stripeSubscriptionId) => {
+  if (!isValidStripeSubscriptionId(stripeSubscriptionId)) {
+    return null;
+  }
+
+  return pb
+    .collection('subscriptions')
+    .getFirstListItem(`stripe_subscription_id = "${stripeSubscriptionId}"`)
+    .catch(() => null);
+};
+
+const handleSubscriptionCheckout = async (session) => {
+  const { userId, plan } = session.metadata || {};
+  // Defaulted rather than required: sessions created before this field
+  // existed carry no `interval` metadata at all.
+  const interval = session.metadata?.interval === 'annual' ? 'annual' : 'monthly';
+
+  if (!userId || !plan || !Object.hasOwn(PLANS, plan)) {
+    logger.warn(`Checkout session ${session.id} missing or invalid userId/plan metadata`);
+    return;
+  }
+
+  const subscription = session.subscription;
+  if (!subscription || typeof subscription === 'string') {
+    logger.warn(`Checkout session ${session.id} has no expanded subscription`);
+    return;
+  }
+
+  // NOT subscription.items.data[].price.unit_amount: a Price's unit_amount is
+  // fixed to that Price's own default currency (sgd for every plan here) and
+  // does not change when a Checkout Session bills a different currency via
+  // currency_options — reading it would silently record the SGD amount for
+  // every MYR customer. The Checkout Session's own line items are already
+  // localized to whatever currency this session actually charged, so those
+  // are the source of truth for what was billed, not the shared Price object.
+  // Note: despite the field name, for an annual subscription this stores the
+  // *annual* charge amount, not a monthly figure — `billing_interval` below
+  // is what disambiguates it.
+  const recurringLineItem = session.line_items?.data?.find((li) => li.price?.recurring);
+  const monthlyCost = recurringLineItem ? recurringLineItem.amount_total / 100 : 0;
+  const currency = session.currency;
+  const periodEnd = getPeriodEnd(subscription);
+
+  try {
+    await pb.collection('subscriptions').create({
+      user_id: userId,
+      plan,
+      status: 'active',
+      subscription_date: new Date(),
+      next_billing_date: periodEnd,
+      monthly_cost: monthlyCost,
+      currency,
+      billing_interval: interval,
+      stripe_subscription_id: subscription.id,
+    });
+  } catch (error) {
+    logger.warn(`Failed to store subscription in PocketBase: ${error.message}`);
+  }
+};
+
+const handleTopupCheckout = async (session) => {
+  const { userId, topup } = session.metadata || {};
+
+  if (!userId || !topup || !Object.hasOwn(TOPUPS, topup)) {
+    logger.warn(`Checkout session ${session.id} missing or invalid userId/topup metadata`);
+    return;
+  }
+
+  try {
+    await pb.collection('topups').create({
+      user_id: userId,
+      plan: TOPUPS[topup].plan,
+      messages: TOPUPS[topup].messages,
+      amount: (session.amount_total ?? 0) / 100,
+      currency: session.currency,
+      stripe_checkout_session_id: session.id,
+      purchased_at: new Date(),
+    });
+  } catch (error) {
+    logger.warn(`Failed to store topup in PocketBase: ${error.message}`);
+  }
+};
 
 // POST /stripe/webhook
 // Handle Stripe webhook events
@@ -310,6 +465,26 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
 
   try {
     switch (event.type) {
+      case 'checkout.session.completed': {
+        const sessionId = event.data.object.id;
+        logger.info(`Checkout session completed: ${sessionId}`);
+
+        // The event payload carries unexpanded ids, and both branches
+        // below need the subscription / line item detail behind them.
+        const session = await stripe.checkout.sessions.retrieve(sessionId, {
+          expand: ['subscription', 'line_items'],
+        });
+
+        if (session.mode === 'subscription') {
+          await handleSubscriptionCheckout(session);
+        } else if (session.mode === 'payment') {
+          await handleTopupCheckout(session);
+        } else {
+          logger.debug(`Unhandled checkout session mode: ${session.mode}`);
+        }
+        break;
+      }
+
       case 'invoice.payment_succeeded': {
         const invoice = event.data.object;
         logger.info(`Invoice payment succeeded: ${invoice.id}`);
@@ -319,30 +494,25 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
           break;
         }
 
-        // Update invoice status in PocketBase
-        try {
-          const existingInvoice = await pb
-            .collection('invoices')
-            .getFirstListItem(`stripe_invoice_id = "${invoice.id}"`)
-            .catch(() => null);
+        const stripeSubscriptionId = getInvoiceSubscriptionId(invoice);
+        const record = await findSubscriptionRecord(stripeSubscriptionId);
 
-          if (existingInvoice) {
-            await pb.collection('invoices').update(existingInvoice.id, {
-              status: 'paid',
-            });
-          } else {
-            // Create new invoice record
-            await pb.collection('invoices').create({
-              stripe_invoice_id: invoice.id,
-              stripe_customer_id: invoice.customer,
-              amount: invoice.amount_paid / 100,
-              status: 'paid',
-              date: new Date(invoice.created * 1000),
-              pdf_url: invoice.invoice_pdf,
-            });
-          }
+        if (!record) {
+          // One-off top-up invoices have no subscription; nothing to renew.
+          logger.debug(`No subscription record for invoice ${invoice.id}`);
+          break;
+        }
+
+        try {
+          const subscription = await stripe.subscriptions.retrieve(stripeSubscriptionId);
+          const periodEnd = getPeriodEnd(subscription);
+
+          await pb.collection('subscriptions').update(record.id, {
+            status: 'active',
+            ...(periodEnd ? { next_billing_date: periodEnd } : {}),
+          });
         } catch (error) {
-          logger.warn(`Failed to update invoice in PocketBase: ${error.message}`);
+          logger.warn(`Failed to update subscription in PocketBase: ${error.message}`);
         }
         break;
       }
@@ -356,30 +526,22 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
           break;
         }
 
-        // Update invoice status in PocketBase
-        try {
-          const existingInvoice = await pb
-            .collection('invoices')
-            .getFirstListItem(`stripe_invoice_id = "${invoice.id}"`)
-            .catch(() => null);
+        const record = await findSubscriptionRecord(getInvoiceSubscriptionId(invoice));
 
-          if (existingInvoice) {
-            await pb.collection('invoices').update(existingInvoice.id, {
-              status: 'failed',
-            });
-          } else {
-            // Create new invoice record
-            await pb.collection('invoices').create({
-              stripe_invoice_id: invoice.id,
-              stripe_customer_id: invoice.customer,
-              amount: invoice.amount_due / 100,
-              status: 'failed',
-              date: new Date(invoice.created * 1000),
-              pdf_url: invoice.invoice_pdf,
-            });
-          }
+        if (!record) {
+          logger.debug(`No subscription record for invoice ${invoice.id}`);
+          break;
+        }
+
+        // Marked past_due only. Retry cadence and the eventual cancel are
+        // Stripe's Smart Retries / dunning settings, configured in the
+        // Dashboard — deliberately not reimplemented here.
+        try {
+          await pb.collection('subscriptions').update(record.id, {
+            status: 'past_due',
+          });
         } catch (error) {
-          logger.warn(`Failed to update invoice in PocketBase: ${error.message}`);
+          logger.warn(`Failed to update subscription in PocketBase: ${error.message}`);
         }
         break;
       }
@@ -388,23 +550,19 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
         const subscription = event.data.object;
         logger.info(`Subscription deleted: ${subscription.id}`);
 
-        if (!isValidStripeSubscriptionId(subscription.id)) {
-          logger.warn(`Unexpected subscription id format from webhook: ${subscription.id}`);
+        // Fires when a cancel_at_period_end subscription reaches its
+        // period end, or when Stripe's own dunning gives up.
+        const record = await findSubscriptionRecord(subscription.id);
+
+        if (!record) {
+          logger.warn(`No subscription record for ${subscription.id}`);
           break;
         }
 
-        // Update subscription status in PocketBase
         try {
-          const existingSubscription = await pb
-            .collection('subscriptions')
-            .getFirstListItem(`stripe_subscription_id = "${subscription.id}"`)
-            .catch(() => null);
-
-          if (existingSubscription) {
-            await pb.collection('subscriptions').update(existingSubscription.id, {
-              status: 'cancelled',
-            });
-          }
+          await pb.collection('subscriptions').update(record.id, {
+            status: 'cancelled',
+          });
         } catch (error) {
           logger.warn(`Failed to update subscription in PocketBase: ${error.message}`);
         }
