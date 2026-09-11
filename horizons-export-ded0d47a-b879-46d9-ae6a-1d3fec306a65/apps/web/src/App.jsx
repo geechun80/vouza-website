@@ -11,6 +11,7 @@ import PasswordResetConfirmPage from './pages/PasswordResetConfirmPage.jsx';
 import PricingPage from './pages/PricingPage.jsx';
 import DashboardPage from './pages/DashboardPage.jsx';
 import BillingHistoryPage from './pages/BillingHistoryPage.jsx';
+import AccountSecurityPage from './pages/AccountSecurityPage.jsx';
 
 function App() {
   return (
@@ -42,6 +43,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <BillingHistoryPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/security"
+            element={
+              <ProtectedRoute>
+                <AccountSecurityPage />
               </ProtectedRoute>
             }
           />

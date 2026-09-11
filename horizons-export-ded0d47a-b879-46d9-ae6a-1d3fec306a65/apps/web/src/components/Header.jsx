@@ -60,6 +60,9 @@ const Header = () => {
                 <Button variant="ghost" asChild>
                   <Link to="/billing">Billing</Link>
                 </Button>
+                <Button variant="ghost" asChild>
+                  <Link to="/security">Security</Link>
+                </Button>
                 <Button variant="outline" onClick={logout}>
                   Logout
                 </Button>
@@ -104,6 +107,9 @@ const Header = () => {
                 <>
                   <Link to="/billing" onClick={() => setMobileMenuOpen(false)}>
                     <Button variant="ghost" className="w-full">Billing</Button>
+                  </Link>
+                  <Link to="/security" onClick={() => setMobileMenuOpen(false)}>
+                    <Button variant="ghost" className="w-full">Security</Button>
                   </Link>
                   <Button variant="outline" onClick={() => { logout(); setMobileMenuOpen(false); }} className="w-full">
                     Logout

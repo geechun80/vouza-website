@@ -8,3 +8,6 @@ node_modules/
 pb_data/
 # PocketBase server executable (32 MB) — download from pocketbase.io releases, don't commit
 **/apps/pocketbase/pocketbase
+
+# Holds the real Google OAuth client secret in plaintext — never commit
+Google Sign-In Json Payment Signup/

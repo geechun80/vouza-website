@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import pb from '@/lib/pocketbaseClient.js';
+import apiServerClient from '@/lib/apiServerClient.js';
 
 const AuthContext = createContext(null);
 
@@ -52,6 +53,57 @@ export const AuthProvider = ({ children }) => {
     setCurrentUser(null);
   };
 
+  // Opens Google's consent screen in a popup and completes the whole
+  // OAuth2 code exchange against PocketBase's own endpoints — PocketBase
+  // holds the Google client secret server-side, so no token handling or
+  // verification happens in this app at all.
+  const loginWithGoogle = async () => {
+    try {
+      const authData = await pb.collection('users').authWithOAuth2({ provider: 'google', $autoCancel: false });
+      setCurrentUser(authData.record);
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  };
+
+  // Alternative to password/Google — not a second factor stacked on top of
+  // them, so this only ever succeeds for accounts that opted into it via the
+  // Security page; password and Google keep working unchanged either way.
+  const loginWithTotp = async (email, code) => {
+    try {
+      const response = await apiServerClient.fetch('/auth/totp-login', {
+        method: 'POST',
+        body: JSON.stringify({ email, code }),
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        return { success: false, error: data.error || 'Sign-in failed' };
+      }
+
+      pb.authStore.save(data.token, data.record);
+      setCurrentUser(data.record);
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  };
+
+  // Re-pulls the current user's own record so fields changed server-side
+  // (e.g. totp_enabled, via the 2FA setup/disable endpoints) show up without
+  // requiring a full logout/login.
+  const refreshUser = async () => {
+    try {
+      const record = await pb.collection('users').getOne(pb.authStore.record.id);
+      pb.authStore.save(pb.authStore.token, record);
+      setCurrentUser(record);
+      return record;
+    } catch (error) {
+      return null;
+    }
+  };
+
   const requestPasswordReset = async (email) => {
     try {
       await pb.collection('users').requestPasswordReset(email, { $autoCancel: false });
@@ -85,6 +137,9 @@ export const AuthProvider = ({ children }) => {
     isAuthenticated: !!currentUser,
     login,
     signup,
+    loginWithGoogle,
+    loginWithTotp,
+    refreshUser,
     logout,
     requestPasswordReset,
     confirmPasswordReset,
