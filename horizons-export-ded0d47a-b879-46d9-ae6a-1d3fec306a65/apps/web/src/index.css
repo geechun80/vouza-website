@@ -142,6 +142,10 @@ body {
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
+    /* Tailwind's text-4xl/5xl line-height is ~1, leaving no room below the
+       baseline — with background-clip:text that crops descenders (g/y/p/q). */
+    line-height: 1.25;
+    padding-bottom: 0.1em;
   }
 
   .glow-cyan {
