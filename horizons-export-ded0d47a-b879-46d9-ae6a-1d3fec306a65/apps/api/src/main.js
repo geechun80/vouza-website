@@ -10,6 +10,7 @@ import { errorMiddleware } from './middleware/error.js';
 import { globalRateLimit } from './middleware/global-rate-limit.js';
 import logger from './utils/logger.js';
 import { BodyLimit } from './constants/common.js';
+import { pollForNewWhatsAppNumbers } from './jobs/whatsapp-onboarding-poll.js';
 
 const app = express();
 
@@ -82,5 +83,13 @@ const port = process.env.PORT || 3001;
 app.listen(port, '127.0.0.1', () => {
 	logger.info(`🚀 API Server running on http://localhost:${port}`);
 });
+
+// No webhook to trigger this — see whatsapp-onboarding-poll.js for why.
+// 5 minutes is frequent enough that a customer isn't left waiting long after
+// completing Meta's flow, without hammering the Graph API on every tick.
+const WHATSAPP_POLL_INTERVAL_MS = 5 * 60 * 1000;
+setInterval(() => {
+	pollForNewWhatsAppNumbers().catch((error) => logger.error(`whatsapp-poll: unhandled error: ${error.message}`));
+}, WHATSAPP_POLL_INTERVAL_MS);
 
 export default app;
