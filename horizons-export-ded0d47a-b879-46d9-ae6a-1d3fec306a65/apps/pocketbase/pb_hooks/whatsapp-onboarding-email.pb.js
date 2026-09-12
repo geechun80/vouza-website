@@ -13,11 +13,13 @@
 // known at signup time, so it's handled as a manual follow-up when a
 // customer replies asking for one, not a separate automated email path.
 //
-// Phase 1 of the onboarding automation: only sends the email. What happens
-// after the customer completes Meta's flow (registering the number for
-// Cloud API, subscribing the WABA to webhooks, provisioning an isolated
-// Chatwoot account + inbox, and connecting the AI agent) is not yet
-// automated — see project memory for the full phased plan.
+// Phase 1: the email itself, linking to our own number-capture page rather
+// than straight to Meta — Meta's client_whatsapp_business_accounts API (used
+// to detect a completed signup) returns no data that maps a WABA back to a
+// specific customer, so we need the number captured on our side first to
+// match against later. Phase 2 (not yet built): the backend job that polls
+// for newly-shared WABAs, matches by phone number, and completes the /register
+// + /subscribed_apps calls — see project memory for the full phased plan.
 onRecordAfterCreateSuccess((e) => {
     const userId = e.record.get("user_id");
 
@@ -42,21 +44,21 @@ onRecordAfterCreateSuccess((e) => {
     const escapeHtml = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
     const greeting = firstName ? `Hi ${escapeHtml(firstName)},` : "Hi,";
 
-    const ZERO_INTEGRATION_URL =
-        "https://business.facebook.com/messaging/whatsapp/onboard/?app_id=1358134533194597&config_id=4509495119264313";
+    const SETUP_URL = `https://app.vouza.ai/whatsapp-setup/${e.record.id}`;
 
     const subject = "Next step: connect your WhatsApp number to Vouza AI";
     const html = [
         `<p>${greeting}</p>`,
         "<p>Thanks for subscribing to Vouza AI! One step left before your AI Agent can start replying on WhatsApp: connecting your WhatsApp Business number.</p>",
         "<p>",
-        `  <a href="${ZERO_INTEGRATION_URL}" target="_blank" rel="noopener" style="display:inline-block;padding:12px 24px;background:#0074d4;color:#fff;text-decoration:none;border-radius:6px;font-weight:600;">Connect your WhatsApp number</a>`,
+        `  <a href="${SETUP_URL}" target="_blank" rel="noopener" style="display:inline-block;padding:12px 24px;background:#0074d4;color:#fff;text-decoration:none;border-radius:6px;font-weight:600;">Connect your WhatsApp number</a>`,
         "</p>",
         "<p><strong>What to expect:</strong></p>",
         "<ol>",
-        "  <li>Click the button above and log in with the Facebook account that manages your business (or create one — it's free).</li>",
+        "  <li>Click the button above and enter the WhatsApp number your AI Agent should use.</li>",
+        "  <li>You'll then be taken to Meta to log in with the Facebook account that manages your business (or create one — it's free).</li>",
         "  <li>Select or create your Business Portfolio in Meta Business Manager.</li>",
-        "  <li>Choose the WhatsApp number you want your AI Agent to use. Already manage a number with Meta? It'll show up in the list to pick directly — otherwise, enter a new one.</li>",
+        "  <li>Choose the same WhatsApp number you entered. Already manage it with Meta? It'll show up in the list to pick directly — otherwise, enter it as a new number.</li>",
         "  <li>Verify the number with the code Meta sends you by text or phone call.</li>",
         "  <li>Confirm access — this is what lets Vouza's backend send and receive messages on your Agent's behalf. Vouza never sees your other Facebook/Business data.</li>",
         "</ol>",

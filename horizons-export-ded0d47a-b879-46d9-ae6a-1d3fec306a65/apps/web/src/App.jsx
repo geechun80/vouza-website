@@ -12,6 +12,7 @@ import PricingPage from './pages/PricingPage.jsx';
 import DashboardPage from './pages/DashboardPage.jsx';
 import BillingHistoryPage from './pages/BillingHistoryPage.jsx';
 import AccountSecurityPage from './pages/AccountSecurityPage.jsx';
+import WhatsAppSetupPage from './pages/WhatsAppSetupPage.jsx';
 
 function App() {
   return (
@@ -51,6 +52,18 @@ function App() {
             element={
               <ProtectedRoute>
                 <AccountSecurityPage />
+              </ProtectedRoute>
+            }
+          />
+          {/* Target of the "Connect your WhatsApp number" link in the
+              post-subscription onboarding email (see pb_hooks/whatsapp-
+              onboarding-email.pb.js) — captures the number before sending
+              the customer on to Meta's Zero Integration Onboarding. */}
+          <Route
+            path="/whatsapp-setup/:subscriptionId"
+            element={
+              <ProtectedRoute>
+                <WhatsAppSetupPage />
               </ProtectedRoute>
             }
           />
