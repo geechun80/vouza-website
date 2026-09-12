@@ -40,7 +40,49 @@ router.get('/status/:subscriptionId', authenticate, async (req, res) => {
         whatsappConnected: !!record.whatsapp_connected,
         whatsappNumber: record.whatsapp_number_e164 || null,
         onboardingUrl: ZERO_INTEGRATION_URL,
+        businessInfo: {
+            name: record.business_name || '',
+            description: record.business_description || '',
+            keyFacts: record.business_key_facts || '',
+            tone: record.business_tone || '',
+        },
     });
+});
+
+const BUSINESS_TONES = ['friendly', 'professional', 'casual'];
+
+// POST /whatsapp/set-business-info
+// Body: { subscriptionId, name, description, keyFacts, tone }. What the AI
+// Agent actually knows about the customer's business — collected here
+// instead of guessed, since a generic agent can't answer real questions
+// about a business it knows nothing about. Independent of /set-number: a
+// customer can fill this in before, after, or while connecting Meta.
+router.post('/set-business-info', authenticate, async (req, res) => {
+    const { subscriptionId, name, description, keyFacts, tone } = req.body;
+
+    if (!subscriptionId || !name) {
+        return res.status(400).json({ error: 'Missing required fields: subscriptionId, name' });
+    }
+
+    if (tone && !BUSINESS_TONES.includes(tone)) {
+        return res.status(400).json({ error: 'Invalid tone' });
+    }
+
+    let record;
+    try {
+        record = await getOwnedSubscription(subscriptionId, req.userId);
+    } catch (error) {
+        return res.status(404).json({ error: 'Subscription not found' });
+    }
+
+    await pb.collection('subscriptions').update(record.id, {
+        business_name: name,
+        business_description: description || '',
+        business_key_facts: keyFacts || '',
+        ...(tone ? { business_tone: tone } : {}),
+    });
+
+    res.json({ success: true });
 });
 
 // POST /whatsapp/set-number
