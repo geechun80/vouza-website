@@ -1,0 +1,1107 @@
+{
+  "name": "__WORKFLOW_NAME__",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "__WEBHOOK_PATH__",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "wh-chatwoot",
+      "name": "Chatwoot Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        -1600,
+        160
+      ],
+      "webhookId": "vouza-chatwoot-bot"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.body.event }}",
+              "value2": "message_created"
+            },
+            {
+              "value1": "={{ $json.body.message_type }}",
+              "value2": "incoming"
+            }
+          ]
+        }
+      },
+      "id": "if-incoming-only",
+      "name": "Is New Incoming Message?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -1470,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $json.body;\nconst conversationId = body.conversation && body.conversation.id;\nconst contactName = (body.sender && body.sender.name) || 'Unknown';\nconst contactPhone = (body.sender && body.sender.phone_number) || '';\nconst text = body.content || '';\nconst attachments = body.attachments || [];\nconst audioAttachment = attachments.find(function(a) { return a.file_type === 'audio'; });\nconst imageAttachment = attachments.find(function(a) { return a.file_type === 'image'; });\nreturn [{\n  json: {\n    conversationId,\n    contactName,\n    contactPhone,\n    text,\n    hasAudio: audioAttachment ? 'true' : 'false',\n    audioUrl: audioAttachment ? audioAttachment.data_url : null,\n    hasImage: imageAttachment ? 'true' : 'false',\n    imageUrl: imageAttachment ? imageAttachment.data_url : null\n  }\n}];"
+      },
+      "id": "code-extract-cw",
+      "name": "Extract Chatwoot Message",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1340,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst body = $('Chatwoot Webhook').first().json.body;\n\nfunction sanitizeId(raw) {\n  if (!raw) return null;\n  const str = String(raw).trim();\n  if (str.endsWith('@lid')) {\n    const digits = str.slice(0, -4).replace(/[^0-9]/g, '');\n    return digits ? { type: 'lid', key: 'lid_' + digits } : null;\n  }\n  const digits = str.replace(/[^0-9]/g, '');\n  return digits.length >= 6 ? { type: 'phone', key: digits } : null;\n}\n\nlet identity = sanitizeId(item.contactPhone);\nif (!identity) {\n  const fallbackRaw = (body.conversation && body.conversation.contact_inbox && body.conversation.contact_inbox.source_id)\n    || (body.sender && body.sender.identifier)\n    || ('cwcontact' + ((body.sender && body.sender.id) || item.conversationId));\n  identity = sanitizeId(fallbackRaw) || { type: 'unresolved', key: 'unresolved_' + String(fallbackRaw).replace(/[^0-9a-zA-Z]/g, '') };\n}\n\nreturn [{ json: Object.assign({}, item, { memoryKey: identity.key, identityType: identity.type }) }];"
+      },
+      "id": "code-resolve-identity-cw",
+      "name": "Resolve Customer Identity",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1275,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst staticData = $getWorkflowStaticData('global');\nif (!staticData.humanHandoff) staticData.humanHandoff = {};\nconst handoff = staticData.humanHandoff[item.conversationId];\nconst now = Date.now();\nconst THREE_HOURS = 3 * 60 * 60 * 1000;\nconst THREE_MIN = 3 * 60 * 1000;\nif (handoff) {\n  if (now - handoff.since >= THREE_HOURS) {\n    delete staticData.humanHandoff[item.conversationId];\n    return [{ json: item }];\n  }\n  const gap = now - (handoff.lastSeenAt || handoff.since);\n  handoff.lastSeenAt = now;\n  if (gap < THREE_MIN) {\n    return [];\n  }\n  return [{ json: Object.assign({}, item, { alreadyHandedOff: 'true' }) }];\n}\nreturn [{ json: item }];"
+      },
+      "id": "code-handoff-check",
+      "name": "Already Handed Off?",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1210,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.alreadyHandedOff }}",
+              "value2": "true"
+            }
+          ]
+        }
+      },
+      "id": "if-cw-send-ack",
+      "name": "Needs Handoff Reminder?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -1150,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://inbox.vouza.ai/api/v1/accounts/__CHATWOOT_ACCOUNT_ID__/conversations/{{ $json.conversationId }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "__CHATWOOT_API_TOKEN__"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ content: \"You're already connected with our support team — they'll follow up with you directly shortly. Thanks for your patience!\", message_type: \"outgoing\" }) }}",
+        "options": {}
+      },
+      "id": "http-send-handoff-ack",
+      "name": "Send Handoff Reminder",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1020,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.hasAudio }}",
+              "value2": "true"
+            }
+          ]
+        }
+      },
+      "id": "if-cw-voice-in",
+      "name": "Has Voice Attachment?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -1080,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.audioUrl }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "data"
+            }
+          }
+        }
+      },
+      "id": "http-download-cw-audio",
+      "name": "Download Chatwoot Audio",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -960,
+        340
+      ],
+      "retryOnFail": true,
+      "maxTries": 4,
+      "waitBetweenTries": 1500
+    },
+    {
+      "parameters": {
+        "jsCode": "const orig = $('Extract Chatwoot Message').first().json;\nconst buffer = await helpers.getBinaryDataBuffer(0, 'data');\nconst audioBase64 = buffer.toString('base64');\nreturn [{ json: Object.assign({}, orig, { audioBase64 }) }];"
+      },
+      "id": "code-prep-cw-audio",
+      "name": "Prep Chatwoot Audio for STT",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -830,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleApi",
+        "method": "POST",
+        "url": "https://speech.googleapis.com/v1/speech:recognize",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ config: { encoding: \"OGG_OPUS\", sampleRateHertz: 16000, languageCode: \"en-US\", alternativeLanguageCodes: [\"cmn-Hans-CN\", \"ms-MY\"], enableAutomaticPunctuation: true }, audio: { content: $json.audioBase64 } }) }}",
+        "options": {}
+      },
+      "id": "http-transcribe-cw",
+      "name": "Transcribe Chatwoot Audio",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -700,
+        340
+      ],
+      "credentials": {
+        "googleApi": {
+          "id": "vouzaGoogleTtsCred1",
+          "name": "Vouza Google TTS"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const orig = $('Extract Chatwoot Message').first().json;\nconst transcript = $json.results && $json.results[0] && $json.results[0].alternatives && $json.results[0].alternatives[0] && $json.results[0].alternatives[0].transcript || '';\nreturn [{ json: Object.assign({}, orig, { text: transcript || \"(customer sent a voice note that could not be transcribed)\" }) }];"
+      },
+      "id": "code-extract-cw-transcript",
+      "name": "Extract Chatwoot Transcript",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -570,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst staticData = $getWorkflowStaticData('global');\nif (!staticData.history) staticData.history = {};\nconst history = staticData.history[item.conversationId] || [];\nreturn [{ json: Object.assign({}, item, { historyMessages: history.slice(-10) }) }];"
+      },
+      "id": "code-load-history-cw",
+      "name": "Load Conversation History (CW)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -570,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "=/home/node/.n8n-files/customer-memory/__SUBSCRIPTION_ID__/{{ $('Resolve Customer Identity').first().json.memoryKey }}.md",
+        "options": {
+          "dataPropertyName": "memoryFile"
+        }
+      },
+      "id": "file-read-customer-memory",
+      "name": "Read Customer Memory",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "continueOnFail": true,
+      "position": [
+        -540,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const prev = $('Load Conversation History (CW)').first().json;\nconst identity = $('Resolve Customer Identity').first().json;\nconst memoryResult = $json;\nlet memoryText = '';\nlet isNewCustomer = true;\nif (!memoryResult.error) {\n  const buf = await helpers.getBinaryDataBuffer(0, 'memoryFile');\n  memoryText = buf.toString('utf8');\n  isNewCustomer = false;\n}\nreturn [{ json: Object.assign({}, prev, { memoryKey: identity.memoryKey, memoryText, isNewCustomer, firstContact: isNewCustomer ? 'true' : 'false' }) }];"
+      },
+      "id": "code-parse-memory-cw",
+      "name": "Parse Customer Memory (CW)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -480,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.firstContact }}",
+              "value2": "true"
+            }
+          ]
+        }
+      },
+      "id": "if-cw-first-contact",
+      "name": "Is First Contact?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -410,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://inbox.vouza.ai/api/v1/accounts/__CHATWOOT_ACCOUNT_ID__/conversations/{{ $json.conversationId }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "__CHATWOOT_API_TOKEN__"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ content: \"👋 Hi! I'm Vouza's AI assistant. How can I help you today?\", message_type: \"outgoing\", content_type: \"input_select\", content_attributes: { items: [ { title: \"Our AI Solutions\", value: \"explore_solutions\" }, { title: \"Get Pricing / Demo\", value: \"pricing_demo\" }, { title: \"Talk to a Human\", value: \"talk_to_human\" } ] } }) }}",
+        "options": {}
+      },
+      "id": "http-send-welcome-menu-cw",
+      "name": "Send Welcome Menu (CW)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -340,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nreturn [{\n  json: {\n    memoryKey: item.memoryKey,\n    memoryText: item.memoryText,\n    contactName: item.contactName,\n    contactPhone: item.contactPhone,\n    customerName: null,\n    newFact: null,\n    language: 'en',\n    customerMessage: item.text,\n    reply: 'Sent the welcome menu (Our AI Solutions / Get Pricing-Demo / Talk to a Human).'\n  }\n}];"
+      },
+      "id": "code-format-welcome-memory-cw",
+      "name": "Format Welcome Memory Entry (CW)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -340,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpHeaderAuth",
+        "method": "POST",
+        "url": "https://openrouter.ai/api/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: \"nvidia/nemotron-3.5-lightning\", max_tokens: 500, response_format: { type: \"json_object\" }, messages: [{ role: \"system\", content: \"You are the WhatsApp customer service assistant for __BUSINESS_NAME__. Only answer using the verified information about __BUSINESS_NAME__ below, do not invent, guess, or assume any feature, product, or pricing that is not listed here. VERIFIED __BUSINESS_NAME__ INFO: __BUSINESS_INFO_BLOCK__ RULES: Only answer questions about __BUSINESS_NAME__'s products, services, pricing, support, or onboarding, using ONLY the verified info above. If unsure whether something is offered, say you will confirm with the team rather than guessing. If a customer asks about anything clearly unrelated to __BUSINESS_NAME__ such as weather or general trivia, politely decline and redirect back to relevant topics. If the customer explicitly asks to speak to a human, a real person, or the business owner, set wants_human to true and tell them a team member will follow up with them directly. MEMORY: You may receive notes about this customer from earlier conversations as a separate system message. The name and facts in those notes belong to the CUSTOMER you are talking to, never to you the assistant. Greet them in the second person using their name, for example Hi GeeChun, welcome back!, never say I am followed by their name and never phrase it as asking them to confirm their own name unless it is genuinely ambiguous. Use the notes naturally to personalize your reply, such as greeting a returning customer by name or referring back to something relevant they mentioned before, but never quote the notes verbatim or make it obvious you are reading from a file. If told this is a new customer, do not pretend to already know them. If the customer states or confirms their name, or shares a short durable fact worth remembering for future conversations (such as their company, industry, or a stated interest), capture it using the customer_name and new_fact fields described below; otherwise leave those fields null. CONVERSATION STYLE: Act like an engaged, friendly human sales and support agent chatting on WhatsApp, not a static FAQ lookup or brochure. Never dump the full catalog of services in one message, even when the customer asks a broad question like what do you offer or tell me about your products. For a broad question, name at most 3 short, likely-relevant things by title only, a few words each with no descriptions, then immediately ask a short question to find out what they actually need before saying more. Only go into detail about a specific product or service once the customer has named or picked one. If you do need to mention more than one item in a single reply, list at most 3, put each on its own line starting with a dash, keep each line under 10 words, and never combine more than one item into a single sentence of prose. Keep the entire reply, including any short list and the follow-up question, to no more than 4 short lines total. Never write a long paragraph. Always end with one short, natural follow-up question or next step relevant to what the customer just asked, unless the customer explicitly asked to speak to a human. Keep language casual and warm, like a real WhatsApp chat, not a formal document, since replies may also be converted to speech and long messages sound unnatural and can fail to generate as voice notes. Overall tone: __BUSINESS_TONE__. If the customer's message is vague or a greeting, skip any listing entirely and just ask a short clarifying question about what they are looking for. LANGUAGE: Detect which language the customer is writing or speaking in. You support English, Chinese (Mandarin), and Malay. Always reply in the SAME language the customer used. If the customer mixes languages or it is unclear, default to English. Set the language field to exactly one of: \\\"en\\\", \\\"zh\\\", \\\"ms\\\". The reply text and the language field MUST always match exactly, never write the reply in a different language than the one stated in the language field, and never mix two languages within the reply. Always respond with ONLY a JSON object in this exact shape: {\\\"reply\\\": \\\"<message to send to the customer, written in the detected language>\\\", \\\"wants_human\\\": <true or false>, \\\"summary\\\": \\\"<one sentence summary in English of what the customer asked and how you responded>\\\", \\\"language\\\": \\\"<en, zh, or ms>\\\", \\\"customer_name\\\": <the customer's name as a string if stated or confirmed in this message, otherwise null>, \\\"new_fact\\\": <one short durable fact as a string worth remembering about this customer for future conversations, otherwise null>}\" }, { role: \"system\", content: ($json.isNewCustomer ? \"This is a NEW customer with no notes from prior conversations yet.\" : \"Notes about this RETURNING customer from previous conversations:\\n\" + $json.memoryText) }].concat($json.historyMessages || [], [{ role: \"user\", content: $json.text }]) }) }}",
+        "options": {}
+      },
+      "id": "http-claude-cw",
+      "name": "Text AI Response (CW)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -440,
+        160
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "__OPENROUTER_CREDENTIAL_ID__",
+          "name": "__OPENROUTER_CREDENTIAL_NAME__"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const prev = $('Parse Customer Memory (CW)').first().json;\nlet parsed;\ntry {\n  parsed = JSON.parse($json.choices?.[0]?.message?.content || '{}');\n} catch (e) {\n  parsed = {};\n}\nconst reply = parsed.reply || \"Sorry, I couldn't process that. Our team will follow up with you shortly.\";\nconst wantsHuman = !!parsed.wants_human;\nconst summary = parsed.summary || '(no summary available)';\nlet language = ['en', 'zh', 'ms'].includes(parsed.language) ? parsed.language : 'en';\nconst hasCJK = /[\\u4e00-\\u9fff]/.test(reply);\nif (hasCJK) {\n  language = 'zh';\n} else if (language === 'zh' && !hasCJK) {\n  language = 'en';\n}\nconst customerName = (parsed.customer_name && String(parsed.customer_name).trim()) || null;\nconst newFact = (parsed.new_fact && String(parsed.new_fact).trim()) || null;\nconst staticData = $getWorkflowStaticData('global');\nif (!staticData.history) staticData.history = {};\nif (!staticData.history[prev.conversationId]) staticData.history[prev.conversationId] = [];\nstaticData.history[prev.conversationId].push({ role: 'user', content: prev.text });\nstaticData.history[prev.conversationId].push({ role: 'assistant', content: reply });\nif (staticData.history[prev.conversationId].length > 20) {\n  staticData.history[prev.conversationId] = staticData.history[prev.conversationId].slice(-20);\n}\nif (wantsHuman) {\n  if (!staticData.humanHandoff) staticData.humanHandoff = {};\n  staticData.humanHandoff[prev.conversationId] = { since: Date.now(), lastSeenAt: Date.now() };\n}\nreturn [{\n  json: {\n    conversationId: prev.conversationId,\n    contactName: prev.contactName,\n    contactPhone: prev.contactPhone,\n    customerMessage: prev.text,\n    reply,\n    wantsHuman: wantsHuman ? 'true' : 'false',\n    summary,\n    language,\n    hasAudio: prev.hasAudio,\n    memoryKey: prev.memoryKey,\n    memoryText: prev.memoryText,\n    isNewCustomer: prev.isNewCustomer,\n    customerName,\n    newFact\n  }\n}];"
+      },
+      "id": "code-format-cw",
+      "name": "Format Reply (CW)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -310,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.hasAudio }}",
+              "value2": "true"
+            }
+          ]
+        }
+      },
+      "id": "if-cw-voice-out",
+      "name": "Reply With Voice?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -180,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleApi",
+        "method": "POST",
+        "url": "https://texttospeech.googleapis.com/v1/text:synthesize",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ input: { text: $json.reply }, voice: { languageCode: ({en:'en-US',zh:'cmn-CN',ms:'ms-MY'})[$json.language] || 'en-US', name: ({en:'en-US-Studio-O',zh:'cmn-CN-Wavenet-A',ms:'ms-MY-Wavenet-A'})[$json.language] || 'en-US-Studio-O' }, audioConfig: { audioEncoding: \"MP3\" } }) }}",
+        "options": {}
+      },
+      "id": "http-generate-tts-cw",
+      "name": "Generate Voice Reply (CW)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -50,
+        -40
+      ],
+      "credentials": {
+        "googleApi": {
+          "id": "vouzaGoogleTtsCred1",
+          "name": "Vouza Google TTS"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const buf = Buffer.from($json.audioContent, 'base64');\nconst bin = await helpers.prepareBinaryData(buf, 'reply.mp3', 'audio/mpeg');\nconst prev = $('Format Reply (CW)').first().json;\nreturn [{ json: { conversationId: prev.conversationId }, binary: { data: bin } }];"
+      },
+      "id": "code-cw-tts-to-binary",
+      "name": "Convert TTS to Binary (CW)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://inbox.vouza.ai/api/v1/accounts/__CHATWOOT_ACCOUNT_ID__/conversations/{{ $json.conversationId }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "__CHATWOOT_API_TOKEN__"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formData",
+              "name": "message_type",
+              "value": "outgoing"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "attachments[]",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "http-send-cw-voice",
+      "name": "Send Chatwoot Voice Reply",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        210,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://inbox.vouza.ai/api/v1/accounts/__CHATWOOT_ACCOUNT_ID__/conversations/{{ $json.conversationId }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "__CHATWOOT_API_TOKEN__"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ content: $json.reply, message_type: \"outgoing\" }) }}",
+        "options": {}
+      },
+      "id": "http-send-cw-text",
+      "name": "Send Chatwoot Text Reply",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -50,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.wantsHuman }}",
+              "value2": "true"
+            }
+          ]
+        }
+      },
+      "id": "if-cw-wants-human",
+      "name": "Wants Human?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -180,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://inbox.vouza.ai/api/v1/accounts/__CHATWOOT_ACCOUNT_ID__/conversations/{{ $json.conversationId }}/assignments",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "__CHATWOOT_API_TOKEN__"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ assignee_id: __CHATWOOT_CUSTOMER_USER_ID__ }) }}",
+        "options": {}
+      },
+      "id": "http-assign-human-cw",
+      "name": "Assign to Human (CW)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -50,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst staticData = $getWorkflowStaticData('global');\nif (!staticData.conversations) staticData.conversations = {};\nconst key = item.conversationId;\nif (!staticData.conversations[key]) {\n  staticData.conversations[key] = { messages: [], name: item.contactName, phone: item.contactPhone };\n}\nstaticData.conversations[key].messages.push({\n  customerMessage: item.customerMessage,\n  reply: item.reply,\n  summary: item.summary,\n  wantsHuman: item.wantsHuman\n});\nstaticData.conversations[key].name = item.contactName;\nstaticData.conversations[key].phone = item.contactPhone;\nstaticData.conversations[key].lastMessageAt = Date.now();\nreturn [{ json: { conversationId: key } }];"
+      },
+      "id": "code-accumulate-cw",
+      "name": "Accumulate Conversation (CW)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -180,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst now = new Date().toISOString();\n\nconst existing = item.memoryText || '';\nlet name = item.customerName || null;\nif (!name) {\n  const m = existing.match(/^Name:\\s*(.+)$/m);\n  if (m) name = m[1].trim();\n}\nif (!name && item.contactName && item.contactName !== 'Unknown') name = item.contactName;\n\nlet facts = [];\nconst factsBlock = existing.split('## Facts')[1];\nif (factsBlock) {\n  const beforeNextHeading = factsBlock.split('## Conversation Log')[0];\n  facts = beforeNextHeading.split('\\n').map(function(l) { return l.trim(); }).filter(function(l) { return l.indexOf('- ') === 0; }).map(function(l) { return l.slice(2).trim(); });\n}\nif (item.newFact && facts.indexOf(item.newFact) === -1) facts.push(item.newFact);\nif (facts.length > 30) facts = facts.slice(-30);\n\nlet logLines = [];\nconst logBlock = existing.split('## Conversation Log')[1];\nif (logBlock) {\n  logLines = logBlock.trim().split('\\n').filter(function(l) { return l.length > 0; });\n}\nlogLines.push('- [' + now + '] Asked: ' + item.customerMessage + ' -> Replied: ' + item.reply);\nif (logLines.length > 15) logLines = logLines.slice(-15);\n\nconst phoneLine = item.memoryKey && /^[0-9]+$/.test(item.memoryKey) ? item.memoryKey : (item.contactPhone || 'unresolved');\n\nconst factsText = facts.length ? facts.map(function(f) { return '- ' + f; }).join('\\n') : '- (none yet)';\nconst md = '# Customer Memory\\n\\nName: ' + (name || 'Unknown') + '\\nPhone: ' + phoneLine + '\\nPreferred language: ' + item.language + '\\nLast contact: ' + now + '\\n\\n## Facts\\n' + factsText + '\\n\\n## Conversation Log\\n' + logLines.join('\\n') + '\\n';\n\nreturn [{ json: { memoryKey: item.memoryKey, memoryMarkdown: md } }];"
+      },
+      "id": "code-build-memory-md-cw",
+      "name": "Build Memory Markdown (CW)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -180,
+        620
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst buf = Buffer.from(item.memoryMarkdown, 'utf8');\nconst bin = await helpers.prepareBinaryData(buf, item.memoryKey + '.md', 'text/markdown');\nreturn [{ json: { memoryKey: item.memoryKey }, binary: { data: bin } }];"
+      },
+      "id": "code-prepare-memory-binary-cw",
+      "name": "Prepare Memory Binary (CW)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -50,
+        620
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=/home/node/.n8n-files/customer-memory/__SUBSCRIPTION_ID__/{{ $json.memoryKey }}.md",
+        "dataPropertyName": "data",
+        "options": {}
+      },
+      "id": "file-write-customer-memory",
+      "name": "Write Customer Memory (CW)",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        80,
+        620
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      },
+      "id": "schedule-idle-check-cw",
+      "name": "Check Idle Every Minute (CW)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1600,
+        600
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const staticData = $getWorkflowStaticData('global');\nconst conversations = staticData.conversations || {};\nconst now = Date.now();\nconst idleMs = 3 * 60 * 1000;\nconst results = [];\nfor (const key of Object.keys(conversations)) {\n  const convo = conversations[key];\n  if (!convo.messages || convo.messages.length === 0) continue;\n  if (now - (convo.lastMessageAt || 0) >= idleMs) {\n    const name = convo.name || 'Unknown';\n    const phone = convo.phone || '';\n    const msgs = convo.messages;\n    const wantsHuman = msgs.some(function(m) { return m.wantsHuman === 'true' || m.wantsHuman === true; });\n    const lines = msgs.map(function(m, i) {\n      return (i + 1) + '. Customer: ' + m.customerMessage + '\\n   AI reply: ' + m.reply + '\\n   Summary: ' + m.summary;\n    }).join('\\n\\n');\n    results.push({ json: { to: phone, name: name, wantsHuman: wantsHuman, conversationText: lines, exchangeCount: msgs.length } });\n    delete staticData.conversations[key];\n  }\n}\nreturn results;"
+      },
+      "id": "code-check-idle-cw",
+      "name": "Find Idle Conversations (CW)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1400,
+        600
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "geechun80@gmail.com",
+        "toEmail": "__CUSTOMER_EMAIL__",
+        "subject": "={{ ($json.wantsHuman ? '[HUMAN REQUESTED] ' : '') + 'Vouza CS: ' + $json.name + ' (' + $json.to + ') - ' + $json.exchangeCount + ' message(s)' }}",
+        "emailFormat": "text",
+        "text": "={{ 'Customer: ' + $json.name + '\\nPhone: ' + $json.to + '\\n\\nConversation:\\n\\n' + $json.conversationText + ($json.wantsHuman ? '\\n\\n>>> Customer asked to speak to a human. Please follow up directly. <<<' : '') }}",
+        "options": {}
+      },
+      "id": "gmail-notify-cw",
+      "name": "Email Summary to Owner (CW)",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        -1200,
+        600
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "9HJpDDgIfKFjWWfI",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.hasImage }}",
+              "value2": "true"
+            }
+          ]
+        }
+      },
+      "id": "if-cw-image-in",
+      "name": "Has Image Attachment?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpHeaderAuth",
+        "method": "POST",
+        "url": "https://openrouter.ai/api/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: \"google/gemini-2.5-flash\", max_tokens: 500, response_format: { type: \"json_object\" }, messages: [{ role: \"system\", content: \"You are the WhatsApp customer service assistant for __BUSINESS_NAME__. Only answer using the verified information about __BUSINESS_NAME__ below, do not invent, guess, or assume any feature, product, or pricing that is not listed here. VERIFIED __BUSINESS_NAME__ INFO: __BUSINESS_INFO_BLOCK__ RULES: Only answer questions about __BUSINESS_NAME__'s products, services, pricing, support, or onboarding, using ONLY the verified info above. If unsure whether something is offered, say you will confirm with the team rather than guessing. If a customer asks about anything clearly unrelated to __BUSINESS_NAME__ such as weather or general trivia, politely decline and redirect back to relevant topics. If the customer explicitly asks to speak to a human, a real person, or the business owner, set wants_human to true and tell them a team member will follow up with them directly. MEMORY: You may receive notes about this customer from earlier conversations as a separate system message. The name and facts in those notes belong to the CUSTOMER you are talking to, never to you the assistant. Greet them in the second person using their name, for example Hi GeeChun, welcome back!, never say I am followed by their name and never phrase it as asking them to confirm their own name unless it is genuinely ambiguous. Use the notes naturally to personalize your reply, such as greeting a returning customer by name or referring back to something relevant they mentioned before, but never quote the notes verbatim or make it obvious you are reading from a file. If told this is a new customer, do not pretend to already know them. If the customer states or confirms their name, or shares a short durable fact worth remembering for future conversations (such as their company, industry, or a stated interest), capture it using the customer_name and new_fact fields described below; otherwise leave those fields null. CONVERSATION STYLE: Act like an engaged, friendly human sales and support agent chatting on WhatsApp, not a static FAQ lookup or brochure. Never dump the full catalog of services in one message, even when the customer asks a broad question like what do you offer or tell me about your products. For a broad question, name at most 3 short, likely-relevant things by title only, a few words each with no descriptions, then immediately ask a short question to find out what they actually need before saying more. Only go into detail about a specific product or service once the customer has named or picked one. If you do need to mention more than one item in a single reply, list at most 3, put each on its own line starting with a dash, keep each line under 10 words, and never combine more than one item into a single sentence of prose. Keep the entire reply, including any short list and the follow-up question, to no more than 4 short lines total. Never write a long paragraph. Always end with one short, natural follow-up question or next step relevant to what the customer just asked, unless the customer explicitly asked to speak to a human. Keep language casual and warm, like a real WhatsApp chat, not a formal document, since replies may also be converted to speech and long messages sound unnatural and can fail to generate as voice notes. Overall tone: __BUSINESS_TONE__. If the customer's message is vague or a greeting, skip any listing entirely and just ask a short clarifying question about what they are looking for. LANGUAGE: Detect which language the customer is writing or speaking in. You support English, Chinese (Mandarin), and Malay. Always reply in the SAME language the customer used. If the customer mixes languages or it is unclear, default to English. Set the language field to exactly one of: \\\"en\\\", \\\"zh\\\", \\\"ms\\\". The reply text and the language field MUST always match exactly, never write the reply in a different language than the one stated in the language field, and never mix two languages within the reply. Always respond with ONLY a JSON object in this exact shape: {\\\"reply\\\": \\\"<message to send to the customer, written in the detected language>\\\", \\\"wants_human\\\": <true or false>, \\\"summary\\\": \\\"<one sentence summary in English of what the customer asked and how you responded>\\\", \\\"language\\\": \\\"<en, zh, or ms>\\\", \\\"customer_name\\\": <the customer's name as a string if stated or confirmed in this message, otherwise null>, \\\"new_fact\\\": <one short durable fact as a string worth remembering about this customer for future conversations, otherwise null>}\" }, { role: \"system\", content: ($json.isNewCustomer ? \"This is a NEW customer with no notes from prior conversations yet.\" : \"Notes about this RETURNING customer from previous conversations:\\n\" + $json.memoryText) }].concat($json.historyMessages || [], [{ role: \"user\", content: [{ type: \"text\", text: $json.text || \"What is in this image?\" }, { type: \"image_url\", image_url: { url: $json.imageUrl } }] }]) }) }}",
+        "options": {}
+      },
+      "id": "http-gemini-vision-cw",
+      "name": "Vision AI Response (CW)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -440,
+        80
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "__OPENROUTER_CREDENTIAL_ID__",
+          "name": "__OPENROUTER_CREDENTIAL_NAME__"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Chatwoot Webhook": {
+      "main": [
+        [
+          {
+            "node": "Is New Incoming Message?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is New Incoming Message?": {
+      "main": [
+        [
+          {
+            "node": "Extract Chatwoot Message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Extract Chatwoot Message": {
+      "main": [
+        [
+          {
+            "node": "Resolve Customer Identity",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resolve Customer Identity": {
+      "main": [
+        [
+          {
+            "node": "Already Handed Off?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Already Handed Off?": {
+      "main": [
+        [
+          {
+            "node": "Needs Handoff Reminder?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Needs Handoff Reminder?": {
+      "main": [
+        [
+          {
+            "node": "Send Handoff Reminder",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Has Voice Attachment?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Voice Attachment?": {
+      "main": [
+        [
+          {
+            "node": "Download Chatwoot Audio",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Load Conversation History (CW)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Chatwoot Audio": {
+      "main": [
+        [
+          {
+            "node": "Prep Chatwoot Audio for STT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prep Chatwoot Audio for STT": {
+      "main": [
+        [
+          {
+            "node": "Transcribe Chatwoot Audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe Chatwoot Audio": {
+      "main": [
+        [
+          {
+            "node": "Extract Chatwoot Transcript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Chatwoot Transcript": {
+      "main": [
+        [
+          {
+            "node": "Load Conversation History (CW)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load Conversation History (CW)": {
+      "main": [
+        [
+          {
+            "node": "Read Customer Memory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Customer Memory": {
+      "main": [
+        [
+          {
+            "node": "Parse Customer Memory (CW)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Customer Memory (CW)": {
+      "main": [
+        [
+          {
+            "node": "Is First Contact?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is First Contact?": {
+      "main": [
+        [
+          {
+            "node": "Send Welcome Menu (CW)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Format Welcome Memory Entry (CW)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Has Image Attachment?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Welcome Memory Entry (CW)": {
+      "main": [
+        [
+          {
+            "node": "Build Memory Markdown (CW)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Reply (CW)": {
+      "main": [
+        [
+          {
+            "node": "Reply With Voice?",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Wants Human?",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Accumulate Conversation (CW)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Build Memory Markdown (CW)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Memory Markdown (CW)": {
+      "main": [
+        [
+          {
+            "node": "Prepare Memory Binary (CW)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Memory Binary (CW)": {
+      "main": [
+        [
+          {
+            "node": "Write Customer Memory (CW)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply With Voice?": {
+      "main": [
+        [
+          {
+            "node": "Generate Voice Reply (CW)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Chatwoot Text Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Voice Reply (CW)": {
+      "main": [
+        [
+          {
+            "node": "Convert TTS to Binary (CW)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert TTS to Binary (CW)": {
+      "main": [
+        [
+          {
+            "node": "Send Chatwoot Voice Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wants Human?": {
+      "main": [
+        [
+          {
+            "node": "Assign to Human (CW)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Check Idle Every Minute (CW)": {
+      "main": [
+        [
+          {
+            "node": "Find Idle Conversations (CW)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Idle Conversations (CW)": {
+      "main": [
+        [
+          {
+            "node": "Email Summary to Owner (CW)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Image Attachment?": {
+      "main": [
+        [
+          {
+            "node": "Vision AI Response (CW)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Text AI Response (CW)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vision AI Response (CW)": {
+      "main": [
+        [
+          {
+            "node": "Format Reply (CW)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text AI Response (CW)": {
+      "main": [
+        [
+          {
+            "node": "Format Reply (CW)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

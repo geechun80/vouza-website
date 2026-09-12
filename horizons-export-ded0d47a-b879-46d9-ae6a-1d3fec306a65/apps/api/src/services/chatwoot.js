@@ -102,6 +102,22 @@ export const getChatwootSsoLoginUrl = async (userId) => {
 	return res.url;
 };
 
+// This is the actual trigger mechanism — NOT a generic Account-level
+// webhook (there are none configured anywhere on this instance, confirmed
+// by querying Webhook.all directly). Chatwoot forwards conversation events
+// to an AgentBot's outgoing_url once that bot is set on an inbox, which is
+// how the demo bot's inbox reaches n8n today (AgentBot id 1, "Vouza AI
+// Assistant", outgoing_url -> the demo's n8n webhook path). Every customer
+// needs their own AgentBot pointed at their own cloned workflow's webhook.
+export const createAgentBot = async (accountId, name, outgoingUrl) => {
+	const bot = await platformRequest('POST', '/agent_bots', { name, account_id: accountId, outgoing_url: outgoingUrl });
+	return bot.id;
+};
+
+export const setInboxAgentBot = async (accountId, inboxId, agentBotId) => {
+	await accountRequest('POST', `/accounts/${accountId}/inboxes/${inboxId}/set_agent_bot`, { agent_bot: agentBotId });
+};
+
 // metaAccessToken: our own META_SYSTEM_USER_TOKEN — Chatwoot stores it as
 // this inbox's own provider_config.api_key and uses it both to validate the
 // number (a real remote check against Meta, not just a format check) and to
