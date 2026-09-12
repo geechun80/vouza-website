@@ -31,12 +31,13 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const signup = async (email, password, passwordConfirm) => {
+  const signup = async (email, password, passwordConfirm, name) => {
     try {
       const record = await pb.collection('users').create({
         email,
         password,
         passwordConfirm,
+        name,
         emailVisibility: true
       }, { $autoCancel: false });
       

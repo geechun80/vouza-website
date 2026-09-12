@@ -34,12 +34,20 @@ onRecordAfterCreateSuccess((e) => {
     const senderAddress = e.app.settings().meta.senderAddress;
     const senderName = e.app.settings().meta.senderName;
 
+    // Only Google sign-ins reliably have a name (mapped from their Google
+    // profile) until every existing account has one — falls back to a plain
+    // "Hi," rather than an awkward "Hi ," for anyone who signed up before
+    // the signup form collected a name.
+    const firstName = (user.get("name") || "").trim().split(/\s+/)[0] || "";
+    const escapeHtml = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    const greeting = firstName ? `Hi ${escapeHtml(firstName)},` : "Hi,";
+
     const ZERO_INTEGRATION_URL =
         "https://business.facebook.com/messaging/whatsapp/onboard/?app_id=1358134533194597&config_id=4509495119264313";
 
     const subject = "Next step: connect your WhatsApp number to Vouza AI";
     const html = [
-        "<p>Hi,</p>",
+        `<p>${greeting}</p>`,
         "<p>Thanks for subscribing to Vouza AI! One step left before your AI Agent can start replying on WhatsApp: connecting your WhatsApp Business number.</p>",
         "<p>",
         `  <a href="${ZERO_INTEGRATION_URL}" target="_blank" rel="noopener" style="display:inline-block;padding:12px 24px;background:#0074d4;color:#fff;text-decoration:none;border-radius:6px;font-weight:600;">Connect your WhatsApp number</a>`,

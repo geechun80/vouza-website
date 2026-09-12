@@ -23,6 +23,7 @@ const SignupPage = () => {
   const navigate = useNavigate();
   const { signup, loginWithGoogle } = useAuth();
   const [formData, setFormData] = useState({
+    name: '',
     email: '',
     password: '',
     passwordConfirm: ''
@@ -55,7 +56,7 @@ const SignupPage = () => {
     
     setLoading(true);
 
-    const result = await signup(formData.email, formData.password, formData.passwordConfirm);
+    const result = await signup(formData.email, formData.password, formData.passwordConfirm, formData.name);
     
     if (result.success) {
       toast('Vouza account created successfully');
@@ -103,6 +104,18 @@ const SignupPage = () => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">Full name</Label>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="Jane Tan"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  required
+                  className="text-foreground"
+                />
+              </div>
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
