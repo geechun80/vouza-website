@@ -1,5 +1,6 @@
 import pb from '../utils/pocketbaseClient.js';
 import logger from '../utils/logger.js';
+import { provisionCustomer } from '../services/provisioning.js';
 
 const GRAPH_VERSION = 'v21.0';
 // Vouza's own Business Portfolio ID (Meta Business Settings URL), not the app
@@ -44,7 +45,10 @@ export const pollForNewWhatsAppNumbers = async () => {
 	let pending;
 	try {
 		pending = await pb.collection('subscriptions').getFullList({
-			filter: 'whatsapp_connected = false && whatsapp_number_e164 != ""',
+			// provisioning_error != "" is deliberately excluded here, not
+			// retried automatically — see provisioning.js for why a bare
+			// retry risks duplicate Chatwoot accounts/OpenRouter keys.
+			filter: 'whatsapp_connected = false && whatsapp_number_e164 != "" && provisioning_error = ""',
 		});
 	} catch (error) {
 		logger.error(`whatsapp-poll: failed to load pending subscriptions: ${error.message}`);
@@ -89,11 +93,19 @@ export const pollForNewWhatsAppNumbers = async () => {
 				logger.warn(`whatsapp-poll: subscribed_apps failed for WABA ${waba.id}: ${JSON.stringify(subBody)}`);
 			}
 
+			// whatsapp_connected is set INSIDE provisionCustomer, only once the
+			// full Chatwoot/OpenRouter/n8n chain succeeds — not here — so a
+			// partial failure doesn't leave the subscription looking "done"
+			// while actually having no working Agent behind it.
 			try {
-				await pb.collection('subscriptions').update(match.id, { whatsapp_connected: true });
-				logger.info(`whatsapp-poll: connected subscription ${match.id} to WABA ${waba.id} / phone ${phoneEntry.id}`);
+				await provisionCustomer(match, waba.id);
 			} catch (error) {
-				logger.error(`whatsapp-poll: failed to mark subscription ${match.id} connected: ${error.message}`);
+				logger.error(`whatsapp-poll: provisioning failed for subscription ${match.id}: ${error.message}`);
+				try {
+					await pb.collection('subscriptions').update(match.id, { provisioning_error: error.message.slice(0, 2000) });
+				} catch (updateError) {
+					logger.error(`whatsapp-poll: failed to record provisioning error for ${match.id}: ${updateError.message}`);
+				}
 			}
 		}
 	}
