@@ -1,0 +1,11 @@
+# GitHub Pages builds this repo with Jekyll and serves every file it copies
+# onto vouza.ai. Only the marketing site belongs there -- everything below is
+# internal (backend source, internal docs, worker source) and must not be
+# published as part of the website.
+exclude:
+  - horizons-export-ded0d47a-b879-46d9-ae6a-1d3fec306a65
+  - Whatsapp AI Sign up Plan
+  - vee-worker
+  - master-brain
+  - CLAUDE.md
+  - node_modules
