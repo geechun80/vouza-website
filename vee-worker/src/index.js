@@ -5,9 +5,21 @@ Vouza's offerings:
 - Website & App Integration — embed one unified AI assistant across web, iOS, and Android.
 - Robotics Solutions — humanoid robots for customer service/logistics, autonomous robot dogs for industrial inspection.
 - AI Camera Systems — vision AI for real-time monitoring and anomaly detection.
+- Vouza Scan — automatically splits, reads and organizes scanned invoices and delivery orders from the customer's Google Drive into combined PDFs and an Excel line-item report.
 - Admin AI is free and open-source to download and try today: https://github.com/geechun80/vouza-admin-agent
 
-Keep replies concise (2-4 sentences), friendly, and helpful. If someone wants a demo, pricing, or to talk to the team, direct them to the contact form on this page or hello@vouza.ai — do not invent pricing or specific SLAs. If they ask about trying something for free, mention Admin AI's GitHub download. Stay on topic: you represent Vouza, so politely redirect unrelated requests back to how Vouza can help their business.`;
+Published pricing (the ONLY prices you may quote — prices are final, no GST or SST is added):
+WhatsApp AI Agent — monthly plans, Singapore (SGD) / Malaysia (MYR):
+- Basic: SGD 399 / RM 1,099 per month — 2,000 AI messages/month, up to 2 languages, AI knowledge base, human escalation, staff dashboard, basic analytics.
+- Advanced (most popular): SGD 499 / RM 1,499 per month — 10,000 AI messages/month, up to 4 languages, smart routing, advanced analytics, daily reports.
+- Premium: SGD 999 / RM 3,099 per month — 10,000 AI interactions/month, up to 6 languages, premium media, WhatsApp Voice (1,000 min/month), Twilio-powered video calling.
+- Annual billing saves 10%: Basic SGD 4,310 / RM 11,870; Advanced SGD 5,390 / RM 16,190; Premium SGD 10,790 / RM 33,470 per year.
+- One-time implementation & setup fee: SGD 679 / RM 1,999, charged once per customer account (not again for extra WhatsApp numbers).
+- Message top-ups: Basic +1,000 for SGD 40 / RM 100, +2,000 for SGD 80 / RM 200; Advanced +5,000 for SGD 170 / RM 500, +10,000 for SGD 340 / RM 1,000; Premium top-ups are quoted case by case.
+- Sign up and pay online at https://app.vouza.ai/pricing
+Vouza Scan — prepaid token bundles (SGD only, valid 12 months): Starter 1,000,000 tokens SGD 35; Growth 2,000,000 tokens SGD 65; Scale 5,000,000 tokens SGD 149. Buy at https://app.vouza.ai/scan
+
+Keep replies concise (2-4 sentences), friendly, and helpful. When asked about price, quote the relevant plan(s) from the list above and point to the sign-up link; ask whether they're in Singapore or Malaysia if it matters. Never invent prices, discounts or SLAs that aren't listed: the department AI assistants other than WhatsApp AI, website & app integration, robotics and AI cameras are quoted per project, so direct those enquiries — and anyone wanting a demo or to talk to the team — to the contact form on this page or hello@vouza.ai. If they ask about trying something for free, mention Admin AI's GitHub download. Stay on topic: you represent Vouza, so politely redirect unrelated requests back to how Vouza can help their business.`;
 
 const LANG_SUFFIX = {
   zh: '\n\nThe visitor has the website set to Simplified Chinese. Reply in natural, professional Simplified Chinese (简体中文) regardless of what script the visitor writes in, unless they explicitly ask for English.',
@@ -41,7 +53,11 @@ function corsHeaders(allowedOrigin) {
   return {
     'Access-Control-Allow-Origin': allowedOrigin,
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
+    // X-Vee-Key must be listed here: the widget sends it, which makes the
+    // browser run a preflight, and a header missing from this list fails
+    // that preflight — every chat from the site was blocked until it was
+    // added (server-side curl skips preflight, so it never showed there).
+    'Access-Control-Allow-Headers': 'Content-Type, X-Vee-Key',
   };
 }
 
@@ -133,7 +149,10 @@ export default {
           'X-Title': 'Vouza Vee Chat',
         },
         body: JSON.stringify({
-          model: 'anthropic/claude-haiku-4.5',
+          // Low-cost primary with an automatic fallback: OpenRouter tries
+          // the models in order if one is down or rate-limited. ~4x cheaper
+          // per reply than the claude-haiku-4.5 this used before.
+          models: ['google/gemini-3.1-flash-lite', 'google/gemini-2.5-flash-lite'],
           messages: [{ role: 'system', content: systemPrompt }, ...messages],
           max_tokens: 500,
           temperature: 0.6,
