@@ -2205,6 +2205,40 @@
 
 <div class="divider"></div>
 
+<!-- ── WHATSAPP AI VIDEO ─────────────────────────────── -->
+<section class="vee-demo" id="whatsapp-demo">
+  <div class="vee-demo-inner">
+    <div class="section-header center">
+      <div class="section-label" data-i18n="waDemo.label">WhatsApp AI in Action</div>
+      <h2 class="section-title" data-i18n="waDemo.title">More Than Replies:<br><span class="grad-text">It Talks, Calls &amp; Takes Action</span></h2>
+      <p class="section-desc" data-i18n="waDemo.desc">Watch Vee follow one customer inquiry from the first WhatsApp message to voice notes, a phone call, a technician ticket, the manager's email and the daily report.</p>
+    </div>
+    <!-- Language follows the EN / 中文 switch (applyLang swaps poster + source). preload="none": nothing downloads until play. -->
+    <div class="vee-video-wrap" id="waDemoWrap" onclick="playWaDemo()">
+      <video id="waDemoVideo" playsinline preload="none" poster="videos/whatsapp-ai-en.jpg" aria-label="Vouza WhatsApp AI demo video">
+        <source src="videos/whatsapp-ai-en.mp4" type="video/mp4">
+      </video>
+      <div class="hud-corner tl"></div>
+      <div class="hud-corner tr"></div>
+      <div class="hud-corner bl"></div>
+      <div class="hud-corner br"></div>
+      <div class="scan-line"></div>
+      <div class="vee-play-overlay">
+        <div class="vee-play-btn">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="vee-play-hint" data-i18n="demo.playHint">Click to play</div>
+      </div>
+    </div>
+    <div class="vee-sound-badge">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+      <span data-i18n="demo.soundBadge">Sound On — turn up your volume</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
 <!-- ── AI ASSISTANTS ────────────────────────────────── -->
 <section id="assistants">
   <div class="section-header center">
@@ -3005,6 +3039,9 @@
       'demo.desc': '点击观看 Vee——您的 AI 助手——讲解 Vouza 平台如何应用于真实的企业工作流程。',
       'demo.playHint': '点击播放',
       'demo.soundBadge': '已开启声音 — 请调高音量',
+      'waDemo.label': 'WhatsApp AI 实战演示',
+      'waDemo.title': '不只是回复：<br><span class="grad-text">会说话、会接电话、更会办事</span>',
+      'waDemo.desc': '跟随 Vee 看一条客户询问如何一路处理：从第一条 WhatsApp 消息，到语音留言、电话、技术员工单、负责人邮件和每日报告。',
 
       'services.label': '核心服务',
       'services.title': '一个平台。<br><span class="grad-text">多种能力。</span>',
@@ -3297,6 +3334,17 @@
         btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
       });
       window.__vouzaLang = lang;
+      var wa = document.getElementById('waDemoVideo');
+      if (wa) {
+        var want = 'videos/whatsapp-ai-' + (lang === 'zh' ? 'zh' : 'en');
+        if (wa.getAttribute('poster') !== want + '.jpg') {
+          wa.pause();
+          document.getElementById('waDemoWrap').classList.remove('playing');
+          wa.setAttribute('poster', want + '.jpg');
+          wa.querySelector('source').setAttribute('src', want + '.mp4');
+          wa.load();
+        }
+      }
       try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
     }
     window.__vouzaApplyLang = applyLang;
@@ -3692,6 +3740,22 @@
   });
 
   /* ── VEE DEMO CLICK-TO-PLAY ─────────────────────── */
+  function playWaDemo() {
+    const wrap  = document.getElementById('waDemoWrap');
+    const video = document.getElementById('waDemoVideo');
+    if (video.paused) {
+      video.play();
+      wrap.classList.add('playing');
+    } else {
+      video.pause();
+      wrap.classList.remove('playing');
+    }
+  }
+  document.getElementById('waDemoVideo').addEventListener('ended', function() {
+    document.getElementById('waDemoWrap').classList.remove('playing');
+    this.currentTime = 0;
+  });
+
   function playVeeDemo() {
     const wrap  = document.getElementById('veeDemoWrap');
     const video = document.getElementById('veeDemoVideo');
