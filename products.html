@@ -1919,7 +1919,13 @@
 <section id="whatsapp-ai">
   <div class="product-detail-inner">
     <div>
-      <img src="product-images/whatsapp-ai.webp" alt="WhatsApp AI" loading="lazy" decoding="async" style="width:100%;border-radius:16px;border:1px solid var(--card-border);box-shadow:0 20px 60px rgba(0,0,0,0.4);">
+      <figure style="margin:0;">
+        <!-- Language follows the EN / 中文 switch (applyLang swaps poster + source). preload="none": nothing downloads until play. -->
+        <video id="waVideo" controls playsinline preload="none" poster="videos/whatsapp-ai-en.jpg" aria-label="Vouza WhatsApp AI demo video" style="width:100%;aspect-ratio:16/9;display:block;background:#060a1c;border-radius:16px;border:1px solid var(--card-border);box-shadow:0 20px 60px rgba(0,0,0,0.4);">
+          <source src="videos/whatsapp-ai-en.mp4" type="video/mp4">
+        </video>
+        <figcaption data-i18n="products.whatsapp.videoCaption" style="margin-top:12px;color:var(--muted);font-size:0.85rem;line-height:1.5;text-align:center;">&#9654; Watch: replies, voice notes, calls, technician tickets, email alerts and daily reports in one minute. Sound on.</figcaption>
+      </figure>
     </div>
     <div>
       <div class="section-label" data-i18n="products.whatsapp.label">WhatsApp AI</div>
@@ -2327,6 +2333,7 @@
       'products.assistants.cta': '获取报价 →',
 
       'products.whatsapp.label': 'WhatsApp AI',
+      'products.whatsapp.videoCaption': '&#9654; 观看：回复、语音留言、通话、技术员工单、邮件通知与每日报告，一分钟看懂。请打开声音。',
       'products.whatsapp.title': '更智能的对话。<br><span class="grad-text">更出色的业务表现。</span>',
       'products.whatsapp.desc': '让您的 WhatsApp Business 号码化身 24/7 AI 智能客服与销售助手。Vouza 的 WhatsApp AI 能自然理解客户消息、即时响应并主动执行操作 —— 查询订单状态、预约安排、解答常见问题 —— 同时将复杂问题无缝转接给您的人工团队。它可直接对接您的 CRM、ERP、客服系统与电商平台,确保每一次对话都有真实数据支撑。',
       'products.whatsapp.bullet1': '全天候即时、拟人化响应',
@@ -2503,6 +2510,16 @@
         btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
       });
       window.__vouzaLang = lang;
+      var wa = document.getElementById('waVideo');
+      if (wa) {
+        var want = 'videos/whatsapp-ai-' + (lang === 'zh' ? 'zh' : 'en');
+        if (wa.getAttribute('poster') !== want + '.jpg') {
+          wa.pause();
+          wa.setAttribute('poster', want + '.jpg');
+          wa.querySelector('source').setAttribute('src', want + '.mp4');
+          wa.load();
+        }
+      }
       try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
     }
     window.__vouzaApplyLang = applyLang;
