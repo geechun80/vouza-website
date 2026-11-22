@@ -322,12 +322,22 @@
       position: absolute;
       inset: 0;
       z-index: 2;
-      background: linear-gradient(180deg,
-        rgba(2,12,14,0.82) 0%,
-        rgba(2,12,14,0.72) 30%,
-        rgba(2,12,14,0.74) 70%,
-        rgba(2,12,14,0.87) 100%);
+      /* Axis H2 hero: keep the bright factory video clear; shade only behind the headline + at the nav / bottom edges */
+      background:
+        radial-gradient(ellipse 60% 46% at 50% 46%, rgba(2,12,14,0.64) 0%, rgba(2,12,14,0.38) 60%, rgba(2,12,14,0) 100%),
+        linear-gradient(180deg,
+          rgba(2,12,14,0.62) 0%,
+          rgba(2,12,14,0.10) 20%,
+          rgba(2,12,14,0.08) 78%,
+          rgba(2,12,14,0.70) 100%);
       pointer-events: none;
+    }
+    .hero h1, .hero-sub { text-shadow: 0 2px 22px rgba(0,8,12,0.65), 0 1px 3px rgba(0,8,12,0.5); }
+    .hero h1 .grad-text { text-shadow: none; filter: drop-shadow(0 2px 14px rgba(0,8,12,0.6)); }
+    .hero-sub { color: #f1f5f9; }
+    .hero .hero-badge { background: rgba(2,18,22,0.72); backdrop-filter: blur(6px); }
+    @media (max-width: 900px) {          /* portrait crop sits closer to the bright factory -> a little more shade */
+      .hero-overlay { background: linear-gradient(180deg, rgba(2,12,14,0.55) 0%, rgba(2,12,14,0.42) 40%, rgba(2,12,14,0.42) 75%, rgba(2,12,14,0.7) 100%); }
     }
 
     .hero-hud {
@@ -1927,8 +1937,10 @@
 <!-- ── HERO ────────────────────────────────────────── -->
 <section class="hero" id="home">
   <div class="hero-video-bg">
-    <video class="hero-video" autoplay muted loop playsinline>
-      <source src="Vee Said Hello.mp4" type="video/mp4">
+    <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="videos/axis-h2-hero.jpg"
+           aria-label="Vouza Axis H2 humanoid robot working in a factory, swapping its hand and legs (concept visualisation)">
+      <source src="videos/axis-h2-hero-720.mp4" type="video/mp4" media="(max-width: 900px)">
+      <source src="videos/axis-h2-hero-1080.mp4" type="video/mp4">
     </video>
   </div>
   <div class="hero-beams">
@@ -1975,7 +1987,7 @@
         <div class="badge-dot"></div>
         <span data-i18n="hero.badge">Vouza AI Platform Live</span>
       </div>
-      <h1 data-i18n="hero.headline">Vouza: AI Assistant<br><span class="grad-text">Solutions for SMEs</span></h1>
+      <h1 data-i18n="hero.headline">Vouza: AI Assistant &amp; Robotics<br><span class="grad-text">Solutions for SMEs</span></h1>
       <p class="hero-sub" data-i18n="hero.sub">Deploy autonomous, highly-specialized AI assistants to scale your operations, automate workflows, and drive smarter business decisions across Southeast Asia.</p>
       <div class="hero-actions">
         <a href="#contact" class="btn btn-primary btn-lg" data-i18n="hero.cta1">Initialize System</a>
@@ -2980,7 +2992,7 @@
       'nav.getStarted': '立即开始',
 
       'hero.badge': 'Vouza AI 平台已上线',
-      'hero.headline': 'Vouza：中小企业的<br><span class="grad-text">AI 智能助手解决方案</span>',
+      'hero.headline': 'Vouza：中小企业的<br><span class="grad-text">AI 智能助手与<br>机器人解决方案</span>',
       'hero.sub': '部署高度专业化的自主 AI 助手，帮助您扩展业务规模、自动化工作流程，并在东南亚各地做出更明智的业务决策。',
       'hero.cta1': '启动系统',
       'hero.cta2': '查看解决方案',
