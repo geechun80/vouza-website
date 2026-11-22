@@ -2033,42 +2033,6 @@
 
 <div class="divider"></div>
 
-<!-- ── AI CORE — 3D Sphere ──────────────────────────── -->
-<section class="sphere-showcase">
-  <div class="sphere-inner">
-    <div>
-      <div class="section-label" data-i18n="core.label">Vouza AI Core</div>
-      <h2 class="section-title" data-i18n="core.title">Always Learning.<br><span class="grad-text">Always Evolving.</span></h2>
-      <p class="section-desc" style="margin-bottom:32px;" data-i18n="core.desc">A continuously adapting neural engine at the heart of every Vouza assistant — every interaction makes it smarter, every workflow makes it faster.</p>
-      <div style="display:flex;flex-direction:column;gap:14px;">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div style="width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);flex-shrink:0;"></div>
-          <span style="font-size:0.9rem;color:var(--muted);" data-i18n="core.point1">Real-time context awareness across all channels</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div style="width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);flex-shrink:0;"></div>
-          <span style="font-size:0.9rem;color:var(--muted);" data-i18n="core.point2">Continuous self-improvement from every interaction</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div style="width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);flex-shrink:0;"></div>
-          <span style="font-size:0.9rem;color:var(--muted);" data-i18n="core.point3">Enterprise-grade accuracy trained on SEA business context</span>
-        </div>
-      </div>
-    </div>
-    <!-- 3D Sphere — reuses hero-right styling -->
-    <div class="hero-right">
-      <canvas id="hero3d"></canvas>
-      <div class="hud-corner tl"></div>
-      <div class="hud-corner tr"></div>
-      <div class="hud-corner bl"></div>
-      <div class="hud-corner br"></div>
-      <div class="scan-line"></div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
 <!-- ── VEE DEMO VIDEO ──────────────────────────────── -->
 <section class="vee-demo" id="demo">
   <div class="vee-demo-inner">
@@ -3416,6 +3380,7 @@
 
   /* ── THREE.JS HERO 3D ───────────────────────────── */
   (function () {
+    if (!document.getElementById('hero3d')) return;          // AI Core sphere section removed 2026-11-22 -> don't download three.js
     const script = document.createElement('script');
     script.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
     script.integrity = 'sha384-CI3ELBVUz9XQO+97x6nwMDPosPR5XvsxW2ua7N1Xeygeh1IxtgqtCkGfQY9WWdHu';
