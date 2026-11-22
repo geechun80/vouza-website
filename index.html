@@ -1669,6 +1669,22 @@
       letter-spacing: 1.5px;
       text-transform: uppercase;
     }
+    /* 2-minute capability demo: autoplays muted, tap for sound */
+    .demo2-wrap video { aspect-ratio: 16 / 9; object-fit: cover; }
+    .demo2-controls { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; margin-top: 18px; }
+    .demo2-note { font-size: 0.72rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: rgba(0,212,212,0.7); }
+    .demo-sound-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 9px 16px; border-radius: 100px; cursor: pointer;
+      font: 700 0.78rem/1 inherit; letter-spacing: 0.5px; color: #fff;
+      background: rgba(2,12,18,0.72); border: 1px solid rgba(0,212,212,0.55);
+      backdrop-filter: blur(6px); box-shadow: 0 0 24px rgba(0,212,212,0.25);
+    }
+    .demo-sound-btn svg { width: 18px; height: 18px; color: var(--cyan); }
+    .demo-sound-btn .ico-on, .demo-sound-btn .lbl-on { display: none; }
+    #demo.sound .demo-sound-btn .ico-on, #demo.sound .demo-sound-btn .lbl-on { display: inline; }
+    #demo.sound .demo-sound-btn .ico-off, #demo.sound .demo-sound-btn .lbl-off { display: none; }
+    #demo:not(.sound) .demo-sound-btn { animation: pulse-play 2.5s ease-in-out infinite; }
     .vee-sound-badge {
       display: inline-flex;
       align-items: center;
@@ -2057,31 +2073,29 @@
 <section class="vee-demo" id="demo">
   <div class="vee-demo-inner">
     <div class="section-header center">
-      <div class="section-label" data-i18n="demo.label">See Vee in Action</div>
-      <h2 class="section-title" data-i18n="demo.title">Watch How<br><span class="grad-text">Vee Transforms Your Business</span></h2>
-      <p class="section-desc" data-i18n="demo.desc">Tap to watch Vee — your AI assistant — explain how Vouza's platform works across real enterprise workflows.</p>
+      <div class="section-label" data-i18n="demo2.label">See Vouza in Action</div>
+      <h2 class="section-title" data-i18n="demo2.title">Watch How Vouza<br><span class="grad-text">Powers Industrial SMEs</span></h2>
+      <p class="section-desc" data-i18n="demo2.desc">AI assistants on WhatsApp, smart CCTV, IoT monitoring, industrial robotics and medical service robots — one partner, explained in 2 minutes.</p>
     </div>
-    <div class="vee-video-wrap" id="veeDemoWrap" onclick="playVeeDemo()">
-      <video id="veeDemoVideo" playsinline preload="metadata">
-        <source src="Vee Explaination.mp4" type="video/mp4">
+    <div class="vee-video-wrap demo2-wrap" id="veeDemoWrap" onclick="toggleDemoSound()">
+      <video id="veeDemoVideo" muted loop playsinline preload="metadata" poster="videos/vouza-demo-en.jpg"
+             aria-label="Vouza in 2 minutes: AI assistants, smart CCTV, IoT, industrial robotics and medical service robots">
+        <source src="videos/vouza-demo-en.mp4" type="video/mp4">
       </video>
       <!-- HUD frame -->
       <div class="hud-corner tl"></div>
       <div class="hud-corner tr"></div>
       <div class="hud-corner bl"></div>
       <div class="hud-corner br"></div>
-      <div class="scan-line"></div>
-      <!-- Play overlay -->
-      <div class="vee-play-overlay" id="veePlayOverlay">
-        <div class="vee-play-btn">
-          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-        </div>
-        <div class="vee-play-hint" data-i18n="demo.playHint">Click to play</div>
-      </div>
     </div>
-    <div class="vee-sound-badge">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
-      <span data-i18n="demo.soundBadge">Sound On — turn up your volume</span>
+    <div class="demo2-controls">
+      <button type="button" class="demo-sound-btn" id="demoSoundBtn" aria-label="Turn sound on" onclick="toggleDemoSound()">
+        <svg class="ico-off" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.6 3 2.7-2.7-1.4-1.4-2.7 2.7-2.7-2.7-1.4 1.4 2.7 2.7-2.7 2.7 1.4 1.4 2.7-2.7 2.7 2.7 1.4-1.4z"/></svg>
+        <svg class="ico-on" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+        <span class="lbl-off" data-i18n="demo2.soundOn">Tap for sound</span>
+        <span class="lbl-on" data-i18n="demo2.soundOff">Mute</span>
+      </button>
+      <span class="demo2-note" data-i18n="demo2.badge">Plays automatically with subtitles</span>
     </div>
   </div>
 </section>
@@ -3015,6 +3029,12 @@
       'core.point2': '从每一次互动中持续自我提升',
       'core.point3': '针对东南亚商业场景训练的企业级准确度',
 
+      'demo2.label': '观看 Vouza 实战',
+      'demo2.title': '观看 Vouza<br><span class="grad-text">如何赋能工业中小企业</span>',
+      'demo2.desc': 'WhatsApp AI 助手、智能监控、物联网监测、工业机器人与医疗服务机器人——一个合作伙伴，两分钟看懂。',
+      'demo2.soundOn': '点击开启声音',
+      'demo2.soundOff': '静音',
+      'demo2.badge': '自动播放 · 附字幕',
       'demo.label': '观看 Vee 实战演示',
       'demo.title': '观看 Vee<br><span class="grad-text">如何改变您的业务</span>',
       'demo.desc': '点击观看 Vee——您的 AI 助手——讲解 Vouza 平台如何应用于真实的企业工作流程。',
@@ -3315,6 +3335,17 @@
           wa.setAttribute('poster', want + '.jpg');
           wa.querySelector('source').setAttribute('src', want + '.mp4');
           wa.load();
+        }
+      }
+      var dv = document.getElementById('veeDemoVideo');
+      if (dv) {
+        var dwant = 'videos/vouza-demo-' + (lang === 'zh' ? 'zh' : 'en');
+        if (dv.getAttribute('poster') !== dwant + '.jpg') {
+          var wasPlaying = !dv.paused;
+          dv.setAttribute('poster', dwant + '.jpg');
+          dv.querySelector('source').setAttribute('src', dwant + '.mp4');
+          dv.load();
+          if (wasPlaying) { var pp = dv.play(); if (pp && pp.catch) pp.catch(function () {}); }
         }
       }
       try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
@@ -3728,22 +3759,32 @@
     this.currentTime = 0;
   });
 
-  function playVeeDemo() {
-    const wrap  = document.getElementById('veeDemoWrap');
+  /* 2-minute capability demo: muted autoplay while on screen, tap to toggle sound (restarts from the top the first time) */
+  function toggleDemoSound() {
+    const wrap  = document.getElementById('demo');
     const video = document.getElementById('veeDemoVideo');
-    if (video.paused) {
-      video.play();
-      wrap.classList.add('playing');
+    const btn   = document.getElementById('demoSoundBtn');
+    if (video.muted) {
+      if (!wrap.dataset.heard) { video.currentTime = 0; wrap.dataset.heard = '1'; }
+      video.muted = false; video.play();
     } else {
-      video.pause();
-      wrap.classList.remove('playing');
+      video.muted = true;
     }
+    wrap.classList.toggle('sound', !video.muted);
+    btn.setAttribute('aria-label', video.muted ? 'Turn sound on' : 'Mute');
   }
-  // Re-show overlay when video ends
-  document.getElementById('veeDemoVideo').addEventListener('ended', function() {
-    document.getElementById('veeDemoWrap').classList.remove('playing');
-    this.currentTime = 0;
-  });
+  (function () {
+    const video = document.getElementById('veeDemoVideo');
+    if (!video) return;
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || !('IntersectionObserver' in window)) return;   // reduced motion: plays only when tapped
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { const p = video.play(); if (p && p.catch) p.catch(function () {}); }
+        else video.pause();
+      });
+    }, { threshold: 0.4 }).observe(video);
+  })();
 
   /* ── NAVBAR ──────────────────────────────────────── */
   function toggleNav() {
