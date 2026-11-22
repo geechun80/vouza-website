@@ -822,6 +822,25 @@
     .industry-card.has-photo h4 { text-shadow: 0 1px 8px rgba(0,8,12,0.6); }
     .industry-card.has-photo p { color: #d3dce6; }
     @media (prefers-reduced-motion: reduce) { .industry-card.has-photo:hover .card-photo { transform: none; } }
+    /* Services / products / AI assistants: same photo-behind-text treatment as the industry cards */
+    .service-card.has-photo, .product-card.has-photo, .assistant-card.has-photo { isolation: isolate; padding-top: var(--ph); }
+    .service-card.has-photo { --ph: 176px; }
+    .product-card.has-photo { --ph: 184px; }
+    .assistant-card.has-photo { --ph: 132px; }
+    .has-photo > .card-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;
+      filter: brightness(1.05); transition: transform 0.6s ease, filter 0.3s ease; }
+    .service-card.has-photo::after, .product-card.has-photo::after, .assistant-card.has-photo::after {
+      content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+      background: linear-gradient(180deg, rgba(2,12,14,0) 0, rgba(2,12,14,0.06) calc(var(--ph) - 60px),
+        rgba(2,12,14,0.80) calc(var(--ph) + 24px), rgba(2,12,14,0.95) 100%); }
+    .has-photo:hover > .card-photo { transform: scale(1.06); filter: brightness(1.15); }
+    .has-photo .service-icon, .has-photo .product-icon, .has-photo .assistant-icon {
+      position: absolute; top: 16px; left: 18px; margin: 0; width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center; font-size: 1rem; color: var(--cyan);
+      background: rgba(2,18,22,0.72); border: 1px solid rgba(0,212,212,0.35); backdrop-filter: blur(6px); }
+    .has-photo h3, .has-photo h4 { text-shadow: 0 1px 8px rgba(0,8,12,0.6); }
+    .service-card.has-photo p, .product-card.has-photo p, .assistant-card.has-photo p { color: #d3dce6; }
+    @media (prefers-reduced-motion: reduce) { .has-photo:hover > .card-photo { transform: none; } }
 
     /* ── LEADERSHIP TEAM ───────────────────────────── */
     .team-grid {
@@ -2086,25 +2105,29 @@
     <p class="section-desc" data-i18n="services.desc">From AI-powered assistants to robotics and vision systems — Vouza delivers a complete enterprise automation suite built for Southeast Asia.</p>
   </div>
   <div class="services-grid">
-    <div class="service-card">
+    <div class="service-card has-photo">
+      <img class="card-photo" src="images/cards/svc-assistants.webp" alt="" loading="lazy" decoding="async" width="800" height="600">
       <div class="service-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="9" width="14" height="11" rx="2"/><path d="M12 9V5"/><circle cx="12" cy="3.5" r="1.5"/><circle cx="9" cy="14" r="1.2"/><circle cx="15" cy="14" r="1.2"/><path d="M9 17.5h6"/><path d="M2 12h3"/><path d="M19 12h3"/></svg></div>
       <h3 data-i18n="services.card1.title">Jobs Localize AI Assistants</h3>
       <p data-i18n="services.card1.desc">Deploy specialized AI assistants across every department — admin, accounting, marketing, engineering, sourcing, and more. Intelligent, context-aware automation.</p>
       <span class="service-tag" data-i18n="services.card1.tag">8 Specialized Assistants</span>
     </div>
-    <div class="service-card">
+    <div class="service-card has-photo">
+      <img class="card-photo" src="images/cards/svc-web.webp" alt="" loading="lazy" decoding="async" width="800" height="600">
       <div class="service-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.6 3.8 6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-6-3.8-9s1.3-6.4 3.8-9z"/></svg></div>
       <h3 data-i18n="services.card2.title">Website & App Integration</h3>
       <p data-i18n="services.card2.desc">Embed a unified AI Assistant directly into your website and mobile apps. One centralized intelligence layer connecting all your business functions seamlessly.</p>
       <span class="service-tag" data-i18n="services.card2.tag">Web · iOS · Android</span>
     </div>
-    <div class="service-card">
+    <div class="service-card has-photo">
+      <img class="card-photo" src="images/cards/svc-robotics.webp" alt="" loading="lazy" decoding="async" width="800" height="600">
       <div class="service-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="3"/><path d="M12 9v3"/><rect x="7" y="12" width="10" height="7" rx="2"/><path d="M9 19v2"/><path d="M15 19v2"/><path d="M7 15H4.5A1.5 1.5 0 0 1 3 13.5V13"/><path d="M17 15h2.5A1.5 1.5 0 0 0 21 13.5V13"/></svg></div>
       <h3 data-i18n="services.card3.title">Robotics Solutions</h3>
       <p data-i18n="services.card3.desc">Deploy humanoid robots for customer service, logistics, and facility management. Autonomous robot dogs for industrial inspection and patrolling.</p>
       <span class="service-tag" data-i18n="services.card3.tag">Humanoid · Robot Dogs</span>
     </div>
-    <div class="service-card">
+    <div class="service-card has-photo">
+      <img class="card-photo" src="images/cards/svc-camera.webp" alt="" loading="lazy" decoding="async" width="800" height="600">
       <div class="service-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2.19a1.5 1.5 0 0 0 1.28-.72l.66-1.08A1.5 1.5 0 0 1 10.91 4.5h2.18a1.5 1.5 0 0 1 1.28.7l.66 1.08A1.5 1.5 0 0 0 16.31 7h2.19A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5v-9z"/><circle cx="12" cy="13" r="3.4"/></svg></div>
       <h3 data-i18n="services.card4.title">AI Camera Systems</h3>
       <p data-i18n="services.card4.desc">Advanced Vision AI with real-time monitoring, anomaly detection, and intelligent surveillance powered by predictive analytics.</p>
@@ -2123,7 +2146,8 @@
     <p class="section-desc" data-i18n="products.desc">From AI assistants to specialized access-control systems — explore Vouza's full product lineup, built for real business outcomes.</p>
   </div>
   <div class="products-grid">
-    <div class="product-card">
+    <div class="product-card has-photo">
+      <img class="card-photo" src="images/cards/prod-platform.webp" alt="" loading="lazy" decoding="async" width="800" height="600">
       <div class="product-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="9" width="14" height="11" rx="2"/><path d="M12 9V5"/><circle cx="12" cy="3.5" r="1.5"/><circle cx="9" cy="14" r="1.2"/><circle cx="15" cy="14" r="1.2"/><path d="M9 17.5h6"/><path d="M2 12h3"/><path d="M19 12h3"/></svg></div>
       <h4 data-i18n="products.card1.title">AI Assistants Platform</h4>
       <p data-i18n="products.card1.desc">One platform, multiple AI assistants — WhatsApp, website chat, and vision AI working together across every part of your business, 24/7.</p>
@@ -2135,7 +2159,8 @@
       </div>
       <a href="products.html#ai-assistants" class="product-cta" data-solution="AI Assistants" data-i18n="products.learnMore">Learn More →</a>
     </div>
-    <div class="product-card">
+    <div class="product-card has-photo">
+      <img class="card-photo" src="images/cards/prod-whatsapp.webp" alt="" loading="lazy" decoding="async" width="800" height="600">
       <div class="product-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1.2-3.6A8 8 0 1 1 8.6 19.2L4 20z"/><path d="M8.5 10.5c0 3 2.5 5 5 5"/></svg></div>
       <h4 data-i18n="products.card2.title">WhatsApp AI</h4>
       <p data-i18n="products.card2.desc">Turn your WhatsApp Business number into a 24/7 AI-powered support and sales agent — instant replies, order tracking, bookings, and seamless handover to your team.</p>
@@ -2146,7 +2171,8 @@
       </div>
       <a href="products.html#whatsapp-ai" class="product-cta" data-solution="WhatsApp AI" data-i18n="products.learnMore">Learn More →</a>
     </div>
-    <div class="product-card">
+    <div class="product-card has-photo">
+      <img class="card-photo" src="images/cards/prod-webdesign.webp" alt="" loading="lazy" decoding="async" width="800" height="600">
       <div class="product-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.6 3.8 6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-6-3.8-9s1.3-6.4 3.8-9z"/></svg></div>
       <h4 data-i18n="products.card3.title">AI-Powered Website Design</h4>
       <p data-i18n="products.card3.desc">AI-assisted design and development that ships modern, responsive, SEO-optimized websites tailored to your brand — from discovery to launch.</p>
@@ -2157,7 +2183,8 @@
       </div>
       <a href="products.html#website-design" class="product-cta" data-solution="Website Design" data-i18n="products.learnMore">Learn More →</a>
     </div>
-    <div class="product-card">
+    <div class="product-card has-photo">
+      <img class="card-photo" src="images/cards/prod-anpr.webp" alt="" loading="lazy" decoding="async" width="800" height="600">
       <div class="product-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="14" width="17" height="6.5" rx="1.5"/><path d="M7 17.2h5"/><path d="M6.5 10.3a6 6 0 0 1 11 0"/><path d="M9 7.8a3 3 0 0 1 6 0"/></svg></div>
       <h4 data-i18n="products.card4.title">Smart ANPR Resident Access</h4>
       <p data-i18n="products.card4.desc">AI license-plate recognition for condominiums and gated communities — automated, secure vehicle access tied to real-time maintenance-fee verification.</p>
@@ -2168,7 +2195,8 @@
       </div>
       <a href="products.html#smart-anpr" class="product-cta" data-solution="Smart ANPR" data-i18n="products.learnMore">Learn More →</a>
     </div>
-    <div class="product-card">
+    <div class="product-card has-photo">
+      <img class="card-photo" src="images/cards/prod-memorial.webp" alt="" loading="lazy" decoding="async" width="800" height="600">
       <div class="product-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg></div>
       <h4 data-i18n="products.card5.title">Smart Memorial Access &amp; Security</h4>
       <p data-i18n="products.card5.desc">AI-powered access control and monitoring for columbariums and memorial niches — secure, dignified, and built for peace of mind.</p>
@@ -2179,7 +2207,8 @@
       </div>
       <a href="products.html#smart-memorial" class="product-cta" data-solution="Smart Memorial" data-i18n="products.learnMore">Learn More →</a>
     </div>
-    <div class="product-card">
+    <div class="product-card has-photo">
+      <img class="card-photo" src="images/cards/prod-security.webp" alt="" loading="lazy" decoding="async" width="800" height="600">
       <div class="product-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="9" width="13" height="7" rx="2"/><circle cx="17" cy="12.5" r="2.3"/><path d="M7 9V6.5a1.5 1.5 0 0 1 1.5-1.5H12"/></svg></div>
       <h4 data-i18n="products.card6.title">Smart Access &amp; Security Monitoring</h4>
       <p data-i18n="products.card6.desc">AI-powered visitor registration, face-recognition access, and real-time CCTV monitoring — with instant WhatsApp security alerts the moment something needs attention.</p>
@@ -2191,7 +2220,8 @@
       </div>
       <a href="products.html#smart-access-security" class="product-cta" data-solution="Smart Access &amp; Security Monitoring" data-i18n="products.learnMore">Learn More →</a>
     </div>
-    <div class="product-card">
+    <div class="product-card has-photo">
+      <img class="card-photo" src="images/cards/prod-consult.webp" alt="" loading="lazy" decoding="async" width="800" height="600">
       <div class="product-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15 9l-2 6-6 2 2-6 6-2z"/></svg></div>
       <h4 data-i18n="products.card7.title">AI Implementation Consultancy</h4>
       <p data-i18n="products.card7.desc">Need more than off-the-shelf? Our team scopes, builds, and integrates custom AI solutions into your existing systems and workflows — as much or as little hands-on help as you need.</p>
@@ -2249,43 +2279,51 @@
     <p class="section-desc" data-i18n="assistants.desc">Each assistant is purpose-built for its domain — trained to handle real business workflows with accuracy and speed.</p>
   </div>
   <div class="assistants-grid">
-    <a class="assistant-card" href="#download">
+    <a class="assistant-card has-photo" href="#download">
+      <img class="card-photo" src="images/cards/ast-admin.webp" alt="" loading="lazy" decoding="async" width="800" height="600">
       <div class="assistant-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a1.5 1.5 0 0 1 1.5-1.5h4l1.5 2h9A1.5 1.5 0 0 1 20.5 9v8A1.5 1.5 0 0 1 19 18.5H5A1.5 1.5 0 0 1 3.5 17V7z"/></svg></div>
       <h4 data-i18n="assistants.card1.title">Admin AI</h4>
       <p data-i18n="assistants.card1.desc">Automates scheduling, document handling, task coordination, and internal communications.</p>
       <span class="service-tag" style="margin-top:12px;" data-i18n="assistants.card1.tag">Free to Try →</span>
     </a>
-    <div class="assistant-card">
+    <div class="assistant-card has-photo">
+      <img class="card-photo" src="images/cards/ast-accounting.webp" alt="" loading="lazy" decoding="async" width="800" height="600">
       <div class="assistant-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M3 20h18"/></svg></div>
       <h4 data-i18n="assistants.card2.title">Accounting AI</h4>
       <p data-i18n="assistants.card2.desc">Manages invoicing, payroll, bookkeeping, and generates real-time financial reports.</p>
     </div>
-    <div class="assistant-card">
+    <div class="assistant-card has-photo">
+      <img class="card-photo" src="images/cards/ast-quality.webp" alt="" loading="lazy" decoding="async" width="800" height="600">
       <div class="assistant-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 3.5h6a1 1 0 0 1 1 1V6H8V4.5a1 1 0 0 1 1-1z"/><path d="M9 12l2 2 4-4"/></svg></div>
       <h4 data-i18n="assistants.card3.title">Quality Engineering AI</h4>
       <p data-i18n="assistants.card3.desc">Maintains ISO documentation, updates procedures, and generates audit-ready reports.</p>
     </div>
-    <div class="assistant-card">
+    <div class="assistant-card has-photo">
+      <img class="card-photo" src="images/cards/ast-marketing.webp" alt="" loading="lazy" decoding="async" width="800" height="600">
       <div class="assistant-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v2a2 2 0 0 0 2 2h1l2 5h2l-1.5-5H10l8 4V5l-8 4H5a2 2 0 0 0-2 2z"/><path d="M18 9.5v5"/></svg></div>
       <h4 data-i18n="assistants.card4.title">Marketing AI</h4>
       <p data-i18n="assistants.card4.desc">Creates personas, manages campaigns, and generates data-driven insights and reports.</p>
     </div>
-    <div class="assistant-card">
+    <div class="assistant-card has-photo">
+      <img class="card-photo" src="images/cards/ast-sourcing.webp" alt="" loading="lazy" decoding="async" width="800" height="600">
       <div class="assistant-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg></div>
       <h4 data-i18n="assistants.card5.title">Sourcing AI</h4>
       <p data-i18n="assistants.card5.desc">Identifies suppliers, manages vendor relationships, and improves sourcing efficiency.</p>
     </div>
-    <div class="assistant-card">
+    <div class="assistant-card has-photo">
+      <img class="card-photo" src="images/cards/ast-buyer.webp" alt="" loading="lazy" decoding="async" width="800" height="600">
       <div class="assistant-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.1"/><circle cx="17" cy="20" r="1.1"/><path d="M3 4h2l2.2 11a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6L20 8H6"/></svg></div>
       <h4 data-i18n="assistants.card6.title">Buyer AI</h4>
       <p data-i18n="assistants.card6.desc">Streamlines purchasing, order processing, supplier negotiations, and cost optimization.</p>
     </div>
-    <div class="assistant-card">
+    <div class="assistant-card has-photo">
+      <img class="card-photo" src="images/cards/ast-engineering.webp" alt="" loading="lazy" decoding="async" width="800" height="600">
       <div class="assistant-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2.5 12h3M18.5 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></div>
       <h4 data-i18n="assistants.card7.title">Engineering AI</h4>
       <p data-i18n="assistants.card7.desc">Supports design optimization, system monitoring, troubleshooting, and performance analysis.</p>
     </div>
-    <div class="assistant-card">
+    <div class="assistant-card has-photo">
+      <img class="card-photo" src="images/cards/ast-whatsapp.webp" alt="" loading="lazy" decoding="async" width="800" height="600">
       <div class="assistant-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1.2-3.6A8 8 0 1 1 8.6 19.2L4 20z"/><path d="M8.5 10.5c0 3 2.5 5 5 5"/></svg></div>
       <h4 data-i18n="assistants.card8.title">WhatsApp AI</h4>
       <p data-i18n="assistants.card8.desc">Handles customer inquiries, automates responses, and generates conversation summaries via WhatsApp.</p>
